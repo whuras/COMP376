@@ -22,6 +22,9 @@ public class Weapon : MonoBehaviour
     public float Range = 100f;
     public float Damage = 5f;
     public float Period = 1f;
+    public Projectile Projectile;
+    public Transform MuzzlePosition;
+    public GameObject Owner;
 
     float mTimeLastShot = 0f;
     uint mAmmoLeft = 10;
@@ -77,15 +80,18 @@ public class Weapon : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0f));
         if (Physics.Raycast(ray, out RaycastHit hit, Range))
         {
-            Target target = hit.collider.gameObject.GetComponent<Target>();
+            Damageable target = hit.collider.gameObject.GetComponent<Damageable>();
             if (target != null)
             {
-                target.TakeHit(this);
+                target.TakeDamage(Damage);
             }
         }
     }
 
     void FireProjectile()
     {
+        Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
+        newProjectile.Owner = Owner;
+        newProjectile.Damage = Damage;
     }
 }
