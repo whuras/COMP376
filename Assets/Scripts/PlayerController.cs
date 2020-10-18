@@ -6,12 +6,15 @@ public class PlayerController : MonoBehaviour
 {
 
     public Transform CameraRoot;
-    public float CharacterSpeed;
+    public float CharacterSpeedNormal;
+    public float CharacterSpeedRunning;
+    public float JumpVelocity;
+    public float GravityAcceleration;
     public Vector2 MouseSensitivity;
     public Weapon weapon;
 
     CharacterController mCharacterController;
-    bool mIsGrounded = true;
+    Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
 
     void Start()
     {
@@ -31,17 +34,27 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement ()
     {
-        // JUMPING
-        if (mIsGrounded && Input.GetButtonDown("Jump"))
-        {
-            mIsGrounded = false;
-        }
-
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        float speed = Mathf.Lerp(CharacterSpeedNormal, CharacterSpeedRunning, Input.GetAxis("Run"));
         moveDirection.Normalize();
         moveDirection = transform.TransformDirection(moveDirection);
-        mCharacterController.Move(moveDirection * CharacterSpeed * Time.deltaTime);
+
+        // JUMPING
+        float verticalVelocity = mCharacterVelocity.y;
+        if (mCharacterController.isGrounded)
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                verticalVelocity = JumpVelocity;
+            }
+        }
+        else
+        {
+            verticalVelocity -= GravityAcceleration * Time.deltaTime;
+        }
+        mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
+        mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
 
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
