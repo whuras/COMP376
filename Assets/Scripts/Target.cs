@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public float Health = 10f;
-
-    public void TakeHit(Weapon weapon)
+    void Start()
     {
-        Health -= weapon.Damage;
-        Debug.Log(Health);
+        Damageable damageable = gameObject.GetComponent<Damageable>();
+        damageable.OnDamaged += OnDamaged;
+        damageable.OnDeath += OnDeath;
+    }
+
+    void OnDamaged()
+    {
+        gameObject.GetComponent<Animator>().Play("Damaged", -1, 0f);
+    }
+
+    void OnDeath()
+    {
+        gameObject.GetComponent<Animator>().Play("Dead");
     }
 }
