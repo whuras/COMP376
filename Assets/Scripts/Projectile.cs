@@ -56,8 +56,6 @@ public class Projectile : MonoBehaviour
     void Hit(Collider collider)
     {
         HealthController target = collider.GetComponent<HealthController>();
-
-        print(target);
         if (target != null)
         {
             target.TakeDamage(Damage);

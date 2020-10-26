@@ -13,12 +13,6 @@ public class HealthController : MonoBehaviour
     public int healthAmount;
     public int healthAmountMaximum;
 
-    public HealthController(int healthAmount)
-    {
-        healthAmountMaximum = healthAmount;
-        this.healthAmount = healthAmount;
-    }
-
     public void TakeDamage(int damage)
     {
         healthAmount -= damage;
