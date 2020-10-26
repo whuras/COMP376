@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     public Transform CameraRoot;
     public float CharacterSpeedNormal;
     public float CharacterSpeedRunning;
@@ -13,26 +10,40 @@ public class PlayerController : MonoBehaviour
     public Vector2 MouseSensitivity;
     public Weapon weapon;
 
+    public PlayerInterface playerInterface;
+    public HealthController healthController;
+
     CharacterController mCharacterController;
-    Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
+    Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
 
     void Start()
     {
+        // Initial Player Health
+        healthController = gameObject.GetComponent<HealthController>();
+        healthController.OnDamaged += HealthController_OnDamaged;
+        healthController.OnHealed += HealthController_OnHealed;
+
+        // Initial User Interface
+        playerInterface.SetHealthBar(healthController.GetHealthNormalized());
+        playerInterface.SetAmmoCount(weapon);
+        
+        // Initialize Controls
         mCharacterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
+
         if (Input.GetButtonDown("Cancel"))
         {
             Cursor.lockState = (Cursor.lockState == CursorLockMode.Locked) ? CursorLockMode.None : CursorLockMode.Locked;
         }
         HandleMovement();
-        HandleWeapons();    
+        HandleWeapons();
     }
 
-    void HandleMovement ()
+    void HandleMovement()
     {
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -58,22 +69,34 @@ public class PlayerController : MonoBehaviour
 
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
-        float angleDelta =  Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;
+        float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;
         characterRotation.y += angleDelta;
         transform.localEulerAngles = characterRotation;
 
         // AIMING (UP/DOWN)
         Vector3 cameraRotation = CameraRoot.transform.localEulerAngles;
-        angleDelta =  Input.GetAxis("Mouse Y") * MouseSensitivity.y * Time.deltaTime;
+        angleDelta = Input.GetAxis("Mouse Y") * MouseSensitivity.y * Time.deltaTime;
         cameraRotation.x = cameraRotation.x - angleDelta;
         CameraRoot.transform.localEulerAngles = cameraRotation;
     }
 
-    void HandleWeapons ()
+    void HandleWeapons()
     {
         weapon.ReceiveFireInputs(
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
+        playerInterface.UpdateAmmoCount(weapon);
+    }
+
+    void HealthController_OnHealed()
+    {
+        playerInterface.UpdateHealthBar(true, healthController.GetHealthNormalized());
+    }
+
+    void HealthController_OnDamaged()
+    {
+        playerInterface.UpdateHealthBar(false, healthController.GetHealthNormalized());
     }
 }
+

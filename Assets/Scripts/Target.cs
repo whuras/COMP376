@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    public bool returnsDamage;
+    public PlayerController Player;
+    public HealthController healthController;
+
     void Start()
     {
-        Damageable damageable = gameObject.GetComponent<Damageable>();
-        damageable.OnDamaged += OnDamaged;
-        damageable.OnDeath += OnDeath;
+        healthController = gameObject.GetComponent<HealthController>();
+        healthController.OnDamaged += HealthController_OnDamaged;
+        healthController.OnDeath += HealthController_OnDeath;
     }
 
-    void OnDamaged()
+    void HealthController_OnDamaged()
     {
-        gameObject.GetComponent<Animator>().Play("Damaged", -1, 0f);
+        if (returnsDamage)
+        {
+            Player.healthController.TakeDamage(10);
+        }
+        else
+        {
+            gameObject.GetComponent<Animator>().Play("Damaged", -1, 0f);
+        }
     }
 
-    void OnDeath()
+    void HealthController_OnDeath()
     {
         gameObject.GetComponent<Animator>().Play("Dead");
     }

@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public GameObject Owner;
     public float Speed = 1f;
-    public float Damage;
+    public int Damage;
     public float TrajectoryCorrectionDistance = 2;
     public float CollisionRadius = 0.1f;
     public GameObject ImpactEffects;
@@ -55,7 +55,9 @@ public class Projectile : MonoBehaviour
 
     void Hit(Collider collider)
     {
-        Damageable target = collider.GetComponent<Damageable>();
+        HealthController target = collider.GetComponent<HealthController>();
+
+        print(target);
         if (target != null)
         {
             target.TakeDamage(Damage);
