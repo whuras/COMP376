@@ -20,14 +20,15 @@ public class Weapon : MonoBehaviour
     public WeaponFireType FireType = WeaponFireType.Manual;
     public WeaponBulletType BulletType = WeaponBulletType.Raycast;
     public float Range = 100f;
-    public float Damage = 5f;
+    public int Damage;
     public float Period = 1f;
     public Projectile Projectile;
     public Transform MuzzlePosition;
     public GameObject Owner;
 
+    public uint mMaxAmmo = 6;
+    public uint mAmmoLeft = 6;
     float mTimeLastShot = 0f;
-    uint mAmmoLeft = 10;
 
     void Start()
     {
@@ -72,6 +73,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
+        mAmmoLeft--;
         return true;
     }
 
@@ -80,7 +82,7 @@ public class Weapon : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0f));
         if (Physics.Raycast(ray, out RaycastHit hit, Range))
         {
-            Damageable target = hit.collider.gameObject.GetComponent<Damageable>();
+            HealthController target = hit.collider.gameObject.GetComponent<HealthController>();
             if (target != null)
             {
                 target.TakeDamage(Damage);

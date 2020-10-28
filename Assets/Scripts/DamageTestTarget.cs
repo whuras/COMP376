@@ -2,24 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Target : MonoBehaviour
+// This is a debug script and can be safely deleted at any time
+
+public class DamageTestTarget : MonoBehaviour
 {
+    public PlayerController Player;
     public HealthController healthController;
 
     void Start()
     {
         healthController = gameObject.GetComponent<HealthController>();
         healthController.OnDamaged += HealthController_OnDamaged;
-        healthController.OnDeath += HealthController_OnDeath;
+        healthController.OnDamaged += HealthController_OnDeath;
     }
 
     void HealthController_OnDamaged()
     {
-        gameObject.GetComponent<Animator>().Play("Damaged", -1, 0f);
+        Player.healthController.TakeDamage(10);
     }
 
     void HealthController_OnDeath()
     {
-        gameObject.GetComponent<Animator>().Play("Dead");
+
     }
 }
