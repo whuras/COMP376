@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour
     public Transform MuzzlePosition;
     public GameObject Owner;
 
-    public uint maxAmmo = 6;
+    public uint mMaxAmmo = 6;
     public uint mAmmoLeft = 6;
     float mTimeLastShot = 0f;
 

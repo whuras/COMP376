@@ -19,29 +19,22 @@ public class HealthController : MonoBehaviour
         if (healthAmount < 0)
         {
             healthAmount = 0;
+            OnDeath();
         }
         else
         {
             OnDamaged();
         }
-
-        if (healthAmount == 0)
-        {
-            OnDeath();
-        }
     }
 
     public void Heal(int health)
     {
-        healthAmount += health;
-        if (healthAmount > healthAmountMaximum)
+        if (healthAmount + health > healthAmountMaximum)
         {
             healthAmount = healthAmountMaximum;
         }
-        else
-        {
-            OnHealed();
-        }
+        
+        OnHealed();
     }
 
     public float GetHealthNormalized()
