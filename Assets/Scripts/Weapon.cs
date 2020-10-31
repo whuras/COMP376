@@ -22,6 +22,7 @@ public class Weapon : MonoBehaviour
     public float Range = 100f;
     public int Damage;
     public float Period = 1f;
+    public float MaxRecoil = 60;
     public Projectile Projectile;
     public Transform MuzzlePosition;
     public GameObject Owner;
@@ -33,6 +34,11 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         
+    }
+
+    void Update()
+    {
+        RecoilAnimation();
     }
 
     public bool ReceiveFireInputs(bool fireDown, bool fireHeld, bool fireReleased)
@@ -75,6 +81,17 @@ public class Weapon : MonoBehaviour
 
         mAmmoLeft--;
         return true;
+    }
+
+    void RecoilAnimation()
+    {
+        Vector3 crrtRotation = transform.localEulerAngles;
+        crrtRotation.x = -20f*Mathf.Exp(5f*(mTimeLastShot - Time.time));
+        transform.localEulerAngles = crrtRotation;
+
+        Vector3 crrtPosition = transform.localPosition;
+        crrtPosition.z = -0.5f*Mathf.Exp(5f*(mTimeLastShot - Time.time));
+        transform.localPosition = crrtPosition;
     }
 
     void FireRaycast()

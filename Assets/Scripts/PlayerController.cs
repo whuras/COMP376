@@ -8,13 +8,21 @@ public class PlayerController : MonoBehaviour
     public float JumpVelocity;
     public float GravityAcceleration;
     public Vector2 MouseSensitivity;
-    public Weapon weapon;
+
+    public Weapon Weapon;
+    public float WeaponBobAmplitude;
+    public float WeaponBobFrequency;
+    public float WeaponBobSharpness;
 
     public PlayerInterface playerInterface;
     public HealthController healthController;
 
     CharacterController mCharacterController;
-    Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
+    Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
+    float mCurrentWeaponBobFactor;
+    float mWeaponBobTime;
+    bool mIsGrounded;
+    float mTimeLastJump = 0f;
 
     void Start()
     {
@@ -30,6 +38,7 @@ public class PlayerController : MonoBehaviour
         // Initialize Controls
         mCharacterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        mWeaponBobTime = Time.time;
     }
 
     void Update()
@@ -39,8 +48,15 @@ public class PlayerController : MonoBehaviour
         {
             Cursor.lockState = (Cursor.lockState == CursorLockMode.Locked) ? CursorLockMode.None : CursorLockMode.Locked;
         }
+        CheckIfGrounded();
         HandleMovement();
         HandleWeapons();
+        HandleWeaponBob();
+    }
+
+    void CheckIfGrounded()
+    {
+        mIsGrounded = mTimeLastJump + 0.2f < Time.time && Physics.Raycast(transform.position, Vector3.down, 1.6f);
     }
 
     void HandleMovement()
@@ -52,17 +68,18 @@ public class PlayerController : MonoBehaviour
         moveDirection = transform.TransformDirection(moveDirection);
 
         // JUMPING
-        float verticalVelocity = mCharacterVelocity.y;
-        if (mCharacterController.isGrounded)
+        float verticalVelocity = 0f;
+        if (mIsGrounded)
         {
             if (Input.GetButtonDown("Jump"))
             {
+                mTimeLastJump = Time.time;
                 verticalVelocity = JumpVelocity;
             }
         }
         else
         {
-            verticalVelocity -= GravityAcceleration * Time.deltaTime;
+            verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
@@ -82,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleWeapons()
     {
-        weapon.ReceiveFireInputs(
+        Weapon.ReceiveFireInputs(
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
@@ -97,6 +114,23 @@ public class PlayerController : MonoBehaviour
     void HealthController_OnDamaged()
     {
         playerInterface.UpdateHealthBar(false, healthController.GetHealthNormalized());
+    }
+
+    void HandleWeaponBob()
+    {
+        // Update strength of weapon bob according to player velocity.
+        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.85f*mCharacterVelocity.magnitude/CharacterSpeedRunning+0.15f, WeaponBobSharpness * Time.deltaTime);
+        mWeaponBobTime += Time.deltaTime * WeaponBobFrequency * mCurrentWeaponBobFactor;
+        if (mWeaponBobTime > 2*Mathf.PI)
+        {
+            mWeaponBobTime -= 2*Mathf.PI;
+        }
+
+        //Calculate weapon bob.
+        float currentWeaponBobAmplitude = mCurrentWeaponBobFactor * WeaponBobAmplitude;
+        float hBobValue = Mathf.Sin(mWeaponBobTime) * currentWeaponBobAmplitude * 0.5f;
+        float vBobValue = 0.5f * (1f - Mathf.Cos(mWeaponBobTime * 2f)) * currentWeaponBobAmplitude;
+        Weapon.gameObject.transform.localPosition = new Vector3(hBobValue, vBobValue, Weapon.gameObject.transform.localPosition.z);
     }
 }
 
