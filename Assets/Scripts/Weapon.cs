@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,9 +32,11 @@ public class Weapon : MonoBehaviour
     public uint mAmmoLeft = 6;
     float mTimeLastShot = 0f;
 
+    private Conductor mConductor;
+
     void Start()
     {
-        
+        mConductor = GameObject.Find("Conductor").GetComponent<Conductor>();
     }
 
     void Update()
@@ -102,15 +105,23 @@ public class Weapon : MonoBehaviour
             HealthController target = hit.collider.gameObject.GetComponent<HealthController>();
             if (target != null)
             {
-                target.TakeDamage(Damage);
+                float damageGiven = Damage * ComputeDamageModifier();
+                Debug.Log("Damage given: " + damageGiven);
+                target.TakeDamage(damageGiven);
             }
         }
     }
 
     void FireProjectile()
     {
+        float damageGiven = Damage * ComputeDamageModifier();
         Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
         newProjectile.Owner = Owner;
-        newProjectile.Damage = Damage;
+        newProjectile.Damage = damageGiven;
+    }
+
+    float ComputeDamageModifier()
+    {
+        return Mathf.Clamp01(1 - Mathf.Pow(mConductor.GetTimeToBeat() / 0.5f, 4));
     }
 }

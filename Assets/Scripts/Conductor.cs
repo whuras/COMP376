@@ -18,21 +18,15 @@ public class Conductor : MonoBehaviour
         mSourceBPS = SourceBPM / 60f;
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log(GetTimeSinceBeat());
-        }
-    }
-    
+    // Returns the normalized time to the nearest beat [-0.5,0.5]
     public float GetTimeToBeat()
     {
         double scaledBeatTime = AudioSettings.dspTime * mSourceBPS;
         int nearestBeat = (int) (scaledBeatTime + 0.5f);
         return (float) (scaledBeatTime - nearestBeat);
     }
-    
+
+    // Returns the time since the last beat [0,1[
     public float GetTimeSinceBeat()
     {
         double scaledBeatTime = AudioSettings.dspTime * mSourceBPS;
