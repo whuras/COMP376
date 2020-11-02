@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour
     bool mIsGrounded;
     float mTimeLastJump = 0f;
 
+    public AudioClip[] woodFootsteps;
+    
+    private AudioSource mPlayerSounds;
+    private float mTimeSinceLastStepSound;
+    
     void Start()
     {
         // Initial Player Health
@@ -37,8 +42,10 @@ public class PlayerController : MonoBehaviour
         
         // Initialize Controls
         mCharacterController = GetComponent<CharacterController>();
+        mPlayerSounds = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
         mWeaponBobTime = Time.time;
+        mTimeSinceLastStepSound = Time.time;
     }
 
     void Update()
@@ -59,14 +66,24 @@ public class PlayerController : MonoBehaviour
         mIsGrounded = mTimeLastJump + 0.2f < Time.time && Physics.Raycast(transform.position, Vector3.down, 1.6f);
     }
 
-    void HandleMovement()
+    void PlayFootStep(float speed)
+    {
+        if (!mPlayerSounds.isPlaying && mIsGrounded && (Time.time - mTimeSinceLastStepSound > (1 / speed) * 5))
+        {
+            mTimeSinceLastStepSound = Time.time;
+            mPlayerSounds.clip = woodFootsteps[Random.Range(0, woodFootsteps.Length-1)];
+            mPlayerSounds.Play();
+        }
+        
+    }
+    void HandleMovement ()
     {
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         float speed = Mathf.Lerp(CharacterSpeedNormal, CharacterSpeedRunning, Input.GetAxis("Run"));
         moveDirection.Normalize();
         moveDirection = transform.TransformDirection(moveDirection);
-
+        
         // JUMPING
         float verticalVelocity = 0f;
         if (mIsGrounded)
@@ -84,6 +101,11 @@ public class PlayerController : MonoBehaviour
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
 
+        if (Mathf.Abs(mCharacterVelocity.magnitude) > 0.1)
+        {
+            PlayFootStep(mCharacterVelocity.magnitude);
+        }
+        
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
         float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;

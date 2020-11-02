@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum WeaponFireType
 {
@@ -32,11 +33,15 @@ public class Weapon : MonoBehaviour
     public uint mAmmoLeft = 6;
     float mTimeLastShot = 0f;
 
+    public AudioClip[] gunShots;
+    
     private Conductor mConductor;
+    private AudioSource mAudioSource;
 
     void Start()
     {
         mConductor = GameObject.Find("Conductor").GetComponent<Conductor>();
+        mAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -81,8 +86,9 @@ public class Weapon : MonoBehaviour
                 FireProjectile();
                 break;
         }
-
-        mAmmoLeft--;
+        
+        PlayGunShot();
+                
         return true;
     }
 
@@ -106,7 +112,6 @@ public class Weapon : MonoBehaviour
             if (target != null)
             {
                 float damageGiven = Damage * ComputeDamageModifier();
-                Debug.Log("Damage given: " + damageGiven);
                 target.TakeDamage(damageGiven);
             }
         }
@@ -123,5 +128,11 @@ public class Weapon : MonoBehaviour
     float ComputeDamageModifier()
     {
         return Mathf.Clamp01(1 - Mathf.Pow(mConductor.GetTimeToBeat() / 0.5f, 4));
+    }
+
+    void PlayGunShot()
+    {
+        mAudioSource.clip = gunShots[Random.Range(0, gunShots.Length-1)];
+        mAudioSource.Play();
     }
 }
