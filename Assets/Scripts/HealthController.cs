@@ -10,10 +10,10 @@ public class HealthController : MonoBehaviour
     public UnityAction OnHealed;
     public UnityAction OnDeath;
 
-    public int healthAmount;
-    public int healthAmountMaximum;
+    public float healthAmount;
+    public float healthAmountMaximum;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         healthAmount -= damage;
         if (healthAmount < 0)
@@ -27,7 +27,7 @@ public class HealthController : MonoBehaviour
         }
     }
 
-    public void Heal(int health)
+    public void Heal(float health)
     {
         if (healthAmount + health > healthAmountMaximum)
         {

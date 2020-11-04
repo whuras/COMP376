@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public GameObject Owner;
     public float Speed = 1f;
-    public int Damage;
+    public float Damage;
     public float TrajectoryCorrectionDistance = 2;
     public float CollisionRadius = 0.1f;
     public GameObject ImpactEffects;

@@ -6,10 +6,10 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     private Conductor mConductor;
-    private Damageable mDamageable;
+    private HealthController mDamageable;
     void Start()
     {
-        mDamageable = gameObject.GetComponent<Damageable>();
+        mDamageable = gameObject.GetComponent<HealthController>();
         mDamageable.OnDamaged += OnDamaged;
         mDamageable.OnDeath += OnDeath;
 
@@ -18,11 +18,6 @@ public class Target : MonoBehaviour
 
     private void Update()
     {
-        // magic number
-        if (Mathf.Abs(mConductor.GetTimeToBeat()) < 0.025 && mDamageable.IsAlive)
-        {
-            //OnBeat();    
-        }
     }
 
     public void OnBeat()

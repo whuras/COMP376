@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class DamageTestTarget : MonoBehaviour
 {
-    public PlayerController Player;
     public HealthController healthController;
 
     void Start()
@@ -18,11 +17,9 @@ public class DamageTestTarget : MonoBehaviour
 
     void HealthController_OnDamaged()
     {
-        Player.healthController.TakeDamage(10);
     }
 
     void HealthController_OnDeath()
     {
-
     }
 }

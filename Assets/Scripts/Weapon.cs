@@ -63,6 +63,7 @@ public class Weapon : MonoBehaviour
     
     float mTimeLastShot = -10f;
     uint mAmmoLeft = 20;
+    public uint AmmoLeft => mAmmoLeft;
 
     /// <summary> Get referenced objects. </summary>
     void Start()

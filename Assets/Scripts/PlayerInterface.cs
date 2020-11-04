@@ -43,7 +43,7 @@ public class PlayerInterface : MonoBehaviour
 
     public void SetAmmoCount(Weapon currentWeapon)
     {
-        currentAmmoText.text = currentWeapon.mMaxAmmo.ToString();
+        currentAmmoText.text = currentWeapon.ClipSize.ToString();
     }
 
     public void UpdateHealthBar(bool isHeal, float normalizedHealth)
@@ -63,6 +63,6 @@ public class PlayerInterface : MonoBehaviour
 
     public void UpdateAmmoCount(Weapon currentWeapon)
     {
-        currentAmmoText.text = currentWeapon.mAmmoLeft.ToString();
+        currentAmmoText.text = currentWeapon.AmmoLeft.ToString();
     }
 }

@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Transform CameraRoot;
     [Tooltip("Transform rooting weapons")]
     public Transform WeaponSocket;
+    [Tooltip("Heads up display")]
+    public PlayerInterface PlayerHUD;
     [Tooltip("Mouse sensitivity accross horizontal and vertical axes")]
     public Vector2 MouseSensitivity;
 
@@ -40,8 +42,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip[] WoodFootStepSoundEffects;
 
     // Components
-    public PlayerInterface playerInterface;
-    public HealthController healthController;
+    HealthController mHealthController;
     CharacterController mCharacterController;
     AudioSource mAudioSource;
 
@@ -62,24 +63,26 @@ public class PlayerController : MonoBehaviour
     /// <summary> Get referenced objects. </summary>
     void Start()
     {
-        // Initial Player Health
-        healthController = gameObject.GetComponent<HealthController>();
-        healthController.OnDamaged += HealthController_OnDamaged;
-        healthController.OnHealed += HealthController_OnHealed;
-
-        // Initial User Interface
-        playerInterface.SetHealthBar(healthController.GetHealthNormalized());
-        playerInterface.SetAmmoCount(weapon);
-        
-        // Initialize Controls
-        mCharacterController = GetComponent<CharacterController>();
-        mAudioSource = GetComponent<AudioSource>();
-
-        Cursor.lockState = CursorLockMode.Locked;
+        // Equip default weapon if provided
         if (Weapons.Any())
         {
             EquipWeapon(0);
         }
+
+        // Initial Player Health
+        mHealthController = gameObject.GetComponent<HealthController>();
+        mHealthController.OnDamaged += OnDamaged;
+        mHealthController.OnHealed += OnHealed;
+
+        // Initial User Interface
+        PlayerHUD.SetHealthBar(mHealthController.GetHealthNormalized());
+        PlayerHUD.SetAmmoCount(mCrrtWeapon);
+        Cursor.lockState = CursorLockMode.Locked;
+        
+        // Initialize Controls
+        mCharacterController = GetComponent<CharacterController>();
+        Debug.Log(mCharacterController);
+        mAudioSource = GetComponent<AudioSource>();
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -153,6 +156,7 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
+        Debug.Log(mCharacterController);
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
         
         // AIMING (LEFT/RIGHT)
@@ -175,17 +179,17 @@ public class PlayerController : MonoBehaviour
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
-        playerInterface.UpdateAmmoCount(weapon);
+        PlayerHUD.UpdateAmmoCount(mCrrtWeapon);
     }
 
-    void HealthController_OnHealed()
+    void OnHealed()
     {
-        playerInterface.UpdateHealthBar(true, healthController.GetHealthNormalized());
+        PlayerHUD.UpdateHealthBar(true, mHealthController.GetHealthNormalized());
     }
 
-    void HealthController_OnDamaged()
+    void OnDamaged()
     {
-        playerInterface.UpdateHealthBar(false, healthController.GetHealthNormalized());
+        PlayerHUD.UpdateHealthBar(false, mHealthController.GetHealthNormalized());
     }
 
     /// <summary> Animate weapon bob. </summary>
