@@ -11,6 +11,7 @@ public class Breakable: MonoBehaviour
     HealthController mHealthController;
     Conductor mConductor;
     AudioSource mAudioSource;
+    Animator mAnimator;
 
     private void Start()
     {
@@ -21,8 +22,15 @@ public class Breakable: MonoBehaviour
         {
             mAudioSource = gameObject.GetComponent<AudioSource>();
         }
+        mAnimator = gameObject.GetComponent<Animator>();
+
     }
 
+    private void Update()
+    {
+        mAnimator.SetFloat("TimeToBeat",Mathf.Abs(mConductor.GetTimeToBeat()));
+    }
+    
     void Destroy()
     {
         Instantiate(DestroyedVersion, transform.position, transform.rotation, transform.parent);

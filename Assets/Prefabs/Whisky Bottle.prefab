@@ -16,9 +16,11 @@ GameObject:
   - component: {fileID: 3887718971082171122}
   - component: {fileID: 2212555538035111299}
   - component: {fileID: 6764574410525880572}
+  - component: {fileID: 1266049204}
+  - component: {fileID: 2595443735959504127}
   m_Layer: 0
   m_Name: Whisky Bottle
-  m_TagString: Untagged
+  m_TagString: Whiskey
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +32,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6932852631029208126}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.831, y: 1.8298581, z: 18.054}
   m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_Children: []
@@ -97,8 +99,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 11.007439, y: 29.890406, z: 11.573905}
-  m_Center: {x: -0.0000009536743, y: 14.944909, z: -0.0000009536743}
+  m_Size: {x: 14.300002, y: 31.760012, z: 23.600037}
+  m_Center: {x: -1.3500004, y: 14.730005, z: -3.34999}
 --- !u!54 &4108081121991061281
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
   MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  BeatThreshold: 0.15
 --- !u!114 &2212555538035111299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,3 +241,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1266049204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932852631029208126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 0
+--- !u!95 &2595443735959504127
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6932852631029208126}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 354dcddc798d77f418c6dddc083397d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
