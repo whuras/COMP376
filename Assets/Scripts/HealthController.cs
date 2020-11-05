@@ -4,21 +4,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summar> Handles health of damageable object. </summary>
 public class HealthController : MonoBehaviour
 {
+    [Header("General")]
+    [Tooltip("Max health of damageable object")]
+    public float MaxHealth;
+
+    [Header("Actions")]
+    [Tooltip("What to do when object is damaged")]
     public UnityAction OnDamaged;
+    [Tooltip("What to do when object is healed")]
     public UnityAction OnHealed;
+    [Tooltip("What to do when object dies")]
     public UnityAction OnDeath;
 
-    public float healthAmount;
-    public float healthAmountMaximum;
+    float mCrrtHealth;
+    /// <summary> Health of object normalized from 0 to 1. </summary>
+    public float NormalizedHealth
+    {
+        get => mCrrtHealth / MaxHealth;
+    }
 
+    /// <summary> Setup health controller. </summary>
+    void Start()
+    {
+        mCrrtHealth = MaxHealth;
+    }
+
+    /// <summary> Deduct health from object </summary>
+    /// <param name="damage"> Amount of damage dealt </param>
     public void TakeDamage(float damage)
     {
-        healthAmount -= damage;
-        if (healthAmount < 0)
+        mCrrtHealth -= damage;
+        if (mCrrtHealth < 0)
         {
-            healthAmount = 0;
+            mCrrtHealth = 0;
             OnDeath();
         }
         else
@@ -27,18 +48,16 @@ public class HealthController : MonoBehaviour
         }
     }
 
+    /// <summary> Add health to object </summary>
+    /// <param name="damage"> Amount of health added </param>
     public void Heal(float health)
     {
-        if (healthAmount + health > healthAmountMaximum)
+        mCrrtHealth += health;
+        if (mCrrtHealth > MaxHealth)
         {
-            healthAmount = healthAmountMaximum;
+            mCrrtHealth = MaxHealth;
         }
         
         OnHealed();
-    }
-
-    public float GetHealthNormalized()
-    {
-        return (float)healthAmount / healthAmountMaximum;
     }
 }

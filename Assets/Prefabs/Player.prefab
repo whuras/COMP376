@@ -50,7 +50,7 @@ MonoBehaviour:
   CameraRoot: {fileID: 6019745203289817065}
   WeaponSocket: {fileID: 6019745204038976729}
   PlayerHUD: {fileID: 0}
-  MouseSensitivity: {x: 480, y: 240}
+  MouseSensitivity: {x: 360, y: 200}
   CharacterSpeedNormal: 15
   CharacterSpeedRunning: 25
   JumpSpeed: 10
@@ -194,8 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthAmount: 100
-  healthAmountMaximum: 100
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0

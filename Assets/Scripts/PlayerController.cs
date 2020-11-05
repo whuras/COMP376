@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviour
     public AudioClip[] WoodFootStepSoundEffects;
 
     // Components
-    HealthController mHealthController;
     CharacterController mCharacterController;
     AudioSource mAudioSource;
 
@@ -68,21 +67,11 @@ public class PlayerController : MonoBehaviour
         {
             EquipWeapon(0);
         }
-
-        // Initial Player Health
-        mHealthController = gameObject.GetComponent<HealthController>();
-        mHealthController.OnDamaged += OnDamaged;
-        mHealthController.OnHealed += OnHealed;
-
-        // Initial User Interface
-        PlayerHUD.SetHealthBar(mHealthController.GetHealthNormalized());
-        PlayerHUD.SetAmmoCount(mCrrtWeapon);
-        Cursor.lockState = CursorLockMode.Locked;
         
         // Initialize Controls
         mCharacterController = GetComponent<CharacterController>();
-        Debug.Log(mCharacterController);
         mAudioSource = GetComponent<AudioSource>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -156,7 +145,6 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
-        Debug.Log(mCharacterController);
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
         
         // AIMING (LEFT/RIGHT)
@@ -179,17 +167,12 @@ public class PlayerController : MonoBehaviour
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
-        PlayerHUD.UpdateAmmoCount(mCrrtWeapon);
-    }
-
-    void OnHealed()
-    {
-        PlayerHUD.UpdateHealthBar(true, mHealthController.GetHealthNormalized());
-    }
-
-    void OnDamaged()
-    {
-        PlayerHUD.UpdateHealthBar(false, mHealthController.GetHealthNormalized());
+            
+        if (Input.GetButtonDown("Reload"))
+        {
+            mCrrtWeapon.Reload();
+        }
+        PlayerHUD.SetAmmoDisplayed(mCrrtWeapon.AmmoLeft, mCrrtWeapon.ClipSize);
     }
 
     /// <summary> Animate weapon bob. </summary>

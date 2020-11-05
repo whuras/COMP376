@@ -5,64 +5,58 @@ using UnityEngine.UI;
 
 public class PlayerInterface : MonoBehaviour
 {
-    // Health
-    private const float SHRINK_TIMER_MAX = 1f;
-    private float damagedHealthShrinkTimer;
-    public Image healthBarFill;
-    public Image healthBarDamage;
-    public Text currentHealthText;
+    [Header("Components")]
+    [Tooltip("Health bar image object")]
+    public Image HealthBarFill;
+    [Tooltip("Health bar image object")]
+    public Image HealthBarDamage;
+    [Tooltip("Current health text object")]
+    public Text CurrentHealthText;
+    [Tooltip("Current ammo text object")]
+    public Text CurrentAmmoText;
+    
+    [Header("Animations")]
+    [Tooltip("Time taken by health bar change animation")]
+    public float HealthAnimationDuration;
 
-    // Ammo
-    public Text currentAmmoText;
+    float mTimeOfLastHealthUpdate = -10f;
+    float mCurrentHealth = 1f;
+    float mTargetHealth = 1f;
 
-    // Specials
-
-    private void Awake()
-    {
-        healthBarDamage.fillAmount = healthBarFill.fillAmount;
-    }
-
+    /// <summary> Animate interface </summary>
     void Update()
     {
-        damagedHealthShrinkTimer -= Time.deltaTime;
-        if (damagedHealthShrinkTimer < 0)
-        {
-            if (healthBarFill.fillAmount < healthBarDamage.fillAmount)
-            {
-                float shrinkSpeed = 0.5f;
-                healthBarDamage.fillAmount -= shrinkSpeed * Time.deltaTime;
-            }
+        AnimateHealthBar();
+    }
 
+    /// <summary> Animate health bar fill and depletion. </summary>
+    void AnimateHealthBar()
+    {
+        // Determine normalized progress of animation
+        float t = (Time.time - mTimeOfLastHealthUpdate) / HealthAnimationDuration;
+        // Animate if animation is in progress
+        if (t < 1)
+        {
+            HealthBarDamage.fillAmount = Mathf.Lerp(mCurrentHealth, mTargetHealth, mTimeOfLastHealthUpdate);
         }
     }
 
-    public void SetHealthBar(float normalizedHealth)
+    /// <summary> Update ammunition shown by interface. </summary>
+    /// <param name="crrtAmmo"> Current ammunition in clip </param>
+    /// <param name="maxAmmo"> Size of clip </param>
+    public void SetAmmoDisplayed(uint crrtAmmo, uint maxAmmo)
     {
-        healthBarFill.fillAmount = normalizedHealth;
+        CurrentAmmoText.text = string.Format("{0} / {1}", crrtAmmo, maxAmmo);
     }
 
-    public void SetAmmoCount(Weapon currentWeapon)
+    /// <summary> Update health shown by interface. </summary>
+    /// <param name="currentWeapon"> Updated health normalized from 0 to 1 </param>
+    public void SetHealthDisplayed(float normalizedHealth)
     {
-        currentAmmoText.text = currentWeapon.ClipSize.ToString();
-    }
-
-    public void UpdateHealthBar(bool isHeal, float normalizedHealth)
-    {
-        SetHealthBar(normalizedHealth);
-        currentHealthText.text = (normalizedHealth * 100).ToString();
-
-        if (isHeal)
-        {
-            healthBarDamage.fillAmount = healthBarFill.fillAmount;
-        }
-        else
-        {
-            damagedHealthShrinkTimer = SHRINK_TIMER_MAX;
-        }
-    }
-
-    public void UpdateAmmoCount(Weapon currentWeapon)
-    {
-        currentAmmoText.text = currentWeapon.AmmoLeft.ToString();
+        HealthBarFill.fillAmount = normalizedHealth;
+        mCurrentHealth = mTargetHealth;
+        mTargetHealth = normalizedHealth;
+        CurrentHealthText.text = string.Format("{0}", (int) (100 * normalizedHealth));
+        mTimeOfLastHealthUpdate = Time.time;
     }
 }

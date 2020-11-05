@@ -62,7 +62,7 @@ public class Weapon : MonoBehaviour
     private AudioSource mAudioSource;
     
     float mTimeLastShot = -10f;
-    uint mAmmoLeft = 20;
+    uint mAmmoLeft;
     public uint AmmoLeft => mAmmoLeft;
 
     /// <summary> Get referenced objects. </summary>
@@ -70,6 +70,7 @@ public class Weapon : MonoBehaviour
     {
         mConductor = GameObject.Find("Conductor").GetComponent<Conductor>();
         mAudioSource = GetComponent<AudioSource>();
+        mAmmoLeft = ClipSize;
     }
 
     /// <summary> Animate weapon every frame. </summary>
@@ -143,6 +144,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
         mTimeLastShot = Time.time;
+        mAmmoLeft -= 1;
         PlayWeaponFireEffects();
 
         return true;
@@ -172,6 +174,7 @@ public class Weapon : MonoBehaviour
         Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
         float damageGiven = Damage * ComputeDamageModifier();
         newProjectile.Damage = damageGiven;
+        newProjectile.Owner = gameObject;
     }
 
     /// <summary> Animates effects that play when gun is fired. </summary>
@@ -183,6 +186,12 @@ public class Weapon : MonoBehaviour
 
         // Sound effects
         mAudioSource.PlayOneShot(GunfireSoundEffects[Random.Range(0, GunfireSoundEffects.Length-1)]);
+    }
+
+    /// <summary> Fill weapon clip. </summary>
+    public void Reload()
+    {
+        mAmmoLeft = ClipSize;
     }
 
     /// <summary> Determine factor by which weapon damage should be scaled using time to nearest beat. </summary>
