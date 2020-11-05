@@ -107,10 +107,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5843768910029564598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33e573d324842274c9a8d567441ffd81, type: 3}
+  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 10
+  MaxHealth: 20
 --- !u!95 &5843768910029564591
 Animator:
   serializedVersion: 3
@@ -142,3 +142,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ae8f37bf7f2bb43a58e8bb78b92011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerHUD: {fileID: 0}

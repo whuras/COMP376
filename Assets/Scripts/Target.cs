@@ -1,25 +1,37 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> Example enemy used for testing. </summary>
 public class Target : MonoBehaviour
 {
-    public HealthController healthController;
+    [Tooltip("Heads up display")]
+    public PlayerInterface PlayerHUD;
 
+    HealthController mHealthController;
+    Animator mAnimator;
+
+    /// <summary> Get references and add actions. </summary>
     void Start()
     {
-        healthController = gameObject.GetComponent<HealthController>();
-        healthController.OnDamaged += HealthController_OnDamaged;
-        healthController.OnDeath += HealthController_OnDeath;
+        mHealthController = gameObject.GetComponent<HealthController>();
+        mAnimator = gameObject.GetComponent<Animator>();
+        mHealthController.OnDamaged += OnDamaged;
+        mHealthController.OnDeath += OnDeath;
     }
 
-    void HealthController_OnDamaged()
+    /// <summary> Action called when target is damaged. </summary>
+    void OnDamaged()
     {
-        gameObject.GetComponent<Animator>().Play("Damaged", -1, 0f);
+        mAnimator.Play("Damaged", -1, 0f);
+        if (PlayerHUD)
+        PlayerHUD.SetHealthDisplayed(mHealthController.NormalizedHealth);
     }
-
-    void HealthController_OnDeath()
+    
+    /// <summary> Action called when target dies. </summary>
+    void OnDeath()
     {
-        gameObject.GetComponent<Animator>().Play("Dead");
+        mAnimator.Play("Dead");
     }
 }
