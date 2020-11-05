@@ -40,9 +40,12 @@ public class HealthController : MonoBehaviour
         if (mCrrtHealth < 0)
         {
             mCrrtHealth = 0;
-            OnDeath();
+            if (OnDeath != null)
+            {
+                OnDeath();
+            }
         }
-        else
+        else if (OnDamaged != null)
         {
             OnDamaged();
         }
@@ -57,7 +60,9 @@ public class HealthController : MonoBehaviour
         {
             mCrrtHealth = MaxHealth;
         }
-        
-        OnHealed();
+        if (OnHealed != null)
+        {
+            OnHealed();
+        }
     }
 }

@@ -10,6 +10,7 @@ public class Conductor : MonoBehaviour
 
     AudioSource mMusicSource;
     float mSourceBPS;
+    float mOffset;
 
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>
     void Start()
@@ -18,13 +19,14 @@ public class Conductor : MonoBehaviour
         mMusicSource.Play();
 
         mSourceBPS = SourceBPM / 60f;
+        mOffset = (float) AudioSettings.dspTime;
     }
 
     /// <summary> Returns time to/from nearest beat normalized from -0.5 to 0.5. </summary>
     /// <returns> Time to/from nearest beat normalized from -0.5 to 0.5 </returns>
     public float GetTimeToBeat()
     {
-        double scaledBeatTime = AudioSettings.dspTime * mSourceBPS;
+        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
         int nearestBeat = (int) (scaledBeatTime + 0.5f);
         return (float) (scaledBeatTime - nearestBeat);
     }
@@ -33,7 +35,7 @@ public class Conductor : MonoBehaviour
     /// <returns> Time since last beat normalized from 0 to 1 </returns>
     public float GetTimeSinceBeat()
     {
-        double scaledBeatTime = AudioSettings.dspTime * mSourceBPS;
+        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
         return (float) (scaledBeatTime - (int) scaledBeatTime);
     }
 }

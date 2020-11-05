@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6019745202820869157}
   - component: {fileID: 6019745202820869159}
   - component: {fileID: -8605344202499835676}
-  - component: {fileID: 7824002416337862448}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -57,7 +56,7 @@ MonoBehaviour:
   GravityAcceleration: 40
   Weapons:
   - {fileID: 4103116638943344188, guid: c6f4e1eb31b83a54296405fe3959034f, type: 3}
-  WeaponBobAmplitude: 0.1
+  WeaponBobAmplitude: 0.05
   WeaponBobFrequency: 12
   WeaponBobSharpness: 5
   StrideLength: 5
@@ -82,7 +81,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -182,18 +181,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7824002416337862448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6019745202820869162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +240,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: 0
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 256
@@ -330,7 +317,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 55
