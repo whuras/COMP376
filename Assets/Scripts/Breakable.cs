@@ -17,5 +17,10 @@ public class Breakable: MonoBehaviour
     {
         Instantiate(destroyedVersion, transform.position, transform.rotation);
         Destroy(gameObject);
+
+        if (tag == "Whiskey")
+        {
+            FindObjectOfType<TutorialManager>().UpdateBottleCount(1);
+        }
     }
 }
