@@ -48,7 +48,7 @@ MonoBehaviour:
   Speed: 100
   Damage: 0
   TrajectoryCorrectionDistance: 5
-  CollisionRadius: 0.1
+  CollisionRadius: 0.15
   ImpactEffects: {fileID: 7655095426451682942, guid: 833b7b9d0eaa68042ad0159835692255, type: 3}
 --- !u!1 &2062856824593538902
 GameObject:
