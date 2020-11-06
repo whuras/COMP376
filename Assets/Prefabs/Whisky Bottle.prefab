@@ -14,9 +14,7 @@ GameObject:
   - component: {fileID: 165774625739077204}
   - component: {fileID: 4108081121991061281}
   - component: {fileID: 3887718971082171122}
-  - component: {fileID: 2212555538035111299}
   - component: {fileID: 6764574410525880572}
-  - component: {fileID: 1266049204}
   - component: {fileID: 2595443735959504127}
   m_Layer: 0
   m_Name: Whisky Bottle
@@ -131,20 +129,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
   MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
   BeatThreshold: 0.15
---- !u!114 &2212555538035111299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6932852631029208126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 0
 --- !u!82 &6764574410525880572
 AudioSource:
   m_ObjectHideFlags: 0
@@ -241,19 +227,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1266049204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6932852631029208126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 0
 --- !u!95 &2595443735959504127
 Animator:
   serializedVersion: 3

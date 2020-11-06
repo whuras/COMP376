@@ -6,6 +6,7 @@ public class Breakable: MonoBehaviour
 {
     public GameObject DestroyedVersion;
     public AudioClip MissedBeatSound;
+    public AudioClip HitBeatSound;
     public float BeatThreshold = 0.15f;
 
     HealthController mHealthController;
@@ -17,13 +18,13 @@ public class Breakable: MonoBehaviour
     {
         mConductor = GameObject.Find("Conductor").GetComponent<Conductor>();
         mHealthController = gameObject.GetComponent<HealthController>();
-        mHealthController.OnDeath += Hit;
+        mHealthController.OnDeath += OnDeath;
+        mHealthController.OnDamaged += OnDamaged;
         if (MissedBeatSound)
         {
             mAudioSource = gameObject.GetComponent<AudioSource>();
         }
         mAnimator = gameObject.GetComponent<Animator>();
-
     }
 
     private void Update()
@@ -42,7 +43,28 @@ public class Breakable: MonoBehaviour
         }
     }
 
-    void Hit()
+    void OnDamaged()
+    {
+        if (Mathf.Abs(mConductor.GetTimeToBeat()) < BeatThreshold)
+        {
+            if (HitBeatSound)
+            {
+                mAudioSource.pitch = 1.5f - mHealthController.NormalizedHealth;
+                mAudioSource.clip = HitBeatSound;
+                mAudioSource.Play();
+            }
+        }
+        else
+        {
+            if (MissedBeatSound)
+            {
+                mAudioSource.pitch = 1;
+                mAudioSource.PlayOneShot(MissedBeatSound);
+            }
+        }
+    }
+
+    void OnDeath()
     {
         if (Mathf.Abs(mConductor.GetTimeToBeat()) < BeatThreshold)
         {
