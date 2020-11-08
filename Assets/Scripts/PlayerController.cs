@@ -78,16 +78,18 @@ public class PlayerController : MonoBehaviour
     /// <param name="index"> Inventory index of weapon to be equipped. </param>
     void EquipWeapon(int index)
     {
+        // Check for out-of-bound indices. Wrap them around (list should be circular).
+        index = (index + Weapons.Count) % Weapons.Count;
+
         // Remove previously equiped weapon.
         if (mCrrtWeapon != null)
         {
-            Destroy(mCrrtWeapon);
+            Destroy(mCrrtWeapon.gameObject);
         }
 
         // Equip new weapon.
         mCrrtWeaponIndex = index;
-        mCrrtWeapon = Instantiate(Weapons[index], Vector3.zero, Quaternion.identity);
-        mCrrtWeapon.gameObject.transform.parent = WeaponSocket;
+        mCrrtWeapon = Instantiate(Weapons[index], WeaponSocket, false);
     }
 
     /// <summary> Update player once per frame. </summary>
@@ -97,6 +99,8 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleWeapons();
         HandleWeaponBob();
+        HandleAbilities();
+        mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
     }
 
     /// <summary> Update whether or not player is grounded. </summary>
@@ -114,7 +118,6 @@ public class PlayerController : MonoBehaviour
             mAudioSource.PlayOneShot(WoodFootStepSoundEffects[Random.Range(0, WoodFootStepSoundEffects.Length-1)], Random.Range(0.5f, 1.0f));
             mTimeLastStep = Time.time;
         }
-        
     }
 
     /// <summary> Receive player movement input and respond to it. </summary>
@@ -145,7 +148,6 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
-        mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
         
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
@@ -156,22 +158,36 @@ public class PlayerController : MonoBehaviour
         // AIMING (UP/DOWN)
         Vector3 cameraRotation = CameraRoot.transform.localEulerAngles;
         angleDelta = Input.GetAxis("Mouse Y") * MouseSensitivity.y * Time.deltaTime;
-        cameraRotation.x = cameraRotation.x - angleDelta;
+        cameraRotation.x -= angleDelta;
         CameraRoot.transform.localEulerAngles = cameraRotation;
     }
 
     /// <summary> Receive weapon input and respond to it. </summary>
     void HandleWeapons ()
     {
+        // Handle weapon fire
         mCrrtWeapon.ReceiveFireInputs(
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
             
+        // Handle weapon reload
         if (Input.GetButtonDown("Reload"))
         {
             mCrrtWeapon.Reload();
         }
+
+        // Handle weapon swap
+        if (Input.mouseScrollDelta.y > 0f)
+        {
+            EquipWeapon(mCrrtWeaponIndex+1);
+        }
+        if (Input.mouseScrollDelta.y < 0f)
+        {
+            EquipWeapon(mCrrtWeaponIndex-1);
+        }
+
+        // Update UI
         PlayerHUD.SetAmmoDisplayed(mCrrtWeapon.AmmoLeft, mCrrtWeapon.ClipSize);
     }
 
@@ -191,6 +207,12 @@ public class PlayerController : MonoBehaviour
         float hBobValue = Mathf.Sin(mWeaponBobTime) * currentWeaponBobAmplitude;
         float vBobValue = (1f - Mathf.Cos(mWeaponBobTime * 2f)) * currentWeaponBobAmplitude;
         mCrrtWeapon.gameObject.transform.localPosition = new Vector3(hBobValue, vBobValue, mCrrtWeapon.gameObject.transform.localPosition.z);
+    }
+
+    /// <summary> Receive ability input and respond to it. </summary>
+    void HandleAbilities ()
+    {
+
     }
 }
 

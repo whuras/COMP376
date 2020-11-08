@@ -56,6 +56,7 @@ MonoBehaviour:
   GravityAcceleration: 40
   Weapons:
   - {fileID: 4103116638943344188, guid: c6f4e1eb31b83a54296405fe3959034f, type: 3}
+  - {fileID: 4103116638943344188, guid: e51b268b477bf5143a0a5198b7fa563f, type: 3}
   WeaponBobAmplitude: 0.05
   WeaponBobFrequency: 12
   WeaponBobSharpness: 5
