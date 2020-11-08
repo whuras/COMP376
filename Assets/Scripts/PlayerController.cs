@@ -41,6 +41,17 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Foot step sound effects for walking on wood")]
     public AudioClip[] WoodFootStepSoundEffects;
 
+    [Header("Abilities")]
+    [Tooltip("Speed of Dash ability")]
+    public float DashSpeed = 30f;
+    [Tooltip("Duration of dash ability")]
+    public float DashDuration = 0.5f;
+    [Tooltip("Factor by which time scale is multiplied during slowdown")]
+    public float SlowdownFactor = 0.5f;
+
+    //Other game objects
+    Conductor mConductor;
+
     // Components
     CharacterController mCharacterController;
     AudioSource mAudioSource;
@@ -58,6 +69,14 @@ public class PlayerController : MonoBehaviour
     // Weaponry
     Weapon mCrrtWeapon;
     int mCrrtWeaponIndex = 0;
+
+    // Abilities
+    float mTimeLastForward = -10f;
+    float mTimeLastLeft = -10f;
+    float mTimeLastBackward = -10f;
+    float mTimeLastRight = -10f;
+    float mTimeSecondDashPress = -10f;
+    Vector3 mDashVelocity;
     
     /// <summary> Get referenced objects. </summary>
     void Start()
@@ -68,7 +87,8 @@ public class PlayerController : MonoBehaviour
             EquipWeapon(0);
         }
         
-        // Initialize Controls
+        // Initialize References
+        mConductor = FindObjectOfType<Conductor>();
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -113,7 +133,7 @@ public class PlayerController : MonoBehaviour
     /// <summary> Play footstep sound effect depending on ground material and player speed. </summary>
     void PlayFootStep(float speed)
     {
-        if (mIsGrounded && Time.time - mTimeLastStep > StrideLength / speed)
+        if (Time.time - mTimeLastStep > StrideLength / speed && mIsGrounded && Time.time > mTimeSecondDashPress + DashDuration)
         {
             mAudioSource.PlayOneShot(WoodFootStepSoundEffects[Random.Range(0, WoodFootStepSoundEffects.Length-1)], Random.Range(0.5f, 1.0f));
             mTimeLastStep = Time.time;
@@ -212,7 +232,67 @@ public class PlayerController : MonoBehaviour
     /// <summary> Receive ability input and respond to it. </summary>
     void HandleAbilities ()
     {
+        // DASH
+        if (Time.time < mTimeSecondDashPress + DashDuration)
+        {
+            mCharacterVelocity = mDashVelocity;
+        }
+        else if (Input.GetButtonDown("DashForward"))
+        {
+            if (Time.time < mTimeLastForward + 0.5f)
+            {
+                mTimeSecondDashPress = Time.time;
+                mCharacterVelocity.y = 0f;
+                mCharacterVelocity.Normalize();
+                mDashVelocity = DashSpeed * mCharacterVelocity;
+            }
+            mTimeLastForward = Time.time;
+        }
+        else if (Input.GetButtonDown("DashLeft"))
+        {
+            if (Time.time < mTimeLastLeft + 0.5f)
+            {
+                mTimeSecondDashPress = Time.time;
+                mCharacterVelocity.y = 0f;
+                mCharacterVelocity.Normalize();
+                mDashVelocity = DashSpeed * mCharacterVelocity;
+            }
+            mTimeLastLeft = Time.time;
+        }
+        else if (Input.GetButtonDown("DashBackward"))
+        {
+            if (Time.time < mTimeLastBackward + 0.5f)
+            {
+                mTimeSecondDashPress = Time.time;
+                mCharacterVelocity.y = 0f;
+                mCharacterVelocity.Normalize();
+                mDashVelocity = DashSpeed * mCharacterVelocity;
+            }
+            mTimeLastBackward = Time.time;
+        }
+        else if (Input.GetButtonDown("DashRight"))
+        {
+            if (Time.time < mTimeLastRight + 0.5f)
+            {
+                mTimeSecondDashPress = Time.time;
+                mCharacterVelocity.y = 0f;
+                mCharacterVelocity.Normalize();
+                mDashVelocity = DashSpeed * mCharacterVelocity;
+            }
+            mTimeLastRight = Time.time;
+        }
 
+        //SLOW-MOTION
+        if (Input.GetButtonDown("Slowdown"))
+        {
+            mConductor.GetComponent<AudioSource>().pitch = SlowdownFactor;
+            Time.timeScale = SlowdownFactor;
+        }
+        if (Input.GetButtonUp("Slowdown"))
+        {
+            mConductor.GetComponent<AudioSource>().pitch = 1f;
+            Time.timeScale = 1f;
+        }
     }
 }
 

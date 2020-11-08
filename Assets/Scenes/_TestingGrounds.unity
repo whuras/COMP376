@@ -1483,6 +1483,18 @@ PrefabInstance:
       propertyPath: PlayerHUD
       value: 
       objectReference: {fileID: 668576681}
+    - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
+      propertyPath: DashSpeed
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
+      propertyPath: DashDuration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
+      propertyPath: JumpSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6019745202820869162, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
       propertyPath: m_Name
       value: Player

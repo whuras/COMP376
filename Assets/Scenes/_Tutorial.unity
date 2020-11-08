@@ -11844,6 +11844,10 @@ PrefabInstance:
       propertyPath: PlayerHUD
       value: 
       objectReference: {fileID: 2121072736}
+    - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
+      propertyPath: SlowdownFactor
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6019745202820869162, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
       propertyPath: m_Name
       value: Player
