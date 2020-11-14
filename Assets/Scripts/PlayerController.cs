@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
         mCrrtWeapon = Instantiate(Weapons[index], WeaponSocket, false);
     }
 
-    /// <summary> Update player once per frame. </summary>
+    /// <summary> Receive input and update player state accordingly. </summary>
     void Update()
     {
         CheckIfGrounded();
@@ -120,6 +120,11 @@ public class PlayerController : MonoBehaviour
         HandleWeapons();
         HandleWeaponBob();
         HandleAbilities();
+    }
+
+    /// <summary> Delay physics updates to syncronize with physics system. </summary>
+    void FixedUpdate()
+    {
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
     }
 
@@ -285,13 +290,11 @@ public class PlayerController : MonoBehaviour
         //SLOW-MOTION
         if (Input.GetButtonDown("Slowdown"))
         {
-            mConductor.GetComponent<AudioSource>().pitch = SlowdownFactor;
-            Time.timeScale = SlowdownFactor;
+            mConductor.SetSpeed(SlowdownFactor);
         }
         if (Input.GetButtonUp("Slowdown"))
         {
-            mConductor.GetComponent<AudioSource>().pitch = 1f;
-            Time.timeScale = 1f;
+            mConductor.SetSpeed(1f);
         }
     }
 }

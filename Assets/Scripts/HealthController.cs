@@ -36,8 +36,6 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of damage dealt </param>
     public void TakeDamage(float damage)
     {
-        Debug.Log(mCrrtHealth);
-        Debug.Log(damage);
         mCrrtHealth -= damage;
         if (mCrrtHealth < 0)
         {
