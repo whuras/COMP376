@@ -10,7 +10,10 @@ public class Conductor : MonoBehaviour
 
     AudioSource mMusicSource;
     float mSourceBPS;
-    float mOffset;
+
+    double mCurrentTimeUnscaled = -1f;
+    double mCurrentTimeScaled = 0f;
+    float mSpeed = 1f;
 
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>
     void Start()
@@ -19,14 +22,23 @@ public class Conductor : MonoBehaviour
         mMusicSource.Play();
 
         mSourceBPS = SourceBPM / 60f;
-        mOffset = (float) AudioSettings.dspTime;
+        mCurrentTimeUnscaled = AudioSettings.dspTime;
+    }
+
+    /// <summary> We track the time of the song ourselves instead of using AudioSettings.dspTime directly because the latter is not updated consistently and is not affected by time scale. </summary>
+    void Update()
+    {
+        double deltaTime = AudioSettings.dspTime - mCurrentTimeUnscaled;
+        deltaTime *= mSpeed;
+        mCurrentTimeScaled += deltaTime;
+        mCurrentTimeUnscaled = AudioSettings.dspTime;
     }
 
     /// <summary> Returns time to/from nearest beat normalized from -0.5 to 0.5. </summary>
     /// <returns> Time to/from nearest beat normalized from -0.5 to 0.5 </returns>
     public float GetTimeToBeat()
     {
-        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
+        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
         int nearestBeat = (int) (scaledBeatTime + 0.5f);
         return (float) (scaledBeatTime - nearestBeat);
     }
@@ -35,7 +47,16 @@ public class Conductor : MonoBehaviour
     /// <returns> Time since last beat normalized from 0 to 1 </returns>
     public float GetTimeSinceBeat()
     {
-        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
+        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
         return (float) (scaledBeatTime - (int) scaledBeatTime);
+    }
+
+    /// <summary> Change BPM of music. </summary>
+    /// <param name="speed"> Scale by which music speed should be changed relative to default. </param>
+    public void SetSpeed(float speed)
+    {
+        mSpeed = speed;
+        mMusicSource.pitch = speed;
+        Time.timeScale = speed;
     }
 }
