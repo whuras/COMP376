@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -35,6 +36,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Speed of weapon bob change with resepct to player speed")]
     public float WeaponBobSharpness;
 
+    [Header("Camera")]
+    [Tooltip("UP and DOWN look limit, the angle is symmetric for the top and bottom parts of the screen")]
+    public float CameraClampAngleX;
+    
     [Header("Special Effects")]
     [Tooltip("Distance traveled per foot step")]
     public float StrideLength;
@@ -156,7 +161,16 @@ public class PlayerController : MonoBehaviour
         // AIMING (UP/DOWN)
         Vector3 cameraRotation = CameraRoot.transform.localEulerAngles;
         angleDelta = Input.GetAxis("Mouse Y") * MouseSensitivity.y * Time.deltaTime;
-        cameraRotation.x = cameraRotation.x - angleDelta;
+
+        float newCameraRotationX = cameraRotation.x - angleDelta;
+        if (newCameraRotationX > CameraClampAngleX && newCameraRotationX < (360 - CameraClampAngleX))
+        {
+            cameraRotation.x = newCameraRotationX > 180 ? 360 - CameraClampAngleX : CameraClampAngleX;
+        }
+        else
+        {
+            cameraRotation.x = newCameraRotationX;
+        }
         CameraRoot.transform.localEulerAngles = cameraRotation;
     }
 
