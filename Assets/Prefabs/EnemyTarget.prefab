@@ -216,8 +216,8 @@ MonoBehaviour:
   attackPlayer: 1
   retreatPlayer: 1
   Projectile: {fileID: 1821543919974348746, guid: 98003878cdf08c747bfc705ea7ec62ef, type: 3}
-  personalSpace: 5
-  chaseDestinationComputeInterval: 0
+  personalSpace: 8
+  chaseDestinationComputeInterval: 2
   snapToMultiplier: 4
   sightRange: 20
   wanderDistanceMin: 5

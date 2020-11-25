@@ -138,6 +138,8 @@ public class EnemyAI : MonoBehaviour
             {
                 RetreatPlayer();
             }
+
+            _wasHitLastFrame = false;
         }
     }
 
