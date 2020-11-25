@@ -62,6 +62,7 @@ MonoBehaviour:
   WeaponBobAmplitude: 0.05
   WeaponBobFrequency: 12
   WeaponBobSharpness: 5
+  CameraClampAngleX: 85
   StrideLength: 5
   WoodFootStepSoundEffects:
   - {fileID: 8300000, guid: e9d41656ebaa8ad4a9792390014a8d91, type: 3}
