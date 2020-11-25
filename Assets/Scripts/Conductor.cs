@@ -51,6 +51,14 @@ public class Conductor : MonoBehaviour
         return (float) (scaledBeatTime - (int) scaledBeatTime);
     }
 
+    /// <summary> Returns index of current beat. </summary>
+    /// <returns> Index of current beat </returns>
+    public int GetBeat()
+    {
+        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
+        return (int) scaledBeatTime;
+    }
+
     /// <summary> Change BPM of music. </summary>
     /// <param name="speed"> Scale by which music speed should be changed relative to default. </param>
     public void SetSpeed(float speed)

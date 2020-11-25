@@ -33,5 +33,7 @@ public class Target : MonoBehaviour
     void OnDeath()
     {
         mAnimator.Play("Dead");
+        if (PlayerHUD)
+        PlayerHUD.SetHealthDisplayed(mHealthController.NormalizedHealth);
     }
 }
