@@ -189,7 +189,7 @@ public class EnemyAI : MonoBehaviour
         // Compute the retreat angle
         float retreatAngle = Random.Range(270 - retreatAngleWidth, 270 + retreatAngleWidth);
 
-        // Compute the normalized vector pointing to our retreat destination
+        // Compute the x,z coordinates for our retreat position
         float z = Mathf.Sin(Mathf.Deg2Rad * retreatAngle) * (transform.forward.z * retreatDistance);
         float x = Mathf.Cos(Mathf.Deg2Rad * retreatAngle) * (transform.forward.x * retreatDistance);
 
@@ -216,11 +216,11 @@ public class EnemyAI : MonoBehaviour
             float wanderDistance = Random.Range(wanderDistanceMin, wanderDistanceMax);
 
             // Compute the retreat angle
-            float retreatAngle = Random.Range(0, 360);
+            float wanderAngle = Random.Range(0, 360);
 
-            // Compute the normalized vector pointing to our retreat destination
-            float z = Mathf.Sin(Mathf.Deg2Rad * retreatAngle) * (wanderDistance);
-            float x = Mathf.Cos(Mathf.Deg2Rad * retreatAngle) * (wanderDistance);
+            // Compute the x,z coordinates for our wander distance
+            float z = Mathf.Sin(Mathf.Deg2Rad * wanderAngle) * (wanderDistance);
+            float x = Mathf.Cos(Mathf.Deg2Rad * wanderAngle) * (wanderDistance);
 
             // Compute destination position
             Vector3 destination = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
