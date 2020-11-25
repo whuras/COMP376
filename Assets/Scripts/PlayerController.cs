@@ -41,8 +41,6 @@ public class PlayerController : MonoBehaviour
     public float CameraClampAngleX;
     
     [Header("Special Effects")]
-    [Tooltip("Distance traveled per foot step")]
-    public float StrideLength;
     [Tooltip("Foot step sound effects for walking on wood")]
     public AudioClip[] WoodFootStepSoundEffects;
 
@@ -65,9 +63,10 @@ public class PlayerController : MonoBehaviour
     Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
     float mTimeLastJump = -10f;
     bool mIsGrounded;
+    bool mIsRunning = false;
     
     // Animation
-    float mTimeLastStep = 0f;
+    int mParityOfNextBeat = 0;
     float mCurrentWeaponBobFactor;
     float mWeaponBobTime = 0f;
 
@@ -143,10 +142,17 @@ public class PlayerController : MonoBehaviour
     /// <summary> Play footstep sound effect depending on ground material and player speed. </summary>
     void PlayFootStep(float speed)
     {
-        if (Time.time - mTimeLastStep > StrideLength / speed && mIsGrounded && Time.time > mTimeSecondDashPress + DashDuration)
+        // Play no footsteps while dashing or no grounded.
+        if (!mIsGrounded || Time.time < mTimeSecondDashPress + DashDuration)
         {
-            mAudioSource.PlayOneShot(WoodFootStepSoundEffects[Random.Range(0, WoodFootStepSoundEffects.Length-1)], Random.Range(0.5f, 1.0f));
-            mTimeLastStep = Time.time;
+            return;
+        }
+        // Play footsteps on beat.
+        int stepsPerBeat = mIsRunning ? 3 : 2;
+        if (mConductor.GetBeat(stepsPerBeat) % stepsPerBeat == mParityOfNextBeat)
+        {
+            mAudioSource.PlayOneShot(WoodFootStepSoundEffects[mParityOfNextBeat]);
+            mParityOfNextBeat = (mParityOfNextBeat + 1) % stepsPerBeat;
         }
     }
 
@@ -155,6 +161,7 @@ public class PlayerController : MonoBehaviour
     {
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        mIsRunning = Input.GetAxisRaw("Run") != 0;
         float speed = Mathf.Lerp(CharacterSpeedNormal, CharacterSpeedRunning, Input.GetAxis("Run"));
         moveDirection.Normalize();
         moveDirection = transform.TransformDirection(moveDirection);
@@ -235,7 +242,9 @@ public class PlayerController : MonoBehaviour
     void HandleWeaponBob()
     {
         // Update strength of weapon bob according to player velocity.
-        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f*mCharacterVelocity.magnitude/CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
+        Vector3 velocityInPlane = mCharacterVelocity;
+        velocityInPlane.y = 0f;
+        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f*velocityInPlane.magnitude/CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
         mWeaponBobTime += Time.deltaTime * WeaponBobFrequency * mCurrentWeaponBobFactor;
         if (mWeaponBobTime > 2*Mathf.PI)
         {
@@ -257,49 +266,12 @@ public class PlayerController : MonoBehaviour
         {
             mCharacterVelocity = mDashVelocity;
         }
-        else if (Input.GetButtonDown("DashForward"))
+        else if (Input.GetButtonDown("Dash"))
         {
-            if (Time.time < mTimeLastForward + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastForward = Time.time;
-        }
-        else if (Input.GetButtonDown("DashLeft"))
-        {
-            if (Time.time < mTimeLastLeft + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastLeft = Time.time;
-        }
-        else if (Input.GetButtonDown("DashBackward"))
-        {
-            if (Time.time < mTimeLastBackward + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastBackward = Time.time;
-        }
-        else if (Input.GetButtonDown("DashRight"))
-        {
-            if (Time.time < mTimeLastRight + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastRight = Time.time;
+            mTimeSecondDashPress = Time.time;
+            mCharacterVelocity.y = 0f;
+            mCharacterVelocity.Normalize();
+            mDashVelocity = DashSpeed * mCharacterVelocity;
         }
 
         //SLOW-MOTION
