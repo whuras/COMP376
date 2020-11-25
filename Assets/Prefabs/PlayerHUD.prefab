@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 2154608969612915664}
   - component: {fileID: 4971920629250819608}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -300,11 +300,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8acc9fbcba66d846b88f3c6c06d1940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBarFill: {fileID: 2154608970163291838}
-  HealthBarDamage: {fileID: 2154608969466978847}
+  HealthBarFront: {fileID: 2154608970163291838}
+  HealthBarBack: {fileID: 2154608969466978847}
   CurrentHealthText: {fileID: 2154608970186904685}
   CurrentAmmoText: {fileID: 2154608969432152708}
-  HealthAnimationDuration: 1
+  HealthAnimationSpeed: 0.5
+  HealthAnimationDelay: 0.5
 --- !u!1 &2154608969941601560
 GameObject:
   m_ObjectHideFlags: 0
