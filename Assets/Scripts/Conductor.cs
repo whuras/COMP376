@@ -53,9 +53,9 @@ public class Conductor : MonoBehaviour
 
     /// <summary> Returns index of current beat. </summary>
     /// <returns> Index of current beat </returns>
-    public int GetBeat()
+    public int GetBeat(int subdivision = 1)
     {
-        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
+        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS * subdivision;
         return (int) scaledBeatTime;
     }
 
