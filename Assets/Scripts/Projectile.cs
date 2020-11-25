@@ -40,7 +40,7 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         // Prevent projectile from colliding with game object that fired it.
-        mIgnoredColliders = new List<Collider>(Owner.GetComponentsInChildren<Collider>());
+        mIgnoredColliders = (Owner == null) ? new List<Collider>() : new List<Collider>(Owner.GetComponentsInChildren<Collider>());
 
         // The projectile fired from a muzzle must hit a target at center of screen. To accomplish this, the trajectory must be corrected.
         mVelocity = transform.forward * Speed;
@@ -70,9 +70,12 @@ public class Projectile : MonoBehaviour
 
         // Hit detection
         Collider[] collisions = Physics.OverlapSphere(transform.position, CollisionRadius);
-        if (collisions.Length > 0)
+        foreach (Collider collider in collisions)
         {
-            Hit(collisions[0]);
+            if (!mIgnoredColliders.Contains(collider))
+            {
+                Hit(collider);
+            }
         }
     }
 

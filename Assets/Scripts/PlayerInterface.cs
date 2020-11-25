@@ -6,18 +6,20 @@ using UnityEngine.UI;
 public class PlayerInterface : MonoBehaviour
 {
     [Header("Components")]
-    [Tooltip("Health bar image object")]
-    public Image HealthBarFill;
-    [Tooltip("Health bar image object")]
-    public Image HealthBarDamage;
+    [Tooltip("Actual health bar that changes instantly")]
+    public Image HealthBarFront;
+    [Tooltip("Health bar behind actual health that drags behind it")]
+    public Image HealthBarBack;
     [Tooltip("Current health text object")]
     public Text CurrentHealthText;
     [Tooltip("Current ammo text object")]
     public Text CurrentAmmoText;
     
     [Header("Animations")]
-    [Tooltip("Time taken by health bar change animation")]
-    public float HealthAnimationDuration;
+    [Tooltip("Speed at which health bar grows/shrinks to represent current health")]
+    public float HealthAnimationSpeed = 0.5f;
+    [Tooltip("Delay between change to player health and animation of back health bar")]
+    public float HealthAnimationDelay = 0.5f;
 
     float mTimeOfLastHealthUpdate = -10f;
     float mCurrentHealth = 1f;
@@ -32,12 +34,28 @@ public class PlayerInterface : MonoBehaviour
     /// <summary> Animate health bar fill and depletion. </summary>
     void AnimateHealthBar()
     {
-        // Determine normalized progress of animation
-        float t = (Time.time - mTimeOfLastHealthUpdate) / HealthAnimationDuration;
-        // Animate if animation is in progress
-        if (t < 1)
+        // Return early if aniamtion should not be playing.
+        if (Time.time - mTimeOfLastHealthUpdate < HealthAnimationDelay)
+            return;
+        // Get direction of health animation.
+        float delta = mTargetHealth - mCurrentHealth;
+        if (delta > 0)
         {
-            HealthBarDamage.fillAmount = Mathf.Lerp(mCurrentHealth, mTargetHealth, mTimeOfLastHealthUpdate);
+            HealthBarBack.fillAmount = mCurrentHealth += HealthAnimationSpeed * Time.deltaTime;
+            if (mCurrentHealth > mTargetHealth)
+            {
+                HealthBarBack.fillAmount = mCurrentHealth = mTargetHealth;
+                mTimeOfLastHealthUpdate = 3.40282347E+38F;
+            }
+        }
+        else
+        {
+            HealthBarBack.fillAmount = mCurrentHealth -= HealthAnimationSpeed * Time.deltaTime;
+            if (mCurrentHealth < mTargetHealth)
+            {
+                HealthBarBack.fillAmount = mCurrentHealth = mTargetHealth;
+                mTimeOfLastHealthUpdate = 3.40282347E+38F;
+            }
         }
     }
 
@@ -53,10 +71,9 @@ public class PlayerInterface : MonoBehaviour
     /// <param name="currentWeapon"> Updated health normalized from 0 to 1 </param>
     public void SetHealthDisplayed(float normalizedHealth)
     {
-        HealthBarFill.fillAmount = normalizedHealth;
-        mCurrentHealth = mTargetHealth;
-        mTargetHealth = normalizedHealth;
         CurrentHealthText.text = string.Format("{0}", (int) (100 * normalizedHealth));
+        HealthBarFront.fillAmount = normalizedHealth;
+        mTargetHealth = normalizedHealth;
         mTimeOfLastHealthUpdate = Time.time;
     }
 }
