@@ -77,6 +77,7 @@ public class TutorialManager : MonoBehaviour
         tipText.text = "Tip: Double tap a movement key to dash!";
     }
 
+    // Used by Bottle script
     public void UpdateShotCount(int amount)
     {
         if (shotCount + amount >= 0)
@@ -86,6 +87,7 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    // Used by Bottle script
     public void UpdateBottleCount(int amount)
     {
         bottleCount += amount;
@@ -129,6 +131,7 @@ public class TutorialManager : MonoBehaviour
         levelTransition.SetActive(true);
     }
 
+    // Used by Bottle script
     public bool GetTutorialPhaseTwoStarted()
     {
         return tutorialPhaseTwoStarted;

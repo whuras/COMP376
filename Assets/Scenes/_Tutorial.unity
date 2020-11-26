@@ -2604,6 +2604,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &130552574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130552569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1 &139841224
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,6 +3283,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &172915250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172915245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 5
 --- !u!1001 &178777208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5479,6 +5513,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &400878398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400878393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!4 &404663820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4172664438871906, guid: 9fa2e90a90f6e8c409b838f0e980d381, type: 3}
@@ -5607,7 +5658,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1001 &411352250
 PrefabInstance:
@@ -6437,7 +6489,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1001 &475582527
 PrefabInstance:
@@ -7165,7 +7218,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &544229867
 GameObject:
@@ -7384,6 +7438,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &562684898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562684893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1 &562948265
 GameObject:
   m_ObjectHideFlags: 0
@@ -8864,6 +8935,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &624125432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624125427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1 &635239886
 GameObject:
   m_ObjectHideFlags: 0
@@ -9884,6 +9972,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &686024396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686024391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1001 &697858035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13316,6 +13421,12 @@ PrefabInstance:
     - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
       propertyPath: SlowdownFactor
       value: 0.2
+      propertyPath: CharacterSpeedNormal
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019745202820869157, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
+      propertyPath: CharacterSpeedRunning
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6019745202820869162, guid: 2899625ab81bd654babeca44cd4f4f0d, type: 3}
       propertyPath: m_Name
@@ -16249,7 +16360,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &1006725263
 GameObject:
@@ -16465,7 +16577,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &1014233978
 GameObject:
@@ -20530,7 +20643,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1001 &1286121057
 PrefabInstance:
@@ -20820,7 +20934,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: f4107f9cae288b64289cbf9add08fdb2, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &1295221547
 GameObject:
@@ -21138,7 +21253,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1001 &1340536765
 PrefabInstance:
@@ -22077,7 +22193,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &1441629204
 GameObject:
@@ -24065,6 +24182,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &1571207607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571207602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1 &1571468654
 GameObject:
   m_ObjectHideFlags: 0
@@ -24304,7 +24438,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!4 &1577652308 stripped
 Transform:
@@ -24431,6 +24566,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &1588235812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588235807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1001 &1589173774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24787,6 +24939,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &1621498520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621498515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1 &1627318575
 GameObject:
   m_ObjectHideFlags: 0
@@ -30938,6 +31107,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &2032477421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032477416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!1001 &2036872737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31842,6 +32028,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
+--- !u!114 &2108239783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108239778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9ee878642d36143a0a02c586c366aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
+  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  BeatThreshold: 0.3
+  Health: 1
 --- !u!4 &2110334247 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c47599fca9c4e284cb4b385ec770a09b, type: 3}
@@ -31999,7 +32202,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3887718971082171122, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 004871cd023bb1a4ba62bb4bb2dca4ba, type: 3}
 --- !u!1 &2120850001
 GameObject:
