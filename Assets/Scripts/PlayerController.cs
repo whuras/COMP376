@@ -48,9 +48,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Abilities")]
     [Tooltip("Speed of Dash ability")]
-    public float DashSpeed = 30f;
+    public float DashSpeed = 20f;
     [Tooltip("Duration of dash ability")]
-    public float DashDuration = 0.5f;
+    public float DashDuration = 0.25f;
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
 
@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
     float mTimeLastJump = -10f;
     bool mIsGrounded;
+    float tempCharSpeedNormal, tempCharSpeedRunning;
     
     // Animation
     float mTimeLastStep = 0f;
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour
     float mTimeLastBackward = -10f;
     float mTimeLastRight = -10f;
     float mTimeSecondDashPress = -10f;
-    Vector3 mDashVelocity;
+    bool isDashing = false;
     
     /// <summary> Get referenced objects. </summary>
     void Start()
@@ -97,6 +98,8 @@ public class PlayerController : MonoBehaviour
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
+        tempCharSpeedNormal = CharacterSpeedNormal;
+        tempCharSpeedRunning = CharacterSpeedRunning;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -130,7 +133,10 @@ public class PlayerController : MonoBehaviour
     /// <summary> Delay physics updates to syncronize with physics system. </summary>
     void FixedUpdate()
     {
-        mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
+        if (!isDashing)
+        {
+            mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
+        }
     }
 
     /// <summary> Update whether or not player is grounded. </summary>
@@ -253,53 +259,10 @@ public class PlayerController : MonoBehaviour
     void HandleAbilities ()
     {
         // DASH
-        if (Time.time < mTimeSecondDashPress + DashDuration)
+        if (Input.GetKeyUp(KeyCode.C))
         {
-            mCharacterVelocity = mDashVelocity;
-        }
-        else if (Input.GetButtonDown("DashForward"))
-        {
-            if (Time.time < mTimeLastForward + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastForward = Time.time;
-        }
-        else if (Input.GetButtonDown("DashLeft"))
-        {
-            if (Time.time < mTimeLastLeft + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastLeft = Time.time;
-        }
-        else if (Input.GetButtonDown("DashBackward"))
-        {
-            if (Time.time < mTimeLastBackward + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastBackward = Time.time;
-        }
-        else if (Input.GetButtonDown("DashRight"))
-        {
-            if (Time.time < mTimeLastRight + 0.5f)
-            {
-                mTimeSecondDashPress = Time.time;
-                mCharacterVelocity.y = 0f;
-                mCharacterVelocity.Normalize();
-                mDashVelocity = DashSpeed * mCharacterVelocity;
-            }
-            mTimeLastRight = Time.time;
+            StartCoroutine(Dash());
+            isDashing = false;
         }
 
         //SLOW-MOTION
@@ -310,6 +273,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonUp("Slowdown"))
         {
             mConductor.SetSpeed(1f);
+        }
+    }
+
+    IEnumerator Dash()
+    {
+        isDashing = true;
+
+        float startTime = Time.time;
+
+        while(Time.time < startTime + DashDuration)
+        {
+            mCharacterController.Move(mCharacterVelocity * DashSpeed * Time.deltaTime);
+
+            yield return null;
         }
     }
 }
