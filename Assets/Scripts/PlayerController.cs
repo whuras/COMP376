@@ -97,8 +97,6 @@ public class PlayerController : MonoBehaviour
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
-        tempCharSpeedNormal = CharacterSpeedNormal;
-        tempCharSpeedRunning = CharacterSpeedRunning;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
