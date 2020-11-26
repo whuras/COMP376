@@ -14,9 +14,12 @@ public class PulseToBeat : MonoBehaviour
     Vector3 mDefaultScale;
     Vector3 mDefaultPosition;
 
+    static bool mIsPulsing;
+
     /// <summary> Get default scale and position of object. </summary>
     void Start()
     {
+        mIsPulsing = true;
         mConductor = FindObjectOfType<Conductor>();
         mDefaultScale = transform.localScale;
         mDefaultPosition = transform.localPosition;
@@ -25,16 +28,25 @@ public class PulseToBeat : MonoBehaviour
     /// <summary> Update position and scale according to time to beat. </summary>
     void Update()
     {
-        float beatDistance = Mathf.Abs(2 * mConductor.GetTimeToBeat());
-        
-        Vector3 scale = mDefaultScale;
-        scale.y *= (1+0.6f*ScaleAmplitude - ScaleAmplitude*beatDistance);
-        scale.x *= (1-0.3f*ScaleAmplitude + ScaleAmplitude*beatDistance);
-        scale.z *= (1+0.3f*ScaleAmplitude + ScaleAmplitude*beatDistance);
-        transform.localScale = scale;
+        if (mIsPulsing)
+        {
+            float beatDistance = Mathf.Abs(2 * mConductor.GetTimeToBeat());
 
-        Vector3 position = mDefaultPosition;
-        position.y += BobAmplitude*(1f - beatDistance);
-        transform.localPosition = position;
+            Vector3 scale = mDefaultScale;
+            scale.y *= (1 + 0.6f * ScaleAmplitude - ScaleAmplitude * beatDistance);
+            scale.x *= (1 - 0.3f * ScaleAmplitude + ScaleAmplitude * beatDistance);
+            scale.z *= (1 + 0.3f * ScaleAmplitude + ScaleAmplitude * beatDistance);
+            transform.localScale = scale;
+
+            Vector3 position = mDefaultPosition;
+            position.y += BobAmplitude * (1f - beatDistance);
+            transform.localPosition = position;
+        }
+    }
+
+    public void ToggleIsPulsing()
+    {
+        mIsPulsing = !mIsPulsing;
+        print(mIsPulsing);
     }
 }

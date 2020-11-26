@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Breakable : MonoBehaviour
+// TODO: This script is mostly copy paste of breakable but with some needed changes.
+//       We shouldn't have it coupled with the Tutorial Manager. If I have time I will 
+//       figure out a proper solution for this.
+
+public class Bottle : MonoBehaviour
 {
     [Header("General")]
     [Tooltip("Destroyed version of object (after destruction)")]
@@ -19,6 +23,7 @@ public class Breakable : MonoBehaviour
     HealthController mHealthController;
     Conductor mConductor;
     AudioSource mAudioSource;
+    TutorialManager mTutorialManager;
     float mCrrtHealth;
 
     /// <summary> Cache components. </summary>
@@ -27,6 +32,7 @@ public class Breakable : MonoBehaviour
         mHealthController = gameObject.GetComponent<HealthController>();
         mHealthController.OnDeath += OnDamaged;
         mConductor = FindObjectOfType<Conductor>();
+        mTutorialManager = FindObjectOfType<TutorialManager>();
         if (MissedBeatSound)
         {
             mAudioSource = gameObject.GetComponent<AudioSource>();
@@ -38,9 +44,13 @@ public class Breakable : MonoBehaviour
     void Destroy()
     {
         // Instantiate destroyed version of object.
-        GameObject brokenObject = Instantiate(DestroyedVersion, transform.position, transform.rotation, transform.parent);
-        brokenObject.transform.localScale = transform.localScale;
+        GameObject brokenBottle = Instantiate(DestroyedVersion, transform.position, transform.rotation, transform.parent);
+        brokenBottle.transform.localScale = transform.localScale;
 
+        if (!mTutorialManager.GetTutorialPhaseTwoStarted())
+        {
+            mTutorialManager.UpdateBottleCount(1);
+        }
         // Remove non-destroyed version.
         Destroy(gameObject);
     }
@@ -51,6 +61,11 @@ public class Breakable : MonoBehaviour
         // If beat was hit, deal demage.
         if (Mathf.Abs(mConductor.GetTimeToBeat()) < BeatThreshold)
         {
+            // If on second phase of tutorial, add 1 to combo when shooting large bottle
+            if (mTutorialManager.GetTutorialPhaseTwoStarted())
+            {
+                mTutorialManager.UpdateShotCount(1);
+            }
             // Play positive hit sound if bottle was not destroyed and one exists.
             if (--mCrrtHealth > 0)
             {
@@ -70,6 +85,15 @@ public class Breakable : MonoBehaviour
         // Else, play missed beat sfx.
         else
         {
+            // If on second phase of tutorial, subtract 1 from combo when shooting large bottle
+            if (mTutorialManager.GetTutorialPhaseTwoStarted())
+            {
+                mTutorialManager.UpdateShotCount(-1);
+                if (mCrrtHealth < 5)
+                {
+                    mCrrtHealth++;
+                }
+            }
             if (MissedBeatSound)
             {
                 mAudioSource.pitch = 1;
