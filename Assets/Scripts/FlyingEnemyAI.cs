@@ -80,9 +80,52 @@ public class FlyingEnemyAI : MonoBehaviour
     [Tooltip("Number of seconds the enemy will retreat for before taking another action.")]
     public float RetreatDuration;
 
+    [Tooltip("Number of seconds the enemy will take to travel to destination retreat point.")]
+    public float RetreatTravelDuration;
+
+    public float RetreatXAmplitude;
+    public float RetreatYAmplitude;
+    
+    public float RetreatXFrequency;
+    public float RetreatYFrequency;
+    
+    // Time at which the retreat started
     private float mRetreatTimeout;
     
+    // Position where the enemy started to retreat
+    private Vector3 mRetreatStartPosition;
     
+    // Retreat position chosen
+    private GameObject mRetreatEndPosition;
+
+    // Whether the enemy is actively traveling to retreat location
+    private bool mIsRetreating
+    {
+        get
+        {
+            return Time.time - mRetreatTimeout <= RetreatDuration;
+        }
+    }
+
+    private bool mIsTravellingToRetreat
+    {
+        get
+        {
+            return Time.time - mRetreatTimeout <= RetreatTravelDuration;
+        }
+    }
+    
+    // Whether the enemy has already arrived and is idling at the retreat location
+    private bool mIsRetreated
+    {
+        get
+        {
+            float time = Time.time - mRetreatTimeout;
+            return time < RetreatDuration && time >= RetreatTravelDuration;
+        }
+    }
+
+
     // States
     private bool mIsAlive;
     private bool mWasHitLastFrame;
@@ -110,9 +153,10 @@ public class FlyingEnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mIsAlive && Time.time - mRetreatTimeout > 5)
+        if (mIsAlive)
         {
             agent.updateRotation = true;
+            agent.enabled = true;
 
             bool playerInSightRange = Vector3.Distance(player.transform.position, transform.position) < SightRange;
             bool playerInAttackRange = Vector3.Distance(player.transform.position, transform.position) < AttackRange;
@@ -132,19 +176,28 @@ public class FlyingEnemyAI : MonoBehaviour
                 AttackPlayer();
             }
             
-            if (mWasHitLastFrame && Random.value <= RetreatProbability && CanRetreat)
+            if (!mIsRetreating && mWasHitLastFrame && Random.value <= RetreatProbability && CanRetreat)
             {
-                RetreatPlayer();
+                ChooseRetreatPosition();
+            }
+            
+            // If actively retreating, then we must move the enemy to the selected location
+            if (mIsRetreating && CanRetreat)
+            {
+                Retreat();
             }
 
             mWasHitLastFrame = false;
         }
     }
+    
 
     private void AttackPlayer()
     {
         // Attack the player on a given interval
         // TODO Maybe make this interval random?
+        
+        // have the enemy swoop towards the player
         if (Time.time - mTimeLastAttack > TimeBetweenAttacks)
         {
             mTimeLastAttack = Time.time;
@@ -181,18 +234,35 @@ public class FlyingEnemyAI : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, SnapToMultiplier * Time.deltaTime);
     }
 
-    private void RetreatPlayer()
+    private void ChooseRetreatPosition()
     {
-        if (mRetreatTimeout - Time.time <= RetreatDuration)
-        {
-            GetComponent<NavMeshAgent>().enabled = false;
-            GameObject retreatPosition = RetreatPositions[Random.Range(0, RetreatPositions.Length - 1)];
-            transform.position = retreatPosition.transform.position;
-            transform.LookAt(player.transform.position - retreatPosition.transform.position);
-            mRetreatTimeout = Time.time;   
-        }
+        mRetreatStartPosition = transform.position;
+        mRetreatEndPosition = RetreatPositions[Random.Range(0, RetreatPositions.Length - 1)];
+            
+        mRetreatTimeout = Time.time;
     }
 
+    private void Retreat()
+    {
+        agent.enabled = false;
+        
+        if (mIsTravellingToRetreat)
+        {
+            float time = Mathf.Clamp01((Time.time - mRetreatTimeout) / RetreatTravelDuration);
+            //transform.LookAt(player.transform.position - retreatPosition.transform.position);
+            Vector3 position = Vector3.Lerp(mRetreatStartPosition, mRetreatEndPosition.transform.position, time);
+
+            float x = position.x + Mathf.Sin(time * 2 * Mathf.PI * RetreatXFrequency) * RetreatXAmplitude;
+            float y = position.y + Mathf.Sin(time * 2 * Mathf.PI * RetreatYFrequency) * RetreatYAmplitude;
+            
+            transform.position = new Vector3(x, y, position.z);
+        }
+        // Otherwise they are retreated (mIsRetreated == true), since we know the enemy is retreating
+        else
+        {
+            transform.LookAt(player.transform);
+        }
+    }
     private void Wander()
     {
         // Change navigation destination every _rescanTime seconds
