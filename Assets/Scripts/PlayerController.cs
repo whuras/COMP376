@@ -65,7 +65,6 @@ public class PlayerController : MonoBehaviour
     Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
     float mTimeLastJump = -10f;
     bool mIsGrounded;
-    float tempCharSpeedNormal, tempCharSpeedRunning;
     
     // Animation
     float mTimeLastStep = 0f;
