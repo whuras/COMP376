@@ -6,7 +6,52 @@ ModelImporter:
   - first:
       74: 4781951162920444690
     second: Armature|ArmatureAction
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hat_main
+    second: {fileID: 2100000, guid: 4396010abb7f019458329a36abd5a86f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: body
+    second: {fileID: 2100000, guid: ac0f1c4afae17984e817927546414249, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chair
+    second: {fileID: 2100000, guid: 7657cb0f4fd34434b9d0a493a41405a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyes
+    second: {fileID: 2100000, guid: e32c0529f6a6e1b4483b79554c96ef78, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: footsies
+    second: {fileID: 2100000, guid: 9dc55211cf115a147878aed50db4d1b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hair
+    second: {fileID: 2100000, guid: 8986785dc6c2edc4d826d1503645c3b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hat_strip
+    second: {fileID: 2100000, guid: 8db024d4dcccb864c8a07965f312803f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: horn
+    second: {fileID: 2100000, guid: 8c8136e552b1779498efd16417862b48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal
+    second: {fileID: 2100000, guid: 8abaa51be09963b4eaa36b35dd4e9077, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

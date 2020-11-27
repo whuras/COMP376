@@ -39,20 +39,16 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     [Tooltip("UP and DOWN look limit, the angle is symmetric for the top and bottom parts of the screen")]
     public float CameraClampAngleX;
-
+    
     [Header("Special Effects")]
-    [Tooltip("Distance traveled per foot step")]
-    public float StrideLength;
     [Tooltip("Foot step sound effects for walking on wood")]
     public AudioClip[] WoodFootStepSoundEffects;
 
     [Header("Abilities")]
     [Tooltip("Speed of Dash ability")]
-    public float DashSpeed = 20f;
+    public float DashSpeed = 40f;
     [Tooltip("Duration of dash ability")]
-    public float DashDuration = 0.25f;
-    [Tooltip("Cooldown for Dash ability")]
-    public float DashCooldownTime = 5.0f;
+    public float DashDuration = 0.3f;
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
 
@@ -64,13 +60,13 @@ public class PlayerController : MonoBehaviour
     AudioSource mAudioSource;
 
     // Movement
-    Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
+    Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
     float mTimeLastJump = -10f;
-    float nextDashTime = 0.0f;
     bool mIsGrounded;
-
+    bool mIsRunning = false;
+    
     // Animation
-    float mTimeLastStep = 0f;
+    int mParityOfNextBeat = 0;
     float mCurrentWeaponBobFactor;
     float mWeaponBobTime = 0f;
 
@@ -79,36 +75,20 @@ public class PlayerController : MonoBehaviour
     int mCrrtWeaponIndex = 0;
 
     // Abilities
-    float mTimeLastForward = -10f;
-    float mTimeLastLeft = -10f;
-    float mTimeLastBackward = -10f;
-    float mTimeLastRight = -10f;
-    float mTimeSecondDashPress = -10f;
-    bool isDashing = false;
-    
+    float mTimeDashStart = -10f;
     Vector3 mDashVelocity;
-
-    // Disable Toggles (for cutscenes)
-    bool mDisableMovement;
-    bool mDisableWeapons;
-
+    
     /// <summary> Get referenced objects. </summary>
     void Start()
     {
-        // Disable Toggles turned off by default
-        mDisableMovement = false;
-        mDisableWeapons = false;
-
         // Equip default weapon if provided
         if (Weapons.Any())
         {
             EquipWeapon(0);
         }
-
+        
         // Initialize References
         mConductor = FindObjectOfType<Conductor>();
-
-        // Initialize Controls
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -136,63 +116,52 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         CheckIfGrounded();
-        if (!mDisableMovement)
-        {
-            HandleMovement();
-        }
-
-        if (!mDisableWeapons)
-        {
-            HandleWeapons();
-            HandleWeaponBob();
-            HandleAbilities();
-        }
+        HandleMovement();
+        HandleWeapons();
+        HandleWeaponBob();
+        HandleAbilities();
     }
 
     /// <summary> Delay physics updates to syncronize with physics system. </summary>
     void FixedUpdate()
     {
-        if (!isDashing || !mDisableMovement)
-        {
-            mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
-        }
-
-        if (!mDisableWeapons)
-        {
-            HandleWeapons();
-            HandleWeaponBob();
-            HandleAbilities();
-        }
-
-        HandleAiming();
+        mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
     }
 
     /// <summary> Update whether or not player is grounded. </summary>
     void CheckIfGrounded()
     {
-        mIsGrounded = mTimeLastJump + 0.2f < Time.time
+        mIsGrounded =  mTimeLastJump + 0.2f < Time.time
                     && Physics.Raycast(transform.position, Vector3.down, 1.6f);
     }
 
     /// <summary> Play footstep sound effect depending on ground material and player speed. </summary>
     void PlayFootStep(float speed)
     {
-        if (Time.time - mTimeLastStep > StrideLength / speed && mIsGrounded && Time.time > mTimeSecondDashPress + DashDuration)
+        // Play no footsteps while dashing or no grounded.
+        if (!mIsGrounded || Time.time < mTimeDashStart + DashDuration)
         {
-            mAudioSource.PlayOneShot(WoodFootStepSoundEffects[Random.Range(0, WoodFootStepSoundEffects.Length - 1)], Random.Range(0.5f, 1.0f));
-            mTimeLastStep = Time.time;
+            return;
+        }
+        // Play footsteps on beat.
+        int stepsPerBeat = mIsRunning ? 3 : 2;
+        if (mConductor.GetBeat(stepsPerBeat) % stepsPerBeat == mParityOfNextBeat)
+        {
+            mAudioSource.PlayOneShot(WoodFootStepSoundEffects[mParityOfNextBeat]);
+            mParityOfNextBeat = (mParityOfNextBeat + 1) % stepsPerBeat;
         }
     }
 
     /// <summary> Receive player movement input and respond to it. </summary>
-    void HandleMovement()
+    void HandleMovement ()
     {
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        mIsRunning = Input.GetAxisRaw("Run") != 0;
         float speed = Mathf.Lerp(CharacterSpeedNormal, CharacterSpeedRunning, Input.GetAxis("Run"));
         moveDirection.Normalize();
         moveDirection = transform.TransformDirection(moveDirection);
-
+        
         // JUMPING
         float verticalVelocity = 0f;
         if (mIsGrounded)
@@ -212,11 +181,7 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
-    }
-
-    /// <summary> Receive player mouse input and respond to it. </summary>
-    void HandleAiming()
-    {
+        
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
         float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;
@@ -241,14 +206,14 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> Receive weapon input and respond to it. </summary>
-    void HandleWeapons()
+    void HandleWeapons ()
     {
         // Handle weapon fire
         mCrrtWeapon.ReceiveFireInputs(
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
-
+            
         // Handle weapon reload
         if (Input.GetButtonDown("Reload"))
         {
@@ -258,11 +223,11 @@ public class PlayerController : MonoBehaviour
         // Handle weapon swap
         if (Input.mouseScrollDelta.y > 0f)
         {
-            EquipWeapon(mCrrtWeaponIndex + 1);
+            EquipWeapon(mCrrtWeaponIndex+1);
         }
         if (Input.mouseScrollDelta.y < 0f)
         {
-            EquipWeapon(mCrrtWeaponIndex - 1);
+            EquipWeapon(mCrrtWeaponIndex-1);
         }
 
         // Update UI
@@ -273,11 +238,13 @@ public class PlayerController : MonoBehaviour
     void HandleWeaponBob()
     {
         // Update strength of weapon bob according to player velocity.
-        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f * mCharacterVelocity.magnitude / CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
+        Vector3 velocityInPlane = mCharacterVelocity;
+        velocityInPlane.y = 0f;
+        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f*velocityInPlane.magnitude/CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
         mWeaponBobTime += Time.deltaTime * WeaponBobFrequency * mCurrentWeaponBobFactor;
-        if (mWeaponBobTime > 2 * Mathf.PI)
+        if (mWeaponBobTime > 2*Mathf.PI)
         {
-            mWeaponBobTime -= 2 * Mathf.PI;
+            mWeaponBobTime -= 2*Mathf.PI;
         }
 
         //Calculate weapon bob.
@@ -288,21 +255,21 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> Receive ability input and respond to it. </summary>
-    void HandleAbilities()
+    void HandleAbilities ()
     {
         // DASH
-        if (Time.time > nextDashTime)
+        if (Time.time < mTimeDashStart + DashDuration)
         {
-            if (Input.GetKeyUp(KeyCode.C))
-            {
-                StartCoroutine(Dash());
-                PlayerHUD.ResetDashIcon();
-                nextDashTime = Time.time + DashCooldownTime;
-                isDashing = false;
-            }
-
+            mCharacterVelocity = mDashVelocity;
         }
-
+        else if (Input.GetButtonDown("Dash"))
+        {
+            mTimeDashStart = Time.time;
+            PlayerHUD.ResetDashIcon();
+            mCharacterVelocity.y = 0f;
+            mCharacterVelocity.Normalize();
+            mDashVelocity = DashSpeed * mCharacterVelocity;
+        }
 
         //SLOW-MOTION
         if (Input.GetButtonDown("Slowdown"))
@@ -313,31 +280,5 @@ public class PlayerController : MonoBehaviour
         {
             mConductor.SetSpeed(1f);
         }
-    }
-
-    IEnumerator Dash()
-    {
-        isDashing = true;
-
-        float startTime = Time.time;
-
-        while(Time.time < startTime + DashDuration)
-        {
-            mCharacterController.Move(mCharacterVelocity * DashSpeed * Time.deltaTime);
-
-            yield return null;
-        }
-    }
-
-    // Used by timeline signals to deactivate movement during cutscenes
-    public void ToggleDisableMovement()
-    {
-        mDisableMovement = !mDisableMovement;
-    }
-
-    // Used by timeline signals to deactivate weapons during cutscenes
-    public void ToggleDisableWeapon()
-    {
-        mDisableWeapons = !mDisableWeapons;
     }
 }
