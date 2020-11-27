@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: Conductor
       value: 
       objectReference: {fileID: 2070855804}
+    - target: {fileID: 3461408714541997673, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
+      propertyPath: DissolveTime
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3461408714541997674, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
       propertyPath: m_Name
       value: Boss

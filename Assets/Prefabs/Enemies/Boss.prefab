@@ -739,7 +739,7 @@ MonoBehaviour:
   AudioSource: {fileID: 3461408714541997678}
   FireSFX: {fileID: 8300000, guid: 610e41d0de57b6947ba83465bbe2158a, type: 3}
   Dissolve: {fileID: 3461408713364275077}
-  DissolveTime: 3
+  DissolveTime: 7
   Projectile: {fileID: 7841898570000956669, guid: 3be43ce5d1c84284b9a5358a8333e332, type: 3}
 --- !u!82 &3461408714541997678
 AudioSource:
@@ -922,7 +922,7 @@ Animator:
   m_GameObject: {fileID: 4379765150953568729}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 596dfbafc72632245af085567545ed9d, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
