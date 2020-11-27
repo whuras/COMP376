@@ -10,6 +10,8 @@ public class PlayerInterface : MonoBehaviour
     public Image HealthBarFront;
     [Tooltip("Health bar behind actual health that drags behind it")]
     public Image HealthBarBack;
+    [Tooltip("Dash Icon")]
+    public Image DashIcon;
     [Tooltip("Current health text object")]
     public Text CurrentHealthText;
     [Tooltip("Current ammo text object")]
@@ -21,13 +23,19 @@ public class PlayerInterface : MonoBehaviour
     [Tooltip("Delay between change to player health and animation of back health bar")]
     public float HealthAnimationDelay = 0.5f;
 
+    // Health Bar Variables
     float mTimeOfLastHealthUpdate = -10f;
     float mCurrentHealth = 1f;
     float mTargetHealth = 1f;
 
+    // Dash Icon Variables
+    float mFillSpeed = 0.2f;
+
+
     /// <summary> Animate interface </summary>
     void Update()
     {
+        RefillDashIcon();
         AnimateHealthBar();
     }
 
@@ -75,5 +83,20 @@ public class PlayerInterface : MonoBehaviour
         HealthBarFront.fillAmount = normalizedHealth;
         mTargetHealth = normalizedHealth;
         mTimeOfLastHealthUpdate = Time.time;
+    }
+
+    /// <summary> Set the Dash Icon fill amount to 0. </summary>
+    public void ResetDashIcon()
+    {
+        DashIcon.fillAmount = 0;
+    }
+
+
+    public void RefillDashIcon()
+    {
+        if (DashIcon.fillAmount < 1)
+        {
+            DashIcon.fillAmount += mFillSpeed * Time.deltaTime;
+        }
     }
 }
