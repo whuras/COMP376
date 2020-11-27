@@ -14,16 +14,16 @@ public class EnemyAI : MonoBehaviour
     [Header("Behavior Toggles")] 
     
     [Tooltip("Whether the game object wanders the player when the player is out of range.")]
-    public bool wander;
+    public bool CanWander;
     
     [Tooltip("Whether the game object chases the player when they are in range.")]
-    public bool chasePlayer;
+    public bool CanChasePlayer;
     
     [Tooltip("Whether the game object attacks the player when they are in range.")]
-    public bool attackPlayer;
+    public bool CanAttackPlayer;
     
     [Tooltip("Whether the game object retreats from the player when they are attacked.")]
-    public bool retreatPlayer;
+    public bool CanRetreat;
 
     public Projectile Projectile;
     
@@ -32,65 +32,65 @@ public class EnemyAI : MonoBehaviour
     
     [Tooltip("The minimum distance that will be maintained between the player and the enemy when calculating a target" +
              " destination.")]
-    public float personalSpace;
+    public float PersonalSpace;
     
     [Tooltip("The delay between each time the enemy recalculates their chase destination.")]
-    public float chaseDestinationComputeInterval;
+    public float ChaseDestinationComputeInterval;
     
     [Tooltip("Multiplier for how fast the enemy will snap to facing the players position.")]
-    public float snapToMultiplier;
+    public float SnapToMultiplier;
 
     [Tooltip("Minimum distance from the player to start chasing.")]
-    public float sightRange;
+    public float SightRange;
     
-    private float _chaseTimeout;
+    private float mChaseTimeout;
 
 
     [Header("Wander Variables")] 
     
-    public float wanderDistanceMin;
-    public float wanderDistanceMax;
+    public float WanderDistanceMin;
+    public float WanderDistanceMax;
 
     [Tooltip("The delay between each time the enemy recalculates their wander destination.")]
-    public float wanderDestinationComputeInterval;
+    public float WanderDestinationComputeInterval;
 
-    private float _wanderTimeout;
+    private float mWanderTimeout;
     
     
     [Header("Attacking Variables")]
     [Tooltip("Amount of time between projectile launches.")]
-    public float timeBetweenAttacks;
+    public float TimeBetweenAttacks;
 
     [Tooltip("Amount of damage each projectile inflicts.")]
-    public float attackDamage;
+    public float AttackDamage;
     
     [Tooltip("Minimum distance from the player for the enemy to start attacking.")]
-    public float attackRange;
+    public float AttackRange;
     
-    private float _timeLastAttack;
+    private float mTimeLastAttack;
 
     
     [Header("Retreat Variables")] 
     [Tooltip("The odds that an enemy will retreat after being hit (must be [0,1]).")]
-    public float retreatProbability;
+    public float RetreatProbability;
 
     [Tooltip("How wide the triangle drawn behind the enemy used to determine where they will retreat to (must be [0,90]).")]
-    public float retreatAngleWidth;
+    public float RetreatAngleWidth;
     
     [Tooltip("Number of seconds the enemy will retreat for before taking another action.")]
-    public float retreatDuration;
+    public float RetreatDuration;
 
-    public float retreatDistanceMin;
-    public float retreatDistanceMax;
+    public float RetreatDistanceMin;
+    public float RetreatDistanceMax;
     
-    private float _retreatTimeout;
+    private float mRetreatTimeout;
     
     
     // States
-    private bool _isAlive;
-    private bool _wasHitLastFrame;
+    private bool mIsAlive;
+    private bool mWasHitLastFrame;
 
-    public GameObject gunPoint;
+    [FormerlySerializedAs("gunPoint")] public GameObject GunPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -102,44 +102,44 @@ public class EnemyAI : MonoBehaviour
         healthController.OnDeath += OnDeath;
         healthController.OnDamaged += OnDamaged;
         
-        _chaseTimeout = -1;
-        _retreatTimeout = -retreatDuration;
+        mChaseTimeout = -1;
+        mRetreatTimeout = -RetreatDuration;
 
-        _isAlive = true;
-        _wasHitLastFrame = false;
+        mIsAlive = true;
+        mWasHitLastFrame = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_isAlive && Time.time - _retreatTimeout > 5)
+        if (mIsAlive && Time.time - mRetreatTimeout > 5)
         {
             agent.updateRotation = true;
 
-            bool playerInSightRange = Vector3.Distance(player.transform.position, transform.position) < sightRange;
-            bool playerInAttackRange = Vector3.Distance(player.transform.position, transform.position) < attackRange;
+            bool playerInSightRange = Vector3.Distance(player.transform.position, transform.position) < SightRange;
+            bool playerInAttackRange = Vector3.Distance(player.transform.position, transform.position) < AttackRange;
 
-            if (!playerInSightRange && !playerInAttackRange && wander)
+            if (!playerInSightRange && !playerInAttackRange && CanWander)
             {
                 Wander();
             }
 
-            if (playerInSightRange && chasePlayer)
+            if (playerInSightRange && CanChasePlayer)
             {
                 ChasePlayer();
             }
 
-            if (playerInAttackRange && playerInSightRange && attackPlayer)
+            if (playerInAttackRange && playerInSightRange && CanAttackPlayer)
             {
                 AttackPlayer();
             }
 
-            if (_wasHitLastFrame && Random.value <= retreatProbability && retreatPlayer)
+            if (mWasHitLastFrame && Random.value <= RetreatProbability && CanRetreat)
             {
                 RetreatPlayer();
             }
 
-            _wasHitLastFrame = false;
+            mWasHitLastFrame = false;
         }
     }
 
@@ -147,11 +147,11 @@ public class EnemyAI : MonoBehaviour
     {
         // Attack the player on a given interval
         // TODO Maybe make this interval random?
-        if (Time.time - _timeLastAttack > timeBetweenAttacks)
+        if (Time.time - mTimeLastAttack > TimeBetweenAttacks)
         {
-            _timeLastAttack = Time.time;
-            Projectile newProjectile = Instantiate(Projectile, gunPoint.transform.position, Quaternion.LookRotation(player.transform.position - gunPoint.transform.position));
-            newProjectile.Damage = attackDamage;
+            mTimeLastAttack = Time.time;
+            Projectile newProjectile = Instantiate(Projectile, GunPoint.transform.position, Quaternion.LookRotation(player.transform.position - GunPoint.transform.position));
+            newProjectile.Damage = AttackDamage;
             newProjectile.Owner = gameObject;    
         }
     }
@@ -159,16 +159,16 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         // Change navigation destination every _rescanTime seconds
-        if (Time.time - _chaseTimeout > chaseDestinationComputeInterval)
+        if (Time.time - mChaseTimeout > ChaseDestinationComputeInterval)
         {
-            _chaseTimeout = Time.time;
+            mChaseTimeout = Time.time;
             
             Vector3 playerPosition = player.transform.position;
 
             float angle = Random.Range(0F, 360F);
 
-            float z = Mathf.Sin(Mathf.Deg2Rad * angle) * personalSpace;
-            float x = Mathf.Cos(Mathf.Deg2Rad * angle) * personalSpace;
+            float z = Mathf.Sin(Mathf.Deg2Rad * angle) * PersonalSpace;
+            float x = Mathf.Cos(Mathf.Deg2Rad * angle) * PersonalSpace;
 
             Vector3 destination = new Vector3(playerPosition.x + x, playerPosition.y, playerPosition.z + z);
             agent.SetDestination(destination);
@@ -180,16 +180,16 @@ public class EnemyAI : MonoBehaviour
         // Make the enemy look at the player when they are attacking
         Vector3 direction = player.transform.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, snapToMultiplier * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, SnapToMultiplier * Time.deltaTime);
     }
 
     private void RetreatPlayer()
     {
         // Compute the retreat distance
-        float retreatDistance = Random.Range(retreatDistanceMin, retreatDistanceMax);
+        float retreatDistance = Random.Range(RetreatDistanceMin, RetreatDistanceMax);
 
         // Compute the retreat angle
-        float retreatAngle = Random.Range(270 - retreatAngleWidth, 270 + retreatAngleWidth);
+        float retreatAngle = Random.Range(270 - RetreatAngleWidth, 270 + RetreatAngleWidth);
 
         // Compute the x,z coordinates for our retreat position
         float z = Mathf.Sin(Mathf.Deg2Rad * retreatAngle) * (transform.forward.z * retreatDistance);
@@ -203,19 +203,19 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(destination);
         
         // Set a timeout time so that no other actions are taken during retreat
-        _retreatTimeout = Time.time;
+        mRetreatTimeout = Time.time;
         
         // Reset last frame his indicator
-        _wasHitLastFrame = false;
+        mWasHitLastFrame = false;
     }
 
     private void Wander()
     {
         // Change navigation destination every _rescanTime seconds
-        if (Time.time - _wanderTimeout > wanderDestinationComputeInterval)
+        if (Time.time - mWanderTimeout > WanderDestinationComputeInterval)
         {
             // Compute the retreat distance
-            float wanderDistance = Random.Range(wanderDistanceMin, wanderDistanceMax);
+            float wanderDistance = Random.Range(WanderDistanceMin, WanderDistanceMax);
 
             // Compute the retreat angle
             float wanderAngle = Random.Range(0, 360);
@@ -230,18 +230,18 @@ public class EnemyAI : MonoBehaviour
             // Set destination
             agent.SetDestination(destination);
 
-            _wanderTimeout = Time.time;
+            mWanderTimeout = Time.time;
         }
     }
 
     private void OnDeath()
     {
         agent.isStopped = true;
-        _isAlive = false;
+        mIsAlive = false;
     }
 
     private void OnDamaged()
     {
-        _wasHitLastFrame = true;
+        mWasHitLastFrame = true;
     }
 }

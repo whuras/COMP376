@@ -17,6 +17,7 @@ public class Target : MonoBehaviour
     {
         mHealthController = gameObject.GetComponent<HealthController>();
         mAnimator = gameObject.GetComponent<Animator>();
+        
         mHealthController.OnDamaged += OnDamaged;
         mHealthController.OnDeath += OnDeath;
     }

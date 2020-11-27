@@ -49,6 +49,7 @@ public class HealthController : MonoBehaviour
         {
             OnDamaged();
         }
+        Debug.Log("Damage!");
     }
 
     /// <summary> Add health to object </summary>
