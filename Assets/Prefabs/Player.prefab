@@ -71,8 +71,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e4cbb767d4df6064dafc78d48a76e287, type: 3}
   - {fileID: 8300000, guid: 7ad0bb5647888374f95ced90223bb034, type: 3}
   - {fileID: 8300000, guid: 32342446ca7564546a3909b7b7461b14, type: 3}
-  DashSpeed: 30
-  DashDuration: 0.5
+  DashSpeed: 5
+  DashDuration: 0.15
+  DashCooldownTime: 5
   SlowdownFactor: 0.5
 --- !u!143 &6019745202820869159
 CharacterController:

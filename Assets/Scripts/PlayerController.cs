@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
     public float DashSpeed = 20f;
     [Tooltip("Duration of dash ability")]
     public float DashDuration = 0.25f;
+    [Tooltip("Cooldown for Dash ability")]
+    public float DashCooldownTime = 5.0f;
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
 
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
     // Movement
     Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
     float mTimeLastJump = -10f;
+    float nextDashTime = 0.0f;
     bool mIsGrounded;
 
     // Animation
@@ -288,11 +291,18 @@ public class PlayerController : MonoBehaviour
     void HandleAbilities()
     {
         // DASH
-        if (Input.GetKeyUp(KeyCode.C))
+        if (Time.time > nextDashTime)
         {
-            StartCoroutine(Dash());
-            isDashing = false;
+            if (Input.GetKeyUp(KeyCode.C))
+            {
+                StartCoroutine(Dash());
+                PlayerHUD.ResetDashIcon();
+                nextDashTime = Time.time + DashCooldownTime;
+                isDashing = false;
+            }
+
         }
+
 
         //SLOW-MOTION
         if (Input.GetButtonDown("Slowdown"))
