@@ -1,4 +1,6 @@
-﻿public class MusicFrame
+﻿using UnityEngine;
+
+public class MusicFrame
 {
     public string Name { get; }
     public float IntroStartTime { get; }

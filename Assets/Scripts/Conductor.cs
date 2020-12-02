@@ -9,53 +9,57 @@ public class Conductor : MonoBehaviour
     public float SourceBPM;
 
     public int BarLength;
+
+    public float TransitionBleed;
     
-    AudioSource mMusicSource;
+    AudioSource[] mMusicSources;
     float mSourceBPS;
 
     double mOffset;
-    double mCurrentTimeUnscaled = -1f;
-    double mCurrentTimeScaled = 0f;
-    float mSpeed = 1f;
-    
-    bool mTransitionRequested;
+
+    // Looping of the current MusicFrame will be disabled until AudioSettings.dspTime - mOffset >= mLoopDisabledUntil
+    double mLoopDisabledUntil;
+
     private Queue<MusicFrame> MusicFrames;
     private MusicFrame mCurrentFrame;
 
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>
     void Start()
-    {
-        mTransitionRequested = false;
+    {    
+        // Get the audio sources attached to the game object
+        mMusicSources = GetComponents<AudioSource>();
         
-        mMusicSource = GetComponent<AudioSource>();
-        mMusicSource.Play();
-
         mSourceBPS = SourceBPM / 60f;
-        mCurrentTimeUnscaled = AudioSettings.dspTime;
-        mOffset = 0;
-        
+
+        // Setup music frame config
         MusicFrames = new Queue<MusicFrame>();
         
         //MusicFrames.Enqueue(new MusicFrame("Intro", 0,10F,15F));
-        MusicFrames.Enqueue(new MusicFrame("Intro", 0,82.434F,161.739F));
+        MusicFrames.Enqueue(new MusicFrame("Main Menu", 9.391F,9.391F,36.521F));
+        MusicFrames.Enqueue(new MusicFrame("Level 1", 0.000F,82.434F,161.739F));
         MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity", 136.695F,161.739F,270.260F));
-        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,270.260F,405.913F));
-        MusicFrames.Enqueue(new MusicFrame("Level 3", 405.913F,426.782F,587.478F));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,282.782F,351.652F));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F));
+        MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F));
+        
 
         mCurrentFrame = MusicFrames.Dequeue();
+        
+        
+        mOffset  = AudioSettings.dspTime + 0.5;
+        
+        // Setup the first music source to play
+        mMusicSources[0].time = mCurrentFrame.IntroStartTime;
+        mMusicSources[0].PlayScheduled(mOffset);
 
-        mMusicSource.time = mCurrentFrame.IntroStartTime;
     }
 
     /// <summary> We track the time of the song ourselves instead of using AudioSettings.dspTime directly because the latter is not updated consistently and is not affected by time scale. </summary>
     void Update()
     {
-        double deltaTime = AudioSettings.dspTime - mCurrentTimeUnscaled;
-        deltaTime *= mSpeed;
-        mCurrentTimeScaled += deltaTime;
-        mCurrentTimeUnscaled = AudioSettings.dspTime;
+        AudioSource currentlyPlaying = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
 
-        Debug.Log(mMusicSource.time);
         HandleLoop();
 
         if (Input.GetKeyDown(KeyCode.T))
@@ -63,9 +67,16 @@ public class Conductor : MonoBehaviour
             RequestTransition();
         }
         
-        if (mTransitionRequested)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            HandleTransition();
+            currentlyPlaying.time += 10;
+            mOffset -= 10;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            currentlyPlaying.time -= 10;
+            mOffset += 10;
         }
     }
 
@@ -73,7 +84,7 @@ public class Conductor : MonoBehaviour
     /// <returns> Time to/from nearest beat normalized from -0.5 to 0.5 </returns>
     public float GetTimeToBeat()
     {
-        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
+        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
         int nearestBeat = (int) (scaledBeatTime + 0.5f);
         return (float) (scaledBeatTime - nearestBeat);
     }
@@ -82,51 +93,67 @@ public class Conductor : MonoBehaviour
     /// <returns> Time since last beat normalized from 0 to 1 </returns>
     public float GetTimeSinceBeat()
     {
-        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS;
+        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS;
         return (float) (scaledBeatTime - (int) scaledBeatTime);
     }
     
-    /// <summary> Returns index of current beat. </summary>
+    /// <summary> Returns index of the last played beat. </summary>
     /// <returns> Index of current beat </returns>
     public int GetBeat(int subdivision = 1)
     {
-        double scaledBeatTime = mCurrentTimeScaled * mSourceBPS * subdivision;
+        double scaledBeatTime = (AudioSettings.dspTime - mOffset) * mSourceBPS * subdivision;
         return (int) scaledBeatTime;
-    }
-
-    /// <summary> Change BPM of music. </summary>
-    /// <param name="speed"> Scale by which music speed should be changed relative to default. </param>
-    public void SetSpeed(float speed)
-    {
-        mSpeed = speed;
-        mMusicSource.pitch = speed;
-        Time.timeScale = speed;
     }
 
     public void RequestTransition()
     {
-        mTransitionRequested = true;
+        HandleTransition();
     }
 
     private void HandleLoop()
     {
-        if (mCurrentTimeScaled - mOffset >= mCurrentFrame.LoopEndTime - mCurrentFrame.LoopStartTime)
+        if (AudioSettings.dspTime >= mLoopDisabledUntil)
         {
-            mMusicSource.time = mCurrentFrame.LoopStartTime;
-            mOffset = mCurrentTimeScaled;
+            AudioSource isPlaying = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
+            AudioSource isStopped = mMusicSources[0].isPlaying ? mMusicSources[1] : mMusicSources[0];
+            
+            double loopAtTime = AudioSettings.dspTime + mCurrentFrame.LoopEndTime - isPlaying.time;
+            
+            isPlaying.SetScheduledEndTime(loopAtTime);
+            isStopped.PlayScheduled(loopAtTime);
+            isStopped.SetScheduledStartTime(loopAtTime);
+            isStopped.time = mCurrentFrame.LoopStartTime;
+            mLoopDisabledUntil = loopAtTime + 0.5;
+            
+            Debug.Log("loop setup!");
         }
     }
     
     private void HandleTransition()
     {
-        // We want to transition at the end of a bar, but before the first beat of the next bar
-        // If the next beat is the beginning of a new bar
-        if (GetBeat() % BarLength == 0 && GetTimeSinceBeat() >= 0.95)
-        {
-            mCurrentFrame = MusicFrames.Dequeue();
-            mMusicSource.time = mCurrentFrame.IntroStartTime;
-            mOffset = mCurrentTimeScaled;
-            mTransitionRequested = false;
-        }
+        AudioSource toPlay = mMusicSources[0].isPlaying ? mMusicSources[1] : mMusicSources[0];
+        AudioSource toStop = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
+        
+        mCurrentFrame = MusicFrames.Dequeue();
+        toPlay.time = mCurrentFrame.IntroStartTime;
+        
+        // Find the timestamp for the next bar end
+        int beat = GetBeat() % BarLength;
+        double timeBetweenBeats = 1 / mSourceBPS;
+        double timeToNextBeat = timeBetweenBeats - (GetTimeSinceBeat() * timeBetweenBeats);
+
+        double transitionTime = (BarLength - beat) * timeBetweenBeats + timeToNextBeat + AudioSettings.dspTime;
+        
+        Debug.Log("Switching to: " + mCurrentFrame.Name);
+        Debug.Log("current beat: " + beat);
+        Debug.Log("beat landed: " +( ((transitionTime - mOffset) * mSourceBPS) % 4));
+        Debug.Log("current time: " + AudioSettings.dspTime);
+        Debug.Log("transition time: " + transitionTime);
+
+        mLoopDisabledUntil = transitionTime + 1F;
+        
+        toPlay.PlayScheduled(transitionTime);
+        toPlay.SetScheduledStartTime(transitionTime);
+        toStop.SetScheduledEndTime(transitionTime);
     }
 }
