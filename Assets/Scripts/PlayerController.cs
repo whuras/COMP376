@@ -270,15 +270,5 @@ public class PlayerController : MonoBehaviour
             mCharacterVelocity.Normalize();
             mDashVelocity = DashSpeed * mCharacterVelocity;
         }
-
-        //SLOW-MOTION
-        if (Input.GetButtonDown("Slowdown"))
-        {
-            mConductor.SetSpeed(SlowdownFactor);
-        }
-        if (Input.GetButtonUp("Slowdown"))
-        {
-            mConductor.SetSpeed(1f);
-        }
     }
 }

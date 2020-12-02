@@ -13,12 +13,16 @@ public class Conductor : MonoBehaviour
     public float TransitionBleed;
     
     AudioSource[] mMusicSources;
+    
+    // 0 if false, 1 if true
+    bool mAudioSourcePlaying;
+
+    double mSwapAudioSourceTime;
+    bool mSourceSwapped;
+    
     float mSourceBPS;
 
     double mOffset;
-
-    // Looping of the current MusicFrame will be disabled until AudioSettings.dspTime - mOffset >= mLoopDisabledUntil
-    double mLoopDisabledUntil;
 
     private Queue<MusicFrame> MusicFrames;
     private MusicFrame mCurrentFrame;
@@ -43,40 +47,37 @@ public class Conductor : MonoBehaviour
         MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F));
         MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F));
         
-
         mCurrentFrame = MusicFrames.Dequeue();
-        
-        
+
         mOffset  = AudioSettings.dspTime + 0.5;
         
         // Setup the first music source to play
-        mMusicSources[0].time = mCurrentFrame.IntroStartTime;
         mMusicSources[0].PlayScheduled(mOffset);
-
+        mMusicSources[0].time = mCurrentFrame.IntroStartTime;
+        
+        // Source 1 plays first
+        mAudioSourcePlaying = true;
+        
+        // Setup AudioSource system swap helper variables
+        mSwapAudioSourceTime = AudioSettings.dspTime + mCurrentFrame.LoopStartTime - mCurrentFrame.IntroStartTime;
+        mSourceSwapped = true;
     }
 
     /// <summary> We track the time of the song ourselves instead of using AudioSettings.dspTime directly because the latter is not updated consistently and is not affected by time scale. </summary>
     void Update()
     {
-        AudioSource currentlyPlaying = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
-
         HandleLoop();
-
+        
+        if (AudioSettings.dspTime >= mSwapAudioSourceTime && !mSourceSwapped)
+        {
+            Debug.Log("source swapped");
+            mAudioSourcePlaying = !mAudioSourcePlaying;
+            mSourceSwapped = true;
+        }
+        
         if (Input.GetKeyDown(KeyCode.T))
         {
             RequestTransition();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            currentlyPlaying.time += 10;
-            mOffset -= 10;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            currentlyPlaying.time -= 10;
-            mOffset += 10;
         }
     }
 
@@ -112,7 +113,8 @@ public class Conductor : MonoBehaviour
 
     private void HandleLoop()
     {
-        if (AudioSettings.dspTime >= mLoopDisabledUntil)
+        // Schedule a loop one bar after the last loop/transition occured
+        if (AudioSettings.dspTime >= mSwapAudioSourceTime + (BarLength / mSourceBPS) && !(mMusicSources[0].isPlaying && mMusicSources[1].isPlaying))
         {
             AudioSource isPlaying = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
             AudioSource isStopped = mMusicSources[0].isPlaying ? mMusicSources[1] : mMusicSources[0];
@@ -121,18 +123,19 @@ public class Conductor : MonoBehaviour
             
             isPlaying.SetScheduledEndTime(loopAtTime);
             isStopped.PlayScheduled(loopAtTime);
-            isStopped.SetScheduledStartTime(loopAtTime);
             isStopped.time = mCurrentFrame.LoopStartTime;
-            mLoopDisabledUntil = loopAtTime + 0.5;
             
-            Debug.Log("loop setup!");
+            mSwapAudioSourceTime = loopAtTime;
+            mSourceSwapped = false;
+            
+            Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
         }
     }
     
     private void HandleTransition()
     {
-        AudioSource toPlay = mMusicSources[0].isPlaying ? mMusicSources[1] : mMusicSources[0];
-        AudioSource toStop = mMusicSources[0].isPlaying ? mMusicSources[0] : mMusicSources[1];
+        AudioSource toPlay = mMusicSources[mAudioSourcePlaying ? 1 : 0];
+        AudioSource toStop = mMusicSources[mAudioSourcePlaying ? 0 : 1];
         
         mCurrentFrame = MusicFrames.Dequeue();
         toPlay.time = mCurrentFrame.IntroStartTime;
@@ -144,16 +147,12 @@ public class Conductor : MonoBehaviour
 
         double transitionTime = (BarLength - beat) * timeBetweenBeats + timeToNextBeat + AudioSettings.dspTime;
         
-        Debug.Log("Switching to: " + mCurrentFrame.Name);
-        Debug.Log("current beat: " + beat);
-        Debug.Log("beat landed: " +( ((transitionTime - mOffset) * mSourceBPS) % 4));
-        Debug.Log("current time: " + AudioSettings.dspTime);
-        Debug.Log("transition time: " + transitionTime);
-
-        mLoopDisabledUntil = transitionTime + 1F;
-        
         toPlay.PlayScheduled(transitionTime);
-        toPlay.SetScheduledStartTime(transitionTime);
         toStop.SetScheduledEndTime(transitionTime);
+        
+        mSwapAudioSourceTime = transitionTime;
+        mSourceSwapped = false;
+        
+        Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
     }
 }
