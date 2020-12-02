@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     [Tooltip("UP and DOWN look limit, the angle is symmetric for the top and bottom parts of the screen")]
     public float CameraClampAngleX;
-    
+
     [Header("Special Effects")]
     [Tooltip("Foot step sound effects for walking on wood")]
     public AudioClip[] WoodFootStepSoundEffects;
@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
 
+    // Disable Toggles (for cutscenes)
+    bool mDisableMovement;
+    bool mDisableWeapons;
+
     //Other game objects
     Conductor mConductor;
 
@@ -60,11 +64,11 @@ public class PlayerController : MonoBehaviour
     AudioSource mAudioSource;
 
     // Movement
-    Vector3 mCharacterVelocity = new Vector3(0f,0f,0f);
+    Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
     float mTimeLastJump = -10f;
     bool mIsGrounded;
     bool mIsRunning = false;
-    
+
     // Animation
     int mParityOfNextBeat = 0;
     float mCurrentWeaponBobFactor;
@@ -77,7 +81,7 @@ public class PlayerController : MonoBehaviour
     // Abilities
     float mTimeDashStart = -10f;
     Vector3 mDashVelocity;
-    
+
     /// <summary> Get referenced objects. </summary>
     void Start()
     {
@@ -86,12 +90,16 @@ public class PlayerController : MonoBehaviour
         {
             EquipWeapon(0);
         }
-        
+
         // Initialize References
         mConductor = FindObjectOfType<Conductor>();
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        // Disable Toggles turned off by default
+        mDisableMovement = false;
+        mDisableWeapons = false;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -116,10 +124,19 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         CheckIfGrounded();
-        HandleMovement();
-        HandleWeapons();
-        HandleWeaponBob();
-        HandleAbilities();
+        if (!mDisableMovement)
+        {
+            HandleMovement();
+        }
+
+        HandleAiming();
+
+        if (!mDisableWeapons)
+        {
+            HandleWeapons();
+            HandleWeaponBob();
+            HandleAbilities();
+        }
     }
 
     /// <summary> Delay physics updates to syncronize with physics system. </summary>
@@ -131,7 +148,7 @@ public class PlayerController : MonoBehaviour
     /// <summary> Update whether or not player is grounded. </summary>
     void CheckIfGrounded()
     {
-        mIsGrounded =  mTimeLastJump + 0.2f < Time.time
+        mIsGrounded = mTimeLastJump + 0.2f < Time.time
                     && Physics.Raycast(transform.position, Vector3.down, 1.6f);
     }
 
@@ -153,7 +170,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> Receive player movement input and respond to it. </summary>
-    void HandleMovement ()
+    void HandleMovement()
     {
         // WALKING/RUNNING
         Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -161,7 +178,7 @@ public class PlayerController : MonoBehaviour
         float speed = Mathf.Lerp(CharacterSpeedNormal, CharacterSpeedRunning, Input.GetAxis("Run"));
         moveDirection.Normalize();
         moveDirection = transform.TransformDirection(moveDirection);
-        
+
         // JUMPING
         float verticalVelocity = 0f;
         if (mIsGrounded)
@@ -181,7 +198,11 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = mCharacterVelocity.y - GravityAcceleration * Time.deltaTime;
         }
         mCharacterVelocity = moveDirection * speed + Vector3.up * verticalVelocity;
-        
+    }
+
+    /// <summary> Receive player mouse input and respond to it. </summary>
+    void HandleAiming()
+    {
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
         float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;
@@ -206,14 +227,14 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> Receive weapon input and respond to it. </summary>
-    void HandleWeapons ()
+    void HandleWeapons()
     {
         // Handle weapon fire
         mCrrtWeapon.ReceiveFireInputs(
             Input.GetButtonDown("Fire1"),
             Input.GetButton("Fire1"),
             Input.GetButtonUp("Fire1"));
-            
+
         // Handle weapon reload
         if (Input.GetButtonDown("Reload"))
         {
@@ -223,11 +244,11 @@ public class PlayerController : MonoBehaviour
         // Handle weapon swap
         if (Input.mouseScrollDelta.y > 0f)
         {
-            EquipWeapon(mCrrtWeaponIndex+1);
+            EquipWeapon(mCrrtWeaponIndex + 1);
         }
         if (Input.mouseScrollDelta.y < 0f)
         {
-            EquipWeapon(mCrrtWeaponIndex-1);
+            EquipWeapon(mCrrtWeaponIndex - 1);
         }
 
         // Update UI
@@ -240,11 +261,11 @@ public class PlayerController : MonoBehaviour
         // Update strength of weapon bob according to player velocity.
         Vector3 velocityInPlane = mCharacterVelocity;
         velocityInPlane.y = 0f;
-        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f*velocityInPlane.magnitude/CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
+        mCurrentWeaponBobFactor = Mathf.Lerp(mCurrentWeaponBobFactor, 0.15f + 0.85f * velocityInPlane.magnitude / CharacterSpeedRunning, WeaponBobSharpness * Time.deltaTime);
         mWeaponBobTime += Time.deltaTime * WeaponBobFrequency * mCurrentWeaponBobFactor;
-        if (mWeaponBobTime > 2*Mathf.PI)
+        if (mWeaponBobTime > 2 * Mathf.PI)
         {
-            mWeaponBobTime -= 2*Mathf.PI;
+            mWeaponBobTime -= 2 * Mathf.PI;
         }
 
         //Calculate weapon bob.
@@ -255,7 +276,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> Receive ability input and respond to it. </summary>
-    void HandleAbilities ()
+    void HandleAbilities()
     {
         // DASH
         if (Time.time < mTimeDashStart + DashDuration)
@@ -280,5 +301,17 @@ public class PlayerController : MonoBehaviour
         {
             mConductor.SetSpeed(1f);
         }
+    }
+
+    // Used by timeline signals to deactivate movement during cutscenes
+    public void ToggleDisableMovement()
+    {
+        mDisableMovement = !mDisableMovement;
+    }
+
+    // Used by timeline signals to deactivate weapons during cutscenes
+    public void ToggleDisableWeapon()
+    {
+        mDisableWeapons = !mDisableWeapons;
     }
 }
