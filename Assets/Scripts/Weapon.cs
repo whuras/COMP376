@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum WeaponFireType
 {
@@ -57,6 +58,9 @@ public class Weapon : MonoBehaviour
     [Header("General")]
     [Tooltip("Position of weapon muzzle")]
     public Transform MuzzlePosition;
+
+    public static UnityAction OnSuccessfulHit;
+    public static UnityAction OnUnsuccessfulHit;
     
     private Conductor mConductor;
     private AudioSource mAudioSource;
@@ -164,6 +168,19 @@ public class Weapon : MonoBehaviour
                 // Deal damage.
                 float damageGiven = Damage * ComputeDamageModifier();
                 target.TakeDamage(damageGiven);
+                
+                if (IsShotOnBeat())
+                {
+                    OnSuccessfulHit?.Invoke();
+                }
+                else
+                {
+                    OnUnsuccessfulHit?.Invoke();
+                }
+            }
+            else
+            {
+                OnUnsuccessfulHit?.Invoke();
             }
         }
     }
@@ -175,6 +192,15 @@ public class Weapon : MonoBehaviour
         float damageGiven = Damage * ComputeDamageModifier();
         newProjectile.Damage = damageGiven;
         newProjectile.Owner = gameObject;
+        
+        if (IsShotOnBeat())
+        {
+            OnSuccessfulHit?.Invoke();
+        }
+        else
+        {
+            OnUnsuccessfulHit?.Invoke();
+        }
     }
 
     /// <summary> Animates effects that play when gun is fired. </summary>
@@ -198,5 +224,10 @@ public class Weapon : MonoBehaviour
     float ComputeDamageModifier()
     {
         return Mathf.Pow(1 - Mathf.Pow(mConductor.GetTimeToBeat() / 0.5f, 4), 8);
+    }
+
+    bool IsShotOnBeat()
+    {
+        return Mathf.Abs(mConductor.GetTimeToBeat()) <= 0.70 / 2;
     }
 }

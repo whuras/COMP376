@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Net;
@@ -52,6 +53,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
 
+    [Header("Scoreboard")] 
+    public int ScorePerHit;
+    
     // Disable Toggles (for cutscenes)
     bool mDisableMovement;
     bool mDisableWeapons;
@@ -81,6 +85,11 @@ public class PlayerController : MonoBehaviour
     // Abilities
     float mTimeDashStart = -10f;
     Vector3 mDashVelocity;
+    
+    // Scoreboard
+    int mScore = 0;
+    int mMultiplier = 1;
+    int mHitStreak = 0;
 
     /// <summary> Get referenced objects. </summary>
     void Start()
@@ -100,6 +109,14 @@ public class PlayerController : MonoBehaviour
         // Disable Toggles turned off by default
         mDisableMovement = false;
         mDisableWeapons = false;
+        
+        // Setup weapon/score update delegates
+        Weapon.OnSuccessfulHit += IncrementHitStreak;
+        Weapon.OnSuccessfulHit += IncrementScore;
+        Weapon.OnSuccessfulHit += ComputeMultiplier;
+        Weapon.OnUnsuccessfulHit += ResetHitStreak;
+        Weapon.OnUnsuccessfulHit += ComputeMultiplier;
+        
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -137,6 +154,8 @@ public class PlayerController : MonoBehaviour
             HandleWeaponBob();
             HandleAbilities();
         }
+
+        DisplayScore();
     }
 
     /// <summary> Delay physics updates to syncronize with physics system. </summary>
@@ -145,6 +164,34 @@ public class PlayerController : MonoBehaviour
         mCharacterController.Move(mCharacterVelocity * Time.deltaTime);
     }
 
+    void DisplayScore()
+    {
+        PlayerHUD.SetScoreDisplayed(mScore);
+        PlayerHUD.SetMultiplierDisplayed(mMultiplier);
+        PlayerHUD.SetShotStreakDisplayed(mHitStreak);
+    }
+
+    void IncrementScore()
+    {
+        int scoreToAdd = ScorePerHit * mMultiplier;
+        mScore += scoreToAdd;
+        PlayerHUD.SpawnScorePopup(scoreToAdd);
+    }
+
+    void ComputeMultiplier()
+    {
+        mMultiplier = (int)Mathf.Pow(2, (int)(mHitStreak / 10));
+    }
+    void IncrementHitStreak()
+    {
+        mHitStreak++;
+    }
+
+    void ResetHitStreak()
+    {
+        mHitStreak = 0;
+    }
+    
     /// <summary> Update whether or not player is grounded. </summary>
     void CheckIfGrounded()
     {
