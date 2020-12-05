@@ -42,7 +42,7 @@ public class Conductor : MonoBehaviour
         MusicFrames.Enqueue(new MusicFrame("Main Menu", 9.391F,9.391F,36.521F));
         MusicFrames.Enqueue(new MusicFrame("Level 1", 0.000F,82.434F,161.739F));
         MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity", 136.695F,161.739F,270.260F));
-        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,282.782F,351.652F));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,295.304F,351.652F));
         MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F));
         MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F));
         MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F));
@@ -70,7 +70,6 @@ public class Conductor : MonoBehaviour
         
         if (AudioSettings.dspTime >= mSwapAudioSourceTime && !mSourceSwapped)
         {
-            Debug.Log("source swapped");
             mAudioSourcePlaying = !mAudioSourcePlaying;
             mSourceSwapped = true;
         }
@@ -128,7 +127,7 @@ public class Conductor : MonoBehaviour
             mSwapAudioSourceTime = loopAtTime;
             mSourceSwapped = false;
             
-            //Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
+            Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
         }
     }
     
@@ -153,6 +152,6 @@ public class Conductor : MonoBehaviour
         mSwapAudioSourceTime = transitionTime;
         mSourceSwapped = false;
         
-        //Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
+        Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
     }
 }
