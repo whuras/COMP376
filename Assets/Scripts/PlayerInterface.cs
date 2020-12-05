@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerInterface : MonoBehaviour
@@ -16,6 +17,12 @@ public class PlayerInterface : MonoBehaviour
     public Text CurrentHealthText;
     [Tooltip("Current ammo text object")]
     public Text CurrentAmmoText;
+    
+    
+    public Text CurrentScoreText;
+    public Text CurrentMultiplierText;
+    public Text CurrentStreakText;
+    public GameObject ScorePopup;
     
     [Header("Animations")]
     [Tooltip("Speed at which health bar grows/shrinks to represent current health")]
@@ -85,13 +92,34 @@ public class PlayerInterface : MonoBehaviour
         mTimeOfLastHealthUpdate = Time.time;
     }
 
+    public void SetScoreDisplayed(int score)
+    {
+        CurrentScoreText.text = $"{score}";
+    }
+
+    public void SetMultiplierDisplayed(int multiplier)
+    {
+        CurrentMultiplierText.text = $"{multiplier}";
+    }
+
+    public void SetShotStreakDisplayed(int streak)
+    {
+        CurrentStreakText.text = $"Streak: {streak}";
+    }
+
     /// <summary> Set the Dash Icon fill amount to 0. </summary>
     public void ResetDashIcon()
     {
         DashIcon.fillAmount = 0;
     }
 
-
+    public void SpawnScorePopup(int score)
+    {
+        GameObject scorePopup = GameObject.Instantiate(ScorePopup, CurrentScoreText.transform);
+        ScoreAddition scoreAddition = scorePopup.GetComponent<ScoreAddition>();
+        scoreAddition.SetScore(score);
+    }
+    
     public void RefillDashIcon()
     {
         if (DashIcon.fillAmount < 1)

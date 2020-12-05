@@ -71,7 +71,6 @@ public class Conductor : MonoBehaviour
         
         if (AudioSettings.dspTime >= mSwapAudioSourceTime && !mSourceSwapped)
         {
-            Debug.Log("source swapped");
             mAudioSourcePlaying = !mAudioSourcePlaying;
             mSourceSwapped = true;
         }
@@ -129,7 +128,7 @@ public class Conductor : MonoBehaviour
             mSwapAudioSourceTime = loopAtTime;
             mSourceSwapped = false;
             
-            //Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
+            Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
         }
     }
     
@@ -154,6 +153,6 @@ public class Conductor : MonoBehaviour
         mSwapAudioSourceTime = transitionTime;
         mSourceSwapped = false;
         
-        //Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
+        Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
     }
 }

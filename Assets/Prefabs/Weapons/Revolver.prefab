@@ -55,12 +55,13 @@ MonoBehaviour:
   ClipSize: 6
   GunfireVisualEffects: {fileID: 157586, guid: 2574ca206a571a342a7fab69fdfb87aa, type: 3}
   GunfireSoundEffects:
-  - {fileID: 8300000, guid: 8e74699468aebaf488837ef16df86531, type: 3}
+  - {fileID: 8300000, guid: f9519224c45149c4cbba6206a2200e28, type: 3}
   RecoilAngle: 30
   RecoilKickback: 0.25
   RecoilDuration: 0.5
   RecoilApex: 0.1
   MuzzlePosition: {fileID: 4103116640681035518}
+  BeatTolerance: 0.3
 --- !u!82 &6211920713624572003
 AudioSource:
   m_ObjectHideFlags: 0
