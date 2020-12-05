@@ -58,7 +58,10 @@ public class Weapon : MonoBehaviour
     [Header("General")]
     [Tooltip("Position of weapon muzzle")]
     public Transform MuzzlePosition;
-
+    
+    [Tooltip("How close to the beat the player needs to shoot for the shot to be considered on beat. (1 is always, 0 is never).")]
+    public float BeatTolerance;
+    
     public static UnityAction OnSuccessfulHit;
     public static UnityAction OnUnsuccessfulHit;
     
@@ -228,6 +231,6 @@ public class Weapon : MonoBehaviour
 
     bool IsShotOnBeat()
     {
-        return Mathf.Abs(mConductor.GetTimeToBeat()) <= 0.70 / 2;
+        return Mathf.Abs(mConductor.GetTimeToBeat()) <= BeatTolerance / 2;
     }
 }

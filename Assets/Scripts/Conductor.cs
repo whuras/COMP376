@@ -41,10 +41,15 @@ public class Conductor : MonoBehaviour
         //MusicFrames.Enqueue(new MusicFrame("Intro", 0,10F,15F));
         MusicFrames.Enqueue(new MusicFrame("Main Menu", 9.391F,9.391F,36.521F));
         MusicFrames.Enqueue(new MusicFrame("Level 1", 0.000F,82.434F,161.739F));
+        MusicFrames.Enqueue(new MusicFrame("Level 1 LOOP", 82.434F,82.434F,161.739F));
         MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity", 136.695F,161.739F,270.260F));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity LOOP", 161.739F,161.739F,270.260F));
         MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,295.304F,351.652F));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity LOOP", 295.304F,295.304F,351.652F));
         MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity LOOP", 355.826F,355.826F,420.521F));
         MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity LOOP", 441.391F,441.391F,485.217F));
         MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F));
         
         mCurrentFrame = MusicFrames.Dequeue();

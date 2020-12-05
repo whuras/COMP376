@@ -54,7 +54,11 @@ public class PlayerController : MonoBehaviour
     public float SlowdownFactor = 0.5f;
 
     [Header("Scoreboard")] 
+    [Tooltip("Number of points awarded before multiplier")]
     public int ScorePerHit;
+
+    [Tooltip("The streak the player needs to achieve to increase the multiplier.")]
+    public int StreakRequiredForMultiplierIncrement;
     
     // Disable Toggles (for cutscenes)
     bool mDisableMovement;
@@ -180,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
     void ComputeMultiplier()
     {
-        mMultiplier = (int)Mathf.Pow(2, (int)(mHitStreak / 10));
+        mMultiplier = (int)Mathf.Pow(2, (int)(mHitStreak / StreakRequiredForMultiplierIncrement));
     }
     void IncrementHitStreak()
     {
