@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
     
     private NavMeshAgent agent;
     private Transform player;
-    private HealthController healthController;
+    public HealthController healthController;
     
     [Header("Behavior Toggles")] 
     
@@ -97,7 +97,6 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        healthController = GetComponent<HealthController>();
 
         healthController.OnDeath += OnDeath;
         healthController.OnDamaged += OnDamaged;
