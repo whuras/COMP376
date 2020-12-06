@@ -17,9 +17,9 @@ TagManager:
   - 
   - 
   - PlayerWeapon
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Bound
   - 
   - 
   - 

@@ -72,7 +72,7 @@ public class Projectile : MonoBehaviour
         Collider[] collisions = Physics.OverlapSphere(transform.position, CollisionRadius);
         foreach (Collider collider in collisions)
         {
-            if (!mIgnoredColliders.Contains(collider))
+            if (!mIgnoredColliders.Contains(collider) && collider.gameObject.layer != 1 << 11)
             {
                 Hit(collider);
             }

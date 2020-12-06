@@ -50,7 +50,7 @@ MonoBehaviour:
   BulletType: 0
   Projectile: {fileID: 1821543919974348746, guid: 98003878cdf08c747bfc705ea7ec62ef, type: 3}
   Damage: 5
-  Range: 25
+  Range: 50
   Period: 0.2
   ClipSize: 6
   GunfireVisualEffects: {fileID: 157586, guid: 2574ca206a571a342a7fab69fdfb87aa, type: 3}
