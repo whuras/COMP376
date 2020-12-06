@@ -24,6 +24,10 @@ public class MainroadConductor : MonoBehaviour
     public Transform Player;
     [Tooltip("Beat and location of enemy spawns relative to round start")]
     public List<EnemySpawn> EnemySpawns;
+    [Tooltip("Boundaries on encounter entrance")]
+    public GameObject Entrance;
+    [Tooltip("Boundaries on encounter exit")]
+    public GameObject Exit;
     
     [Header("Visuals")]
     [Tooltip("Particle system emitting fog on left side of end of road.")]
@@ -90,9 +94,10 @@ public class MainroadConductor : MonoBehaviour
         if (mKillCount == EnemySpawns.Count)
         {
             mIsComplete = true;
-            LeftFogCurtain.Stop();
-            RightFogCurtain.Stop();
-            GroundFog.Stop();
+            LeftFogCurtain?.Stop();
+            RightFogCurtain?.Stop();
+            GroundFog?.Stop();
+            Exit?.SetActive(false);
             Destroy(this.gameObject, 15f);
         }
         // Start next round if all enemies are dead.
@@ -110,8 +115,9 @@ public class MainroadConductor : MonoBehaviour
     public void StartConductor(int startBeat)
     {
         mRoundBeatOffset = startBeat;
-        LeftFogCurtain.Play();
-        RightFogCurtain.Play();
-        GroundFog.Play();
+        LeftFogCurtain?.Play();
+        RightFogCurtain?.Play();
+        GroundFog?.Play();
+        Entrance?.SetActive(true);
     }
 }

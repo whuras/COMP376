@@ -39,7 +39,7 @@ public class MeleeEnemy : Enemy
     void Start()
     {
         NavMeshAgent.speed = Speed;
-        NavMeshAgent.stoppingDistance = AttackRange - 0.5f;
+        NavMeshAgent.stoppingDistance = AttackRange - 1f;
         _HealthController.OnDeath += OnDeath;
         _HealthController.MaxHealth = Health;
     }
@@ -62,7 +62,7 @@ public class MeleeEnemy : Enemy
     /// <summary> Start attack animation if within range of target. </summary>
     void TryStartAttack()
     {
-        if (NavMeshAgent.remainingDistance < AttackRange && mTimeLastAttack + AttackCooldown < Time.time)
+        if (NavMeshAgent.remainingDistance < AttackRange)
         {
             if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
