@@ -42,7 +42,6 @@ public class ScoreAddition : MonoBehaviour
         {
             Color c = mText.color;
             c.a = 1 - (Time.time - lifetimeStartTime - (Lifetime - FadeOutDuration)) / FadeOutDuration;
-            Debug.Log(c.a);
             mText.color = c;
         }
 

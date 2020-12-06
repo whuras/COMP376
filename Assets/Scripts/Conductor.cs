@@ -27,6 +27,20 @@ public class Conductor : MonoBehaviour
     private Queue<MusicFrame> MusicFrames;
     private MusicFrame mCurrentFrame;
 
+
+    public static Conductor GetActiveConductor()
+    {
+        // If we are playing the game in order, then we will find the conductor in the scene
+        GameObject conductor = GameObject.Find("Conductor");
+
+        if (conductor == null)
+        {
+            conductor = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Conductor"));
+        }
+
+        return conductor.GetComponent<Conductor>();
+    }
+    
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>
     void Start()
     {    
@@ -38,15 +52,13 @@ public class Conductor : MonoBehaviour
         // Setup music frame config
         MusicFrames = new Queue<MusicFrame>();
         
-        //MusicFrames.Enqueue(new MusicFrame("Intro", 0,0F,60F));
-        //MusicFrames.Enqueue(new MusicFrame("Intro", 0,10F,15F));
-        //MusicFrames.Enqueue(new MusicFrame("Main Menu", 9.391F,9.391F,36.521F));
-        MusicFrames.Enqueue(new MusicFrame("Level 1", 0.000F,82.434F,161.739F));
-        MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity", 136.695F,161.739F,270.260F));
-        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,282.782F,351.652F));
-        MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F));
-        MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F));
-        MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F));
+        MusicFrames.Enqueue(new MusicFrame("Main Menu", 9.391F,9.391F,36.521F, false));
+        MusicFrames.Enqueue(new MusicFrame("Level 1", 0.000F,82.434F,161.739F, true));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 Low Intensity", 136.695F,161.739F,270.260F,false));
+        MusicFrames.Enqueue(new MusicFrame("Level 2 High Intensity", 270.260F,295.304F,351.652F,false));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F,false));
+        MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F,true));
+        MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F,false));
         
         mCurrentFrame = MusicFrames.Dequeue();
 
@@ -131,28 +143,41 @@ public class Conductor : MonoBehaviour
             Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
         }
     }
-    
+
     private void HandleTransition()
     {
         AudioSource toPlay = mMusicSources[mAudioSourcePlaying ? 1 : 0];
         AudioSource toStop = mMusicSources[mAudioSourcePlaying ? 0 : 1];
-        
+
         mCurrentFrame = MusicFrames.Dequeue();
         toPlay.time = mCurrentFrame.IntroStartTime;
-        
+
         // Find the timestamp for the next bar end
         int beat = GetBeat() % BarLength;
         double timeBetweenBeats = 1 / mSourceBPS;
         double timeToNextBeat = timeBetweenBeats - (GetTimeSinceBeat() * timeBetweenBeats);
 
-        double transitionTime = (BarLength - beat) * timeBetweenBeats + timeToNextBeat + AudioSettings.dspTime;
+        // Find the number of beats to wait (number of beats to wait until transitioning, we usually transition on the first beat of each bar)
+        int beatsToWait = 0;
+        if (!mCurrentFrame.TransitionImmediately)
+        {
+            beatsToWait = BarLength - (beat + 1);
+        }
+
+        double transitionTime = beatsToWait * timeBetweenBeats + timeToNextBeat + AudioSettings.dspTime;
+
+        // If we transition immediately, we need to reset our offset, otherwise the bar count will get messed up
+        if (mCurrentFrame.TransitionImmediately)
+        {
+            mOffset = transitionTime;
+        }
         
         toPlay.PlayScheduled(transitionTime);
         toStop.SetScheduledEndTime(transitionTime);
-        
+
         mSwapAudioSourceTime = transitionTime;
         mSourceSwapped = false;
-        
+
         Debug.Log($"Next track queued: {mCurrentFrame.Name}, time until transition: {transitionTime - AudioSettings.dspTime}");
     }
 }

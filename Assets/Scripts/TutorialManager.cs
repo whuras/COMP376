@@ -137,4 +137,9 @@ public class TutorialManager : MonoBehaviour
         return tutorialPhaseTwoStarted;
     }
 
+    public void TransitionMusic()
+    {
+        Conductor c = Conductor.GetActiveConductor();
+        c.RequestTransition();
+    }
 }

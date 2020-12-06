@@ -7,18 +7,21 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject MainMenuButtons;
     public GameObject OptionsScreen;
-
+    
+    private Conductor mConductor;
     private AudioSource mSelectionSFX;
 
     private void Start()
     {
         mSelectionSFX = GetComponent<AudioSource>();
         OptionsScreen.SetActive(false);
+        mConductor = Conductor.GetActiveConductor();
     }
 
     public void PlayGame()
     {
         mSelectionSFX.Play();
+        mConductor.RequestTransition();
         SceneManager.LoadScene(1);
     }
 
