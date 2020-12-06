@@ -11,6 +11,9 @@ public class MeleeEnemy : Enemy
     [Tooltip("Health controller of enemy")]
     public HealthController _HealthController;
     public override HealthController HealthController => _HealthController;
+    [Tooltip("Conductor object used to time actions")]
+    public Conductor _Conductor;
+    public override Conductor Conductor { get { return _Conductor; } set { _Conductor = value; } }
     [Tooltip("NavMesh agent of enemy")]
     public UnityEngine.AI.NavMeshAgent NavMeshAgent;
     [Tooltip("Animator of enemy")]

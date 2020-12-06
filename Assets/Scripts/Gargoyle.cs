@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gargoyle : MonoBehaviour
+public class Gargoyle : Enemy
 {
-    [Tooltip("Target to aim at")]
-    public Transform Target;
+    [Tooltip("Game object gargoyle should be attacking")]
+    public Transform _Target;
+    public override Transform Target { get { return _Target; } set { _Target = value; } }
+    [Tooltip("Health controller of gargoyle")]
+    public HealthController _HealthController;
+    public override HealthController HealthController => _HealthController;
+    [Tooltip("Conductor object used to time actions")]
+    public Conductor _Conductor;
+    public override Conductor Conductor { get { return _Conductor; } set { _Conductor = value; } }
     [Tooltip("Source of projectiles")]
     public Transform MuzzlePosition;
-    [Tooltip("Health controller of enemy to attach actions to")]
-    public HealthController HealthController;
     [Tooltip("Rendered object to dissolve when enemy is killed")]
     public Dissolve Dissolve;
     [Tooltip("Time taken to dissolve enemy on death")]
@@ -18,8 +23,6 @@ public class Gargoyle : MonoBehaviour
     public Projectile Projectile;
     [Tooltip("Fire sound effects")]
     public AudioClip FireSFX;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor Conductor;
     [Tooltip("Audio Source to play sound effects from")]
     public AudioSource AudioSource;
     [Tooltip("Movement speed of enemy")]

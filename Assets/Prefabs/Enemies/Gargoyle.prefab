@@ -107,14 +107,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b296d756f564654eb905417c4d0ae4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
+  _Target: {fileID: 0}
+  _HealthController: {fileID: 64884605}
+  _Conductor: {fileID: 0}
   MuzzlePosition: {fileID: 1075295777525684732}
-  HealthController: {fileID: 64884605}
   Dissolve: {fileID: 8362901062094015858}
   DissolveTime: 3
   Projectile: {fileID: 7841898570000956669, guid: 3be43ce5d1c84284b9a5358a8333e332, type: 3}
   FireSFX: {fileID: 8300000, guid: 610e41d0de57b6947ba83465bbe2158a, type: 3}
-  Conductor: {fileID: 0}
   AudioSource: {fileID: 7941527540841918856}
   MovementSpeed: 8
   FireBeat: 0
@@ -678,6 +678,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 721139782195574956, guid: ee37e83f2176d704da584e51c9a94e28, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
     - target: {fileID: 5678512132720936790, guid: ee37e83f2176d704da584e51c9a94e28, type: 3}
       propertyPath: m_RootOrder
       value: 3

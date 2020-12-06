@@ -74,6 +74,7 @@ public class MainroadConductor : MonoBehaviour
         {
             Enemy enemy = Instantiate(EnemySpawns[mCrrtIndex].Enemy, EnemySpawns[mCrrtIndex].SpawnLocation.position, Quaternion.identity);
             enemy.Target = Player;
+            enemy.Conductor = Conductor;
             enemy.HealthController.OnDeath += IncrementKillCount;
             mCrrtIndex++;
         }
