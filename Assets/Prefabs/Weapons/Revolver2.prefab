@@ -61,6 +61,7 @@ MonoBehaviour:
   RecoilDuration: 0.35
   RecoilApex: 0.1
   MuzzlePosition: {fileID: 4103116640681035518}
+  BeatTolerance: 1
 --- !u!82 &6211920713624572003
 AudioSource:
   m_ObjectHideFlags: 0

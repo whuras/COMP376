@@ -54,7 +54,7 @@ MonoBehaviour:
   PlayerHUD: {fileID: 8124330934293397499}
   MouseSensitivity: {x: 360, y: 200}
   CharacterSpeedNormal: 15
-  CharacterSpeedRunning: 25
+  CharacterSpeedRunning: 15
   JumpSpeed: 10
   GravityAcceleration: 40
   Weapons:
@@ -73,7 +73,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 32342446ca7564546a3909b7b7461b14, type: 3}
   DashSpeed: 50
   DashDuration: 0.2
-  SlowdownFactor: 0.5
+  SlowdownFactor: 0.2
+  ScorePerHit: 50
+  StreakRequiredForMultiplierIncrement: 5
 --- !u!143 &6019745202820869159
 CharacterController:
   m_ObjectHideFlags: 0
