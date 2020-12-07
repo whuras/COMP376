@@ -17,7 +17,6 @@ public class CameraFade : MonoBehaviour
     float currentTime;
     Color colorLerp;
     bool canStartFade;
-    bool fadeIsComplete;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +40,16 @@ public class CameraFade : MonoBehaviour
         }
     }
 
+    public void FadeCamera()
+    {
+        print("in here!");
+        colorLerp = fadeColor;
+        gameObject.SetActive(true);
+        enabled = true;
+        canStartFade = false;
+        StartCoroutine("StartCameraFade");
+    }
+
     public void OnGUI()
     {
         GUI.color = colorLerp;
@@ -49,7 +58,6 @@ public class CameraFade : MonoBehaviour
 
     public void FadeComplete()
     {
-        fadeIsComplete = true;
         enabled = false;
         gameObject.SetActive(false);
     }
