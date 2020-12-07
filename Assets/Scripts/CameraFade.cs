@@ -42,7 +42,6 @@ public class CameraFade : MonoBehaviour
 
     public void FadeCamera()
     {
-        print("in here!");
         colorLerp = fadeColor;
         gameObject.SetActive(true);
         enabled = true;

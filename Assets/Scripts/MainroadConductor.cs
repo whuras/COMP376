@@ -71,7 +71,6 @@ public class MainroadConductor : MonoBehaviour
         // Spawn enemy at appropriate location if on beat.
         int crrtRoundBeat = Conductor.GetBeat() - mRoundBeatOffset;
 
-        print(crrtRoundBeat);
         while (mCrrtIndex < EnemySpawns.Count && crrtRoundBeat - EnemySpawns[mCrrtIndex].Beat == 0)
         {
             Enemy enemy = Instantiate(EnemySpawns[mCrrtIndex].Enemy, EnemySpawns[mCrrtIndex].SpawnLocation.position, Quaternion.identity);

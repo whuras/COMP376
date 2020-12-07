@@ -68,7 +68,6 @@ public class Level2Director : MonoBehaviour
 
     public void ToggleMainRoadConductorStart()
     {
-        print((Conductor.GetComponent<Conductor>().GetBeat() / 4 + 1) * 4);
         MainRoadConductor.GetComponent<MainroadConductor>().StartConductor((Conductor.GetComponent<Conductor>().GetBeat() / 4 + 1) * 4);
     }
 
