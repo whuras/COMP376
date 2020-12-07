@@ -43,6 +43,7 @@ public class TutorialManager : MonoBehaviour
         tutorialPhaseTwoStarted = false;
         largeBottle.SetActive(false);
         levelTransition.SetActive(false);
+        bartender.GetComponent<Animator>().SetBool("isRunning", false);
     }
 
     void Update()
