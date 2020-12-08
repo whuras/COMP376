@@ -34,6 +34,8 @@ public class MainroadConductor : MonoBehaviour
     public ParticleSystem RightFogCurtain;
     [Tooltip("Particle system emitting fog on ground.")]
     public ParticleSystem GroundFog;
+    [Tooltip("End of Round Voice Line")]
+    public AudioSource EndOfRoundVoiceOver;
     
     private Conductor mConductor;
 
@@ -60,7 +62,7 @@ public class MainroadConductor : MonoBehaviour
         // Return early if done or not yet started.
         if (mIsRoundOver)
         {
-            // If encounter is complete, part curtains.
+            // If encounter is complete, part curtains and play audio clip.
             if (mIsComplete)
             {
                 LeftFogCurtain.transform.position -= LeftFogCurtain.transform.right * Time.deltaTime * 5f;
@@ -97,6 +99,7 @@ public class MainroadConductor : MonoBehaviour
         if (mKillCount == EnemySpawns.Count)
         {
             mIsComplete = true;
+            EndOfRoundVoiceOver.Play();
             LeftFogCurtain?.Stop();
             RightFogCurtain?.Stop();
             GroundFog?.Stop();
