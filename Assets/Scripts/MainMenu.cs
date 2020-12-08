@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
         mSelectionSFX = GetComponent<AudioSource>();
         OptionsScreen.SetActive(false);
         mConductor = Conductor.GetActiveConductor();
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void PlayGame()
