@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Initialize References
-        mConductor = FindObjectOfType<Conductor>();
+        mConductor = Conductor.GetActiveConductor();
         mCharacterController = GetComponent<CharacterController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;

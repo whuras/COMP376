@@ -35,7 +35,8 @@ public class Conductor : MonoBehaviour
 
         if (conductor == null)
         {
-            conductor = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Conductor"));
+            conductor = (GameObject)GameObject.Instantiate(Resources.Load("Conductor"));
+            conductor.name = "Conductor";
         }
 
         return conductor.GetComponent<Conductor>();

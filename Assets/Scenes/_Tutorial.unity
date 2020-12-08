@@ -6035,6 +6035,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -11372,6 +11376,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -11536,6 +11544,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -12829,6 +12841,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -13632,6 +13648,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -16871,6 +16891,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -19059,6 +19083,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2028084052}
     m_Modifications:
+    - target: {fileID: 666535009, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
+      propertyPath: m_Intensity
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 487480715199853732, guid: 15aed23f35d5d8945980ac3083e24a87, type: 3}
       propertyPath: m_Name
       value: CeilingLight
@@ -19868,7 +19896,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 1.03
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

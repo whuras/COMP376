@@ -20,7 +20,7 @@ public class PulseToBeat : MonoBehaviour
     void Start()
     {
         mIsPulsing = true;
-        mConductor = FindObjectOfType<Conductor>();
+        mConductor = Conductor.GetActiveConductor();
         mDefaultScale = transform.localScale;
         mDefaultPosition = transform.localPosition;
     }
