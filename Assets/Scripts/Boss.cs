@@ -38,6 +38,9 @@ public class Boss : MonoBehaviour
     {
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
+        
+        // To Be Deleted, shooting is too loud for the voice lines
+        AudioSource.volume = .05f;
     }
 
     /// <summary> Update function. </summary>
