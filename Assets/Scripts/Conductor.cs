@@ -30,6 +30,11 @@ public class Conductor : MonoBehaviour
 
     public static Conductor GetActiveConductor()
     {
+        return GetActiveConductorGameObject().GetComponent<Conductor>();
+    }
+
+    public static GameObject GetActiveConductorGameObject()
+    {
         // If we are playing the game in order, then we will find the conductor in the scene
         GameObject conductor = GameObject.Find("Conductor");
 
@@ -39,7 +44,7 @@ public class Conductor : MonoBehaviour
             conductor.name = "Conductor";
         }
 
-        return conductor.GetComponent<Conductor>();
+        return conductor;
     }
     
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>

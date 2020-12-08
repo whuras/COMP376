@@ -11,6 +11,9 @@ public class HealthController : MonoBehaviour
     [Tooltip("Max health of damageable object")]
     public float MaxHealth;
 
+    [SerializeField]
+    public float CurrentHealth => mCrrtHealth;
+
     [Header("Actions")]
     [Tooltip("What to do when object is damaged")]
     public UnityAction OnDamaged;

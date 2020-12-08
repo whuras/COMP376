@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Net;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -59,6 +60,8 @@ public class PlayerController : MonoBehaviour
 
     [Tooltip("The streak the player needs to achieve to increase the multiplier.")]
     public int StreakRequiredForMultiplierIncrement;
+
+    public UnityAction OnMultiplierIncrement;
     
     // Disable Toggles (for cutscenes)
     bool mDisableMovement;
@@ -69,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
     // Components
     CharacterController mCharacterController;
+    PlayerLifeController mPlayerLifeController;
     AudioSource mAudioSource;
 
     // Movement
@@ -107,6 +111,7 @@ public class PlayerController : MonoBehaviour
         // Initialize References
         mConductor = Conductor.GetActiveConductor();
         mCharacterController = GetComponent<CharacterController>();
+        mPlayerLifeController = GetComponent<PlayerLifeController>();
         mAudioSource = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -120,7 +125,8 @@ public class PlayerController : MonoBehaviour
         Weapon.OnSuccessfulHit += ComputeMultiplier;
         Weapon.OnUnsuccessfulHit += ResetHitStreak;
         Weapon.OnUnsuccessfulHit += ComputeMultiplier;
-        
+
+        OnMultiplierIncrement += mPlayerLifeController.OnMultiplierIncreaseHealPlayer;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>
@@ -184,7 +190,14 @@ public class PlayerController : MonoBehaviour
 
     void ComputeMultiplier()
     {
-        mMultiplier = (int)Mathf.Pow(2, (int)(mHitStreak / StreakRequiredForMultiplierIncrement));
+        int multiplier = (int)Mathf.Pow(2, (int)(mHitStreak / StreakRequiredForMultiplierIncrement));
+
+        if (multiplier > mMultiplier)
+        {
+            OnMultiplierIncrement?.Invoke();
+        }
+
+        mMultiplier = multiplier;
     }
     void IncrementHitStreak()
     {

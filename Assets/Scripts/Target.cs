@@ -6,9 +6,6 @@ using UnityEngine;
 /// <summary> Example enemy used for testing. </summary>
 public class Target : MonoBehaviour
 {
-    [Tooltip("Heads up display")]
-    public PlayerInterface PlayerHUD;
-
     HealthController mHealthController;
     Animator mAnimator;
 
@@ -26,15 +23,11 @@ public class Target : MonoBehaviour
     void OnDamaged()
     {
         mAnimator.Play("Damaged", -1, 0f);
-        if (PlayerHUD)
-        PlayerHUD.SetHealthDisplayed(mHealthController.NormalizedHealth);
     }
     
     /// <summary> Action called when target dies. </summary>
     void OnDeath()
     {
         mAnimator.Play("Dead");
-        if (PlayerHUD)
-        PlayerHUD.SetHealthDisplayed(mHealthController.NormalizedHealth);
     }
 }

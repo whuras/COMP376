@@ -22,8 +22,7 @@ public class PlayerInterface : MonoBehaviour
     public Text CurrentScoreText;
     public Text CurrentMultiplierText;
     public Text CurrentStreakText;
-    public GameObject ScorePopup;
-    
+
     [Header("Animations")]
     [Tooltip("Speed at which health bar grows/shrinks to represent current health")]
     public float HealthAnimationSpeed = 0.5f;
@@ -86,7 +85,7 @@ public class PlayerInterface : MonoBehaviour
     /// <param name="currentWeapon"> Updated health normalized from 0 to 1 </param>
     public void SetHealthDisplayed(float normalizedHealth)
     {
-        CurrentHealthText.text = string.Format("{0}", (int) (100 * normalizedHealth));
+        CurrentHealthText.text = string.Format("{0}", (int)(100 * normalizedHealth + 0.5));
         HealthBarFront.fillAmount = normalizedHealth;
         mTargetHealth = normalizedHealth;
         mTimeOfLastHealthUpdate = Time.time;
@@ -115,7 +114,7 @@ public class PlayerInterface : MonoBehaviour
 
     public void SpawnScorePopup(int score)
     {
-        GameObject scorePopup = GameObject.Instantiate(ScorePopup, CurrentScoreText.transform);
+        GameObject scorePopup = GameObject.Instantiate((GameObject)Resources.Load("ScorePopup"), CurrentScoreText.transform);
         ScoreAddition scoreAddition = scorePopup.GetComponent<ScoreAddition>();
         scoreAddition.SetScore(score);
     }
