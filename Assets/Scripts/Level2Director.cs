@@ -22,10 +22,6 @@ public class Level2Director : MonoBehaviour
     // Triggers
     public GameObject CutsceneTwoTrigger;
 
-    // Positions
-    Vector3 BartenderPos1 = new Vector3(-11.75f, 27.22f, 13.07f);
-    Vector3 BartenderPos2;
-
     void Start()
     {
         // Bartender Is Always Running In These Cutscenes

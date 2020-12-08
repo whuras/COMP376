@@ -22,6 +22,8 @@ public class MarketplaceConductor : MonoBehaviour
     public int BeatOffset;
     [Tooltip("Beats until gargoyles start moving")]
     public int GargoyleBeginBeat;
+    [Tooltip("Audio that plays during the MarketPlace Encounter")]
+    public AudioSource[] VoiceLines;
 
     int FirstBeat;
 
@@ -37,6 +39,7 @@ public class MarketplaceConductor : MonoBehaviour
     int mNumGruntsKilled = 0;
     int mNumGruntsSpawned = 0;
     int mRound = 0;
+    int mVoiceLineIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +77,9 @@ public class MarketplaceConductor : MonoBehaviour
     void GargoyleRound()
     {
         int crrtBeat = Conductor.GetBeat() - FirstBeat;
+
+        print(crrtBeat);
+
         // Return early if round has not begun
         if (crrtBeat < 0)
         {
@@ -82,6 +88,12 @@ public class MarketplaceConductor : MonoBehaviour
         // Spawn enemies on first few beats
         else if (mNumGargoylesSpawned != mNumGargoyles && crrtBeat == mNumGargoylesSpawned)
         {
+            // Play VoicesLine When Gargoyles Spawn (But Only Once)
+            if (mVoiceLineIndex == 0 || mVoiceLineIndex == 2 || mVoiceLineIndex == 4)
+            {
+                VoiceLines[mVoiceLineIndex++].Play();
+            }
+
             Gargoyle gargoyle = mGargoyles[crrtBeat] = Instantiate(Gargoyle, GargoylePerches[crrtBeat].position, Quaternion.identity);
             gargoyle.Conductor = Conductor;
             gargoyle.Target = Player;
@@ -132,6 +144,11 @@ public class MarketplaceConductor : MonoBehaviour
         // Spawn grunts periodically if round has begun
         if (mNumGruntsSpawned != mNumGrunts && crrtBeat == mNumGruntsSpawned)
         {
+            // Play VoicesLine When Grunts Spawn (But Only Once)
+            if (mVoiceLineIndex == 1 || mVoiceLineIndex == 3 || mVoiceLineIndex == 5)
+            {
+                VoiceLines[mVoiceLineIndex++].Play();
+            }
             MeleeEnemy enemy = Instantiate(Grunt, GruntSpawns[mNumGruntsSpawned % GruntSpawns.Count].position, Quaternion.identity);
             enemy.Target = Player;
             enemy.HealthController.OnDeath += IncrementGruntKillCount;
