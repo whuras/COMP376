@@ -6,7 +6,6 @@ using UnityEngine.Playables;
 public class Level2Director : MonoBehaviour
 {
     // Scripts
-    public GameObject Conductor;
     public GameObject MainRoadConductor;
     public GameObject FadeManager;
     
@@ -22,6 +21,8 @@ public class Level2Director : MonoBehaviour
     // Triggers
     public GameObject CutsceneTwoTrigger;
 
+    private Conductor mConductor;
+    
     void Start()
     {
         // Bartender Is Always Running In These Cutscenes
@@ -29,6 +30,8 @@ public class Level2Director : MonoBehaviour
         
         // Disable Player HUD for Cutscenes
         MainPlayer.SetActive(false);
+        
+        mConductor = Conductor.GetActiveConductor();
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class Level2Director : MonoBehaviour
 
     public void ToggleMainRoadConductorStart()
     {
-        MainRoadConductor.GetComponent<MainroadConductor>().StartConductor((Conductor.GetComponent<Conductor>().GetBeat() / 4 + 1) * 4);
+        MainRoadConductor.GetComponent<MainroadConductor>().StartConductor((mConductor.GetComponent<Conductor>().GetBeat() / 4 + 1) * 4);
     }
 
     public void PauseTimeLine()

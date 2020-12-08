@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Projectile : MonoBehaviour
     public float CollisionRadius = 0.1f;
     [Tooltip("Effects generated on projectile impact")]
     public GameObject ImpactEffects;
+
+    public UnityAction<HealthController> OnSuccessfulImpact;
+    public UnityAction OnUnsuccessfulImpact;
 
     Vector3 mVelocity;
     Vector3 mTrajectoryCorrectionVector = new Vector3(0f, 0f, 0f);
@@ -88,6 +92,11 @@ public class Projectile : MonoBehaviour
         if (target != null)
         {
             target.TakeDamage(Damage);
+            OnSuccessfulImpact?.Invoke(target);
+        }
+        else
+        {
+            OnUnsuccessfulImpact?.Invoke();
         }
 
         // Play impact effects if any exist.

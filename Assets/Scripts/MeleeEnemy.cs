@@ -11,9 +11,7 @@ public class MeleeEnemy : Enemy
     [Tooltip("Health controller of enemy")]
     public HealthController _HealthController;
     public override HealthController HealthController => _HealthController;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor _Conductor;
-    public override Conductor Conductor { get { return _Conductor; } set { _Conductor = value; } }
+    public override Conductor Conductor { get { return mConductor; } set { mConductor = value; } }
     [Tooltip("NavMesh agent of enemy")]
     public UnityEngine.AI.NavMeshAgent NavMeshAgent;
     [Tooltip("Animator of enemy")]
@@ -22,6 +20,8 @@ public class MeleeEnemy : Enemy
     public Dissolve Dissolve;
     [Tooltip("Duration of dissolve effect")]
     public float DissolveTime = 2f;
+    [Tooltip("Origin of raycast used to check for successful attacks")]
+    public Transform AttackOrigin;
 
     [Header("Mechanics")]
     [Tooltip("Max health of enemy")]
@@ -29,7 +29,7 @@ public class MeleeEnemy : Enemy
     [Tooltip("Movement speed of enemy")]
     public float Speed = 5f;
     [Tooltip("Damage dealt by melee attacks")]
-    public float Damage = 1f;
+    public float Damage = 10f;
     [Tooltip("Range at which enemy can attack")]
     public float AttackRange = 1f;
     [Tooltip("Minimum time between enemy attacks")]
@@ -38,13 +38,16 @@ public class MeleeEnemy : Enemy
     float mTimeOfDeath = -10f;
     float mTimeLastAttack = -10f;
     
+    private Conductor mConductor;
 
     void Start()
     {
         NavMeshAgent.speed = Speed;
-        NavMeshAgent.stoppingDistance = AttackRange - 1f;
+        NavMeshAgent.stoppingDistance = 0f;
+        NavMeshAgent.SetDestination(_Target.position);
         _HealthController.OnDeath += OnDeath;
         _HealthController.MaxHealth = Health;
+        mConductor = Conductor.GetActiveConductor();
     }
     
     void Update()
@@ -58,15 +61,17 @@ public class MeleeEnemy : Enemy
         }
 
         // Attack if within range
-        NavMeshAgent.SetDestination(_Target.position);
         TryStartAttack();
     }
 
     /// <summary> Start attack animation if within range of target. </summary>
     void TryStartAttack()
     {
-        if (NavMeshAgent.remainingDistance < AttackRange)
+        float distanceToTarget = (Target.position - transform.position).magnitude;
+        if (distanceToTarget < AttackRange || Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
+            Debug.Log("WithinRange");
+            NavMeshAgent.enabled = false;
             if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
                 Animator.Play("Attack");
@@ -75,6 +80,8 @@ public class MeleeEnemy : Enemy
         }
         else
         {
+            NavMeshAgent.enabled = true;
+            NavMeshAgent.SetDestination(Target.position);
             if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Running") && NavMeshAgent.velocity.magnitude != 0)
             {
                 Animator.Play("Running");
@@ -93,6 +100,19 @@ public class MeleeEnemy : Enemy
     /// <summary> Should be called by trigger within attack animation. Checks if player is within melee range and deals appropriate amount of damage. </summary>
     public void Attack()
     {
-        // REQUIRES IMPLEMENTATION
+        Debug.Log("Attacks");
+        Debug.DrawLine(AttackOrigin.position, AttackOrigin.position + AttackOrigin.forward.normalized * AttackRange, Color.red, 2f);
+        for (int i = -1; i < 2; i++)
+        {
+            if (Physics.Raycast(AttackOrigin.position, AttackOrigin.forward + i * AttackOrigin.right, out RaycastHit hitInfo, AttackRange, 1 << 9))
+            {
+                HealthController other = hitInfo.transform.gameObject.GetComponent<HealthController>();
+                if (other != null)
+                {
+                    other.TakeDamage(Damage);
+                    return;
+                }
+            }
+        }
     }
 }

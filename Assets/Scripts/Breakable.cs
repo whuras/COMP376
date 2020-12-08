@@ -26,7 +26,7 @@ public class Breakable : MonoBehaviour
     {
         mHealthController = gameObject.GetComponent<HealthController>();
         mHealthController.OnDeath += OnDamaged;
-        mConductor = FindObjectOfType<Conductor>();
+        mConductor = Conductor.GetActiveConductor();
         if (MissedBeatSound)
         {
             mAudioSource = gameObject.GetComponent<AudioSource>();
