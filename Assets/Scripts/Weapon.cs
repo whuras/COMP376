@@ -75,7 +75,7 @@ public class Weapon : MonoBehaviour
     /// <summary> Get referenced objects. </summary>
     void Start()
     {
-        mConductor = GameObject.Find("Conductor").GetComponent<Conductor>();
+        mConductor = Conductor.GetActiveConductor();
         mAudioSource = GetComponent<AudioSource>();
         mAmmoLeft = ClipSize;
     }

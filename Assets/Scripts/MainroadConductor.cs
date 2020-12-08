@@ -18,8 +18,6 @@ public class MainroadConductor : MonoBehaviour
     [Header("General")]
     [Tooltip("Beat offset of first round. Use negative value to start conductor using script.")]
     public int BeatOffset;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor Conductor;
     [Tooltip("Player to assign to enemies as target")]
     public Transform Player;
     [Tooltip("Beat and location of enemy spawns relative to round start")]
@@ -36,6 +34,8 @@ public class MainroadConductor : MonoBehaviour
     public ParticleSystem RightFogCurtain;
     [Tooltip("Particle system emitting fog on ground.")]
     public ParticleSystem GroundFog;
+    
+    private Conductor mConductor;
 
     int mRoundBeatOffset;
     bool mIsRoundOver = false;
@@ -51,6 +51,7 @@ public class MainroadConductor : MonoBehaviour
             mRoundBeatOffset = int.MaxValue;
         }
         mRoundBeatOffset = BeatOffset;
+        mConductor = Conductor.GetActiveConductor();
     }
 
     /// <summary> Update function. </summary>
@@ -69,13 +70,13 @@ public class MainroadConductor : MonoBehaviour
         }
 
         // Spawn enemy at appropriate location if on beat.
-        int crrtRoundBeat = Conductor.GetBeat() - mRoundBeatOffset;
+        int crrtRoundBeat = mConductor.GetBeat() - mRoundBeatOffset;
 
         while (mCrrtIndex < EnemySpawns.Count && crrtRoundBeat - EnemySpawns[mCrrtIndex].Beat == 0)
         {
             Enemy enemy = Instantiate(EnemySpawns[mCrrtIndex].Enemy, EnemySpawns[mCrrtIndex].SpawnLocation.position, Quaternion.identity);
             enemy.Target = Player;
-            enemy.Conductor = Conductor;
+            enemy.Conductor = mConductor;
             enemy.HealthController.OnDeath += IncrementKillCount;
             mCrrtIndex++;
         }
@@ -105,7 +106,7 @@ public class MainroadConductor : MonoBehaviour
         // Start next round if all enemies are dead.
         else if (mKillCount == mCrrtIndex && mIsRoundOver)
         {
-            int crrtBeat = Conductor.GetBeat();
+            int crrtBeat = mConductor.GetBeat();
             int nextBarBeat = (crrtBeat/4 + 1) * 4;
             mRoundBeatOffset = nextBarBeat;
             mIsRoundOver = false;

@@ -11,9 +11,7 @@ public class MeleeEnemy : Enemy
     [Tooltip("Health controller of enemy")]
     public HealthController _HealthController;
     public override HealthController HealthController => _HealthController;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor _Conductor;
-    public override Conductor Conductor { get { return _Conductor; } set { _Conductor = value; } }
+    public override Conductor Conductor { get { return mConductor; } set { mConductor = value; } }
     [Tooltip("NavMesh agent of enemy")]
     public UnityEngine.AI.NavMeshAgent NavMeshAgent;
     [Tooltip("Animator of enemy")]
@@ -38,6 +36,7 @@ public class MeleeEnemy : Enemy
     float mTimeOfDeath = -10f;
     float mTimeLastAttack = -10f;
     
+    private Conductor mConductor;
 
     void Start()
     {
@@ -45,6 +44,7 @@ public class MeleeEnemy : Enemy
         NavMeshAgent.stoppingDistance = AttackRange - 1f;
         _HealthController.OnDeath += OnDeath;
         _HealthController.MaxHealth = Health;
+        mConductor = Conductor.GetActiveConductor();
     }
     
     void Update()

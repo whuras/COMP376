@@ -14,8 +14,6 @@ public class Boss : MonoBehaviour
     public Transform MuzzlePosition;
     [Tooltip("What boss should aim at")]
     public Transform Target;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor Conductor;
     [Tooltip("Audio Source to play sound effects from")]
     public AudioSource AudioSource;
     [Tooltip("Sound effect played when boss fires projectiles")]
@@ -33,9 +31,12 @@ public class Boss : MonoBehaviour
     float mBeatReloadStart = -10;
     float mTimeOfDeath = -10f;
 
+    private Conductor mConductor;
+    
     /// <summary> Get references and add actions. </summary>
     void Start()
     {
+        mConductor = Conductor.GetActiveConductor();
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
         
@@ -67,7 +68,7 @@ public class Boss : MonoBehaviour
         // Reload if no ammo
         if (mAmmoLeft == 0)
         {
-            if (Conductor.GetBeat() > mBeatReloadStart + 4)
+            if (mConductor.GetBeat() > mBeatReloadStart + 4)
             {
                 mAmmoLeft = 8;
             }
@@ -78,7 +79,7 @@ public class Boss : MonoBehaviour
         }
 
         // Fire on half-beats
-        if ((Conductor.GetBeat(2) - mAmmoLeft) % 2 == 0)
+        if ((mConductor.GetBeat(2) - mAmmoLeft) % 2 == 0)
         {
             Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
             newProjectile.Owner = HealthController.gameObject;
@@ -91,7 +92,7 @@ public class Boss : MonoBehaviour
         // Reload if no ammo
         if (mAmmoLeft == 0)
         {
-            mBeatReloadStart = Conductor.GetBeat();
+            mBeatReloadStart = mConductor.GetBeat();
         }
     }
 

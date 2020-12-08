@@ -31,7 +31,7 @@ public class Bottle : MonoBehaviour
     {
         mHealthController = gameObject.GetComponent<HealthController>();
         mHealthController.OnDeath += OnDamaged;
-        mConductor = FindObjectOfType<Conductor>();
+        mConductor = Conductor.GetActiveConductor();
         mTutorialManager = FindObjectOfType<TutorialManager>();
         if (MissedBeatSound)
         {

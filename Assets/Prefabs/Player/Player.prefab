@@ -586,6 +586,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2476405646661149463, guid: 8426296e77c67614ca212c4cbc2599a0, type: 3}
+      propertyPath: sharedProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 130e40d347ebfae4aab2ff5bebe30e9b, type: 2}
     - target: {fileID: 5555314326034984236, guid: 8426296e77c67614ca212c4cbc2599a0, type: 3}
       propertyPath: m_RootOrder
       value: 2

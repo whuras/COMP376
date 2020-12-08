@@ -10,9 +10,7 @@ public class Gargoyle : Enemy
     [Tooltip("Health controller of gargoyle")]
     public HealthController _HealthController;
     public override HealthController HealthController => _HealthController;
-    [Tooltip("Conductor object used to time actions")]
-    public Conductor _Conductor;
-    public override Conductor Conductor { get { return _Conductor; } set { _Conductor = value; } }
+    public override Conductor Conductor { get { return mConductor; } set { mConductor = value; } }
     [Tooltip("Source of projectiles")]
     public Transform MuzzlePosition;
     [Tooltip("Rendered object to dissolve when enemy is killed")]
@@ -28,6 +26,8 @@ public class Gargoyle : Enemy
     [Tooltip("Movement speed of enemy")]
     public float MovementSpeed = 3f;
 
+    private Conductor mConductor;
+    
     public Vector3 Destination
     {
         get => mDestination;
@@ -60,6 +60,7 @@ public class Gargoyle : Enemy
     // Start is called before the first frame update
     void Start()
     {
+        mConductor = Conductor.GetActiveConductor();
         HealthController.OnDeath += OnDeath;
     }
 
