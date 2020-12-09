@@ -15,6 +15,7 @@ public class PlayerLifeController : MonoBehaviour
     {
         mPlayerHUD = gameObject.GetComponentInChildren<PlayerInterface>();
         mHealthController = GetComponent<HealthController>();
+        mPlayerController = GetComponent<PlayerController>();
 
         mHealthController.OnDamaged += OnPlayerDamaged;
         mHealthController.OnDeath += OnPlayerDeath;
