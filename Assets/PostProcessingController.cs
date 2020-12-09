@@ -65,7 +65,6 @@ public class PostProcessingController : MonoBehaviour
         if (currentTime > mHurtEffectStart + HurtDuration &&  currentTime <= mHurtEffectStart + HurtDuration + HurtFadeAwayTime)
         {
             float progress = (currentTime - mHurtEffectStart - HurtDuration) / HurtFadeAwayTime;
-            Debug.Log(progress);
             SetProcessingState(LerpProcessingState(mCurrentProcessingState, mDefaultProcessingState, progress));
         }
 
