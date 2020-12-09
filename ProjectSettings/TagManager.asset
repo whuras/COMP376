@@ -7,6 +7,10 @@ TagManager:
   - Whiskey
   - LargeWhiskey
   - Lava
+  - MainRoad
+  - Marketplace
+  - BehindMarketplace
+  - Canyon
   layers:
   - Default
   - TransparentFX

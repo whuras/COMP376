@@ -48,11 +48,14 @@ public class MainroadConductor : MonoBehaviour
     /// <summary> Start function. </summary>
     void Start()
     {
-        if (BeatOffset < 0)
+        if (gameObject.tag == "MainRoad")
         {
-            mRoundBeatOffset = int.MaxValue;
+            if (BeatOffset < 0)
+            {
+                mRoundBeatOffset = int.MaxValue;
+            }
+            mRoundBeatOffset = BeatOffset;
         }
-        mRoundBeatOffset = BeatOffset;
         mConductor = Conductor.GetActiveConductor();
     }
 
@@ -99,12 +102,15 @@ public class MainroadConductor : MonoBehaviour
         if (mKillCount == EnemySpawns.Count)
         {
             mIsComplete = true;
-            EndOfRoundVoiceOver.Play();
+            if (gameObject.tag == "MainRoad")
+            {
+                EndOfRoundVoiceOver.Play();
+            }
             LeftFogCurtain?.Stop();
             RightFogCurtain?.Stop();
             GroundFog?.Stop();
             Exit?.SetActive(false);
-            Destroy(this.gameObject, 15f);
+            Destroy(this.gameObject, 5f);
         }
         // Start next round if all enemies are dead.
         else if (mKillCount == mCrrtIndex && mIsRoundOver)

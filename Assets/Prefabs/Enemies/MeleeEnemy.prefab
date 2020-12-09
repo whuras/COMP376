@@ -14,6 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Renderer: {fileID: 8088907397753765176}
   DissolveMaterial: {fileID: 2100000, guid: 8816c56eccdf7af40b4a3f5e03f3c184, type: 2}
+--- !u!114 &3846847824905475725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024411240261296997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ddb7d113fb7b74ebc3154a4fafeb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionOnAttack:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5867623271502359384}
+        m_TargetAssemblyTypeName: MeleeEnemy, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5867623271502359385
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,11 +91,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Target: {fileID: 0}
   _HealthController: {fileID: 5867623271938251712}
-  _Conductor: {fileID: 0}
   NavMeshAgent: {fileID: 5867623271502359382}
   Animator: {fileID: 213385835971233483}
   Dissolve: {fileID: 2268376814656897531}
   DissolveTime: 2
+  AttackOrigin: {fileID: 1711681216692907545}
   Health: 4.5
   Speed: 4
   Damage: 10
@@ -708,6 +735,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c9fa4eab25287469c1236921c3e0c6, type: 3}
+--- !u!1 &1024411240261296997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6870959071010831071, guid: 21c9fa4eab25287469c1236921c3e0c6, type: 3}
+  m_PrefabInstance: {fileID: 5867623273191709114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &395367016611019231 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6057724625455505509, guid: 21c9fa4eab25287469c1236921c3e0c6, type: 3}
