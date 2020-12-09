@@ -53,6 +53,12 @@ public class PlayerController : MonoBehaviour
     public float DashDuration = 0.3f;
     [Tooltip("Factor by which time scale is multiplied during slowdown")]
     public float SlowdownFactor = 0.5f;
+    [Tooltip("Image(with animator) of dash ability")]
+    public GameObject DashEffect;
+    [Tooltip("Sound Effect of dash ability")]
+    public AudioClip DashSoundEffect;
+    [Tooltip("Sound Effect volume of dash ability")]
+    public float DashSoundVolume = 0.4f;
 
     [Header("Scoreboard")] 
     [Tooltip("Number of points awarded before multiplier")]
@@ -345,15 +351,22 @@ public class PlayerController : MonoBehaviour
         // DASH
         if (Time.time < mTimeDashStart + DashDuration)
         {
+            DashEffect.SetActive(true);
+            mAudioSource.PlayOneShot(DashSoundEffect, DashSoundVolume);
             mCharacterVelocity = mDashVelocity;
         }
         else if (Input.GetButtonDown("Dash"))
         {
+            DashEffect.SetActive(false);
             mTimeDashStart = Time.time;
             PlayerHUD.ResetDashIcon();
             mCharacterVelocity.y = 0f;
             mCharacterVelocity.Normalize();
             mDashVelocity = DashSpeed * mCharacterVelocity;
+        }
+        else
+        {
+            DashEffect.SetActive(false);
         }
     }
 
