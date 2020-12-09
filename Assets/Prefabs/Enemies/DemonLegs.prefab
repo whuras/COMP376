@@ -224,6 +224,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1495469742207777439}
   - component: {fileID: 1495469742207777436}
+  - component: {fileID: 5878484421312179445}
+  - component: {fileID: 4140034909706255359}
+  - component: {fileID: 8812889444020043508}
+  - component: {fileID: 3725337409496072549}
   m_Layer: 0
   m_Name: DemonLegs
   m_TagString: Untagged
@@ -266,6 +270,87 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5878484421312179445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495469742207777437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 20
+--- !u!114 &4140034909706255359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495469742207777437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ae8f37bf7f2bb43a58e8bb78b92011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8812889444020043508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495469742207777437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789f4177ddd5efa4ca37bfe55339bf2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthController: {fileID: 0}
+  CanWander: 0
+  CanChasePlayer: 0
+  CanAttackPlayer: 0
+  CanRetreat: 0
+  Projectile: {fileID: 1821543919974348746, guid: 98003878cdf08c747bfc705ea7ec62ef, type: 3}
+  PersonalSpace: 5
+  ChaseDestinationComputeInterval: 0.5
+  SnapToMultiplier: 1
+  SightRange: 10
+  WanderDistanceMin: 2
+  WanderDistanceMax: 5
+  WanderDestinationComputeInterval: 3
+  TimeBetweenAttacks: 3
+  AttackDamage: 1
+  AttackRange: 15
+  RetreatProbability: 0.75
+  RetreatAngleWidth: 45
+  RetreatDuration: 2
+  RetreatDistanceMin: 5
+  RetreatDistanceMax: 10
+  GunPoint: {fileID: 0}
+--- !u!195 &3725337409496072549
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495469742207777437}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1495469742270565185
 GameObject:
   m_ObjectHideFlags: 0

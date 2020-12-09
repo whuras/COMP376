@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 
-public class EnemyAI : MonoBehaviour
+public class RangedEnemy : MonoBehaviour
 {
     
     private NavMeshAgent agent;
     private Transform player;
-    public HealthController healthController;
-    
+        
     [Header("Behavior Toggles")] 
     
     [Tooltip("Whether the game object wanders the player when the player is out of range.")]
@@ -86,9 +85,18 @@ public class EnemyAI : MonoBehaviour
     private float mRetreatTimeout;
     
     
+    [Tooltip("Object to dissolve on death")]
+    public Dissolve Dissolve;
+    [Tooltip("Duration of dissolve effect")]
+    public float DissolveTime = 2f;
+    
+    
     // States
     private bool mIsAlive;
     private bool mWasHitLastFrame;
+
+    private float mTimeOfDeath = -10f;
+    private HealthController mHealthController;
 
     [FormerlySerializedAs("gunPoint")] public GameObject GunPoint;
 
@@ -97,9 +105,11 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-
-        healthController.OnDeath += OnDeath;
-        healthController.OnDamaged += OnDamaged;
+        mHealthController = GetComponentInChildren<HealthController>();
+        
+        
+        mHealthController.OnDeath += OnDeath;
+        mHealthController.OnDamaged += OnDamaged;
         
         mChaseTimeout = -1;
         mRetreatTimeout = -RetreatDuration;
@@ -139,6 +149,13 @@ public class EnemyAI : MonoBehaviour
             }
 
             mWasHitLastFrame = false;
+        }
+        
+        // Dissolve out if dead.
+        float dissolveProgress = (Time.time - mTimeOfDeath) / DissolveTime;
+        if (dissolveProgress > 0 && dissolveProgress < 1)
+        {
+            Dissolve.SetDissolved(dissolveProgress);
         }
     }
 
@@ -235,6 +252,9 @@ public class EnemyAI : MonoBehaviour
 
     private void OnDeath()
     {
+        mTimeOfDeath = Time.time;
+        Destroy(mHealthController.gameObject);
+        Destroy(gameObject, DissolveTime);
         agent.isStopped = true;
         mIsAlive = false;
     }
