@@ -8,9 +8,6 @@ public class Level2Director : MonoBehaviour
     // Scripts
     public GameObject MainRoadConductor;
     public GameObject FadeManager;
-    
-    // Components
-    public GameObject Director;
 
     // Animations
     public GameObject Bartender;

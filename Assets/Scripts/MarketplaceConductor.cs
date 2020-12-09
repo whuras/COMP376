@@ -24,6 +24,10 @@ public class MarketplaceConductor : MonoBehaviour
     public int GargoyleBeginBeat;
     [Tooltip("Audio that plays during the MarketPlace Encounter")]
     public AudioSource[] VoiceLines;
+    [Tooltip("Entrace to MarketPlace Encounter")]
+    public GameObject Entrance;
+    [Tooltip("Exit to MarketPlace Encounter")]
+    public GameObject Exit;
 
     int FirstBeat;
 
@@ -44,11 +48,11 @@ public class MarketplaceConductor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (BeatOffset < 0)
-        {
-            FirstBeat = int.MaxValue;
-        }
-        FirstBeat = BeatOffset;
+        //if (BeatOffset < 0)
+        //{
+        //    FirstBeat = int.MaxValue;
+        //}
+        //FirstBeat = BeatOffset;
 
         mNumGargoyles = GargoylePerches.Count;
         mGargoyles = new Gargoyle[mNumGargoyles];
@@ -72,13 +76,17 @@ public class MarketplaceConductor : MonoBehaviour
         {
             GruntRound();
         }
+
+        if (mRound == 5)
+        {
+            Exit?.SetActive(false);
+            Entrance?.SetActive(false);
+        }
     }
 
     void GargoyleRound()
     {
         int crrtBeat = Conductor.GetBeat() - FirstBeat;
-
-        print(crrtBeat);
 
         // Return early if round has not begun
         if (crrtBeat < 0)
