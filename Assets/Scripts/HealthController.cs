@@ -22,6 +22,9 @@ public class HealthController : MonoBehaviour
     [Tooltip("What to do when object dies")]
     public UnityAction OnDeath;
 
+    [Tooltip("Toggles being able to take damage")]
+    public bool canTakeDamage = true;
+
     float mCrrtHealth;
     /// <summary> Health of object normalized from 0 to 1. </summary>
     public float NormalizedHealth
@@ -39,16 +42,19 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of damage dealt </param>
     public void TakeDamage(float damage)
     {
-        Debug.Log("DamageTaken");
-        mCrrtHealth -= damage;
-        if (mCrrtHealth < 0)
+        if (canTakeDamage)
         {
-            mCrrtHealth = 0;
-            OnDeath?.Invoke();
-        }
-        else
-        {
-            OnDamaged?.Invoke();
+            Debug.Log("DamageTaken");
+            mCrrtHealth -= damage;
+            if (mCrrtHealth < 0)
+            {
+                mCrrtHealth = 0;
+                OnDeath?.Invoke();
+            }
+            else
+            {
+                OnDamaged?.Invoke();
+            }
         }
     }
 
