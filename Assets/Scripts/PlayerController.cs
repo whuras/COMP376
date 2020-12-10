@@ -220,7 +220,7 @@ public class PlayerController : MonoBehaviour
     /// <summary> Update whether or not player is grounded. </summary>
     void CheckIfGrounded()
     {
-        int groundMask = 1 << 12;
+        int groundMask = 1 << 13;
         groundMask = ~groundMask;
         RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, 1.6f, groundMask);
 
