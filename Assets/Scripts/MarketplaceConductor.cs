@@ -28,6 +28,10 @@ public class MarketplaceConductor : MonoBehaviour
     public GameObject Entrance;
     [Tooltip("Exit to MarketPlace Encounter")]
     public GameObject Exit;
+    [Tooltip("Wall of dust")]
+    public ParticleSystem Dust;
+    [Tooltip("Dust on ground")]
+    public ParticleSystem GroundDust;
 
     int FirstBeat;
 
@@ -48,11 +52,11 @@ public class MarketplaceConductor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //if (BeatOffset < 0)
-        //{
-        //    FirstBeat = int.MaxValue;
-        //}
-        //FirstBeat = BeatOffset;
+        if (BeatOffset < 0)
+        {
+            FirstBeat = int.MaxValue;
+        }
+        FirstBeat = BeatOffset;
 
         mNumGargoyles = GargoylePerches.Count;
         mGargoyles = new Gargoyle[mNumGargoyles];
@@ -87,6 +91,7 @@ public class MarketplaceConductor : MonoBehaviour
     void GargoyleRound()
     {
         int crrtBeat = Conductor.GetBeat() - FirstBeat;
+        Debug.Log(crrtBeat);
 
         // Return early if round has not begun
         if (crrtBeat < 0)
@@ -188,7 +193,10 @@ public class MarketplaceConductor : MonoBehaviour
         {
             if (mRound/2 == GruntCount.Count - 1)
             {
-                Destroy(gameObject);
+                Dust?.Stop();
+                GroundDust?.Stop();
+                Exit?.SetActive(false);
+                Destroy(gameObject, 15f);
             }
             FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
             mRound += 1;
@@ -200,6 +208,10 @@ public class MarketplaceConductor : MonoBehaviour
     /// <summary> If BeatOffset is set to some negative value, conductor will wait for this function to be called with a future beat to start. </summary>
     public void StartConductor(int startBeat)
     {
-        FirstBeat = startBeat;
+        Debug.Log(startBeat);
+        BeatOffset = startBeat;
+        Dust?.Play();
+        GroundDust?.Play();
+        Entrance?.SetActive(true);
     }
 }

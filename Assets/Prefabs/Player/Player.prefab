@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 1014301463}
   - component: {fileID: 645899913}
   - component: {fileID: 1305417510}
-  - component: {fileID: 5580977444479269252}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -60,8 +59,8 @@ MonoBehaviour:
   JumpSpeed: 10
   GravityAcceleration: 40
   Weapons:
-  - {fileID: 4103116638943344188, guid: e51b268b477bf5143a0a5198b7fa563f, type: 3}
   - {fileID: 4103116638943344188, guid: c6f4e1eb31b83a54296405fe3959034f, type: 3}
+  - {fileID: 4103116638943344188, guid: e51b268b477bf5143a0a5198b7fa563f, type: 3}
   WeaponBobAmplitude: 0.05
   WeaponBobFrequency: 12
   WeaponBobSharpness: 5
@@ -225,6 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  InvulnerabilityTime: 0
 --- !u!114 &1305417510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,19 +238,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MultiplierHealAmount: 0
---- !u!114 &5580977444479269252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6019745202820869162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 100
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0

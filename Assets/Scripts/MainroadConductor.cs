@@ -110,7 +110,7 @@ public class MainroadConductor : MonoBehaviour
             RightFogCurtain?.Stop();
             GroundFog?.Stop();
             Exit?.SetActive(false);
-            Destroy(this.gameObject, 5f);
+            Destroy(this.gameObject, 15f);
         }
         // Start next round if all enemies are dead.
         else if (mKillCount == mCrrtIndex && mIsRoundOver)
