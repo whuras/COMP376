@@ -125,7 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Target: {fileID: 0}
   _HealthController: {fileID: 409837738}
-  FireSFX: {fileID: -7567166931912155939}
   CanWander: 0
   CanChasePlayer: 1
   CanAttackPlayer: 1
@@ -138,8 +137,8 @@ MonoBehaviour:
   WanderDistanceMin: 0
   WanderDistanceMax: 0
   WanderDestinationComputeInterval: 0
-  TimeBetweenAttacks: 1
-  AttackDamage: 1
+  TimeBetweenAttacks: 3
+  AttackDamage: 10
   AttackRange: 40
   RetreatProbability: 0.5
   RetreatAngleWidth: 45
@@ -201,8 +200,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 610e41d0de57b6947ba83465bbe2158a, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.508
   m_Pitch: 1
   Loop: 0
   Mute: 0
