@@ -35,7 +35,7 @@ public class PlayerInterface : MonoBehaviour
     float mTargetHealth = 1f;
 
     // Dash Icon Variables
-    float mFillSpeed = 0.2f;
+    float mFillSpeed = 1f;
 
 
     /// <summary> Animate interface </summary>
