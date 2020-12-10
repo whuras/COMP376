@@ -10,6 +10,8 @@ public class HealthController : MonoBehaviour
     [Header("General")]
     [Tooltip("Max health of damageable object")]
     public float MaxHealth;
+    [Tooltip("Timeframe after damage is taken during which object is invulnerable.")]
+    public float InvulnerabilityTime = 0f;
 
     [SerializeField]
     public float CurrentHealth => mCrrtHealth;
@@ -28,6 +30,8 @@ public class HealthController : MonoBehaviour
     public bool canHeal = true;
 
     float mCrrtHealth;
+    float mLastTimeDamageTaken = -10f;
+
     /// <summary> Health of object normalized from 0 to 1. </summary>
     public float NormalizedHealth
     {
@@ -44,9 +48,13 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of damage dealt </param>
     public void TakeDamage(float damage)
     {
-        if (canTakeDamage)
-        {
-            Debug.Log("DamageTaken");
+        if (canTakeDamage){
+            // Return early if object is currently invulnerable
+            if (mLastTimeDamageTaken + InvulnerabilityTime > Time.time)
+            {
+                return;
+            }
+            mLastTimeDamageTaken = Time.time;
             mCrrtHealth -= damage;
             if (mCrrtHealth < 0)
             {
@@ -55,7 +63,17 @@ public class HealthController : MonoBehaviour
             }
             else
             {
-                OnDamaged?.Invoke();
+                Debug.Log("DamageTaken");
+                mCrrtHealth -= damage;
+                if (mCrrtHealth < 0)
+                {
+                    mCrrtHealth = 0;
+                    OnDeath?.Invoke();
+                }
+                else
+                {
+                    OnDamaged?.Invoke();
+                }
             }
         }
     }

@@ -36,7 +36,7 @@ public class PostProcessingController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mPostProcessing = GetComponentInChildren<Volume>();
+        mPostProcessing = GetComponent<Volume>();
 
         mPostProcessing.profile.TryGet(out mVignette);
         mPostProcessing.profile.TryGet(out mColorAdjustments);
@@ -52,7 +52,8 @@ public class PostProcessingController : MonoBehaviour
 
         mCurrentProcessingState = mDefaultProcessingState;
         
-        mHealthController = gameObject.GetComponentInParent<HealthController>();
+        GameObject player = GameObject.Find("Player");
+        mHealthController = player.GetComponent<HealthController>();
         mHealthController.OnDamaged += IncreaseHurtIntensity;
 
         mHurtEffectStart = 3.40282347E+38F;

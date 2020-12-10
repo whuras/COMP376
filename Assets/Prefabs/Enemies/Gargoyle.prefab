@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 19
+  InvulnerabilityTime: 0
 --- !u!1 &2660953945501197720
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +86,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2660953945501197720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.245804, y: -4.291046, z: -95.05897}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 64884604}
@@ -109,14 +110,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Target: {fileID: 0}
   _HealthController: {fileID: 64884605}
-  _Conductor: {fileID: 0}
   MuzzlePosition: {fileID: 1075295777525684732}
   Dissolve: {fileID: 8362901062094015858}
   DissolveTime: 3
   Projectile: {fileID: 7841898570000956669, guid: 3be43ce5d1c84284b9a5358a8333e332, type: 3}
   FireSFX: {fileID: 8300000, guid: 610e41d0de57b6947ba83465bbe2158a, type: 3}
+  SwoopSFX: {fileID: 8300000, guid: 36b3b4e1dafa33743885f115054e9ab2, type: 3}
   AudioSource: {fileID: 7941527540841918856}
   MovementSpeed: 8
+  SwoopDamage: 20
   FireBeat: 0
   FireRate: 8
 --- !u!82 &7941527540841918856
@@ -130,7 +132,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

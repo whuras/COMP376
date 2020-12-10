@@ -21,10 +21,14 @@ public class Gargoyle : Enemy
     public Projectile Projectile;
     [Tooltip("Fire sound effects")]
     public AudioClip FireSFX;
+    [Tooltip("Swoop sound effects")]
+    public AudioClip SwoopSFX;
     [Tooltip("Audio Source to play sound effects from")]
     public AudioSource AudioSource;
     [Tooltip("Movement speed of enemy")]
     public float MovementSpeed = 3f;
+    [Tooltip("Damage dealt by swoop")]
+    public float SwoopDamage;
 
     private Conductor mConductor;
     
@@ -54,6 +58,7 @@ public class Gargoyle : Enemy
     Vector3 SwoopDirection;
     Vector3 SwoopStartPos;
     float SwoopHeight;
+    bool mSwoopHasHit = false;
 
     Quaternion mRotation;
 
@@ -67,6 +72,9 @@ public class Gargoyle : Enemy
     // Update is called once per frame
     void Update()
     {
+        Move();
+        Swoop();
+        
         // Dissolve out if dead
         float dissolveProgress = (Time.time - mTimeOfDeath) / DissolveTime;
         if (dissolveProgress < 1 && dissolveProgress > 0)
@@ -75,9 +83,7 @@ public class Gargoyle : Enemy
             return;
         }
 
-        Move();
         Fire();
-        Swoop();
         transform.rotation = Quaternion.Lerp(transform.rotation, mRotation, Time.deltaTime * 5f);
     }
 
@@ -154,6 +160,24 @@ public class Gargoyle : Enemy
         Debug.DrawLine(transform.position, transform.position+up.normalized * 5f, Color.green);
         Debug.DrawLine(transform.position, transform.position+left.normalized * 5f, Color.red);
         Debug.DrawLine(transform.position, transform.position+forward.normalized * 5f, Color.blue);
+
+        // Check for collisions
+        // Return early if swoop has already hit player
+        if (mSwoopHasHit)
+        {
+            return;
+        }
+        // Continue check otherwise
+        foreach (Collider col in Physics.OverlapSphere(transform.position, 2.5f, 1 << 9))
+        {
+            HealthController other = col.gameObject.GetComponent<HealthController>();
+            if (other != null)
+            {
+                Debug.Log("HitPlayer");
+                other.TakeDamage(SwoopDamage);
+                mSwoopHasHit = true;
+            }
+        }
     }
 
     public void StartSwoop(Vector3 target)
@@ -162,9 +186,10 @@ public class Gargoyle : Enemy
         {
             return;
         }
-        Debug.Log("SwoopStart");
+        AudioSource.PlayOneShot(SwoopSFX);
         CanFire = false;
         HasNotFired = false;
+        mSwoopHasHit = false;
         SwoopStart = Time.time;
         SwoopDirection = target - transform.position;
         SwoopHeight = -1.5f-SwoopDirection.y;

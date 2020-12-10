@@ -94,6 +94,7 @@ public class MainroadConductor : MonoBehaviour
         }
     }
 
+
     /// <summary> Increase enemies killed by one. Update game state as necessary. </summary>
     void IncrementKillCount()
     {
@@ -110,7 +111,7 @@ public class MainroadConductor : MonoBehaviour
             RightFogCurtain?.Stop();
             GroundFog?.Stop();
             Exit?.SetActive(false);
-            Destroy(this.gameObject, 5f);
+            Destroy(this.gameObject, 15f);
         }
         // Start next round if all enemies are dead.
         else if (mKillCount == mCrrtIndex && mIsRoundOver)

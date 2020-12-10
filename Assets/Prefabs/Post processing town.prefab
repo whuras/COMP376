@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4926572871878029419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2990897931085384589}
+  - component: {fileID: 5099280877850838454}
+  - component: {fileID: 9204566027697242730}
+  m_Layer: 0
+  m_Name: Post processing town
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2990897931085384589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926572871878029419}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -18.466354, y: 16.145767, z: -2.983665}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &5099280877850838454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926572871878029419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 130e40d347ebfae4aab2ff5bebe30e9b, type: 2}
+--- !u!114 &9204566027697242730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926572871878029419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87d32747f44aff468e33304ddbb12f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamagedIntensity:
+  - mVignetteColor: {r: 0.2627451, g: 0.14509805, b: 0.14509805, a: 0}
+    mVignetteIntensity: 0.5
+    mVignetteSmoothness: 0.32
+    mColorContrast: 22
+    mColorSaturation: -25.5
+  - mVignetteColor: {r: 0.3882353, g: 0.14509805, b: 0.14509805, a: 0}
+    mVignetteIntensity: 0.58
+    mVignetteSmoothness: 0.375
+    mColorContrast: 28.5
+    mColorSaturation: -51
+  HurtFadeAwayTime: 2
+  HurtDuration: 1

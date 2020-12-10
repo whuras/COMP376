@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public GameObject DashEffect;
     [Tooltip("Sound Effect of dash ability")]
     public AudioClip DashSoundEffect;
+    [Tooltip("Cooldown of dash ability")]
+    public float DashCooldown;
     [Tooltip("Sound Effect volume of dash ability")]
     public float DashSoundVolume = 0.4f;
 
@@ -355,20 +357,21 @@ public class PlayerController : MonoBehaviour
         // DASH
         if (Time.time < mTimeDashStart + DashDuration)
         {
-            DashEffect.SetActive(true);
-            mAudioSource.PlayOneShot(DashSoundEffect, DashSoundVolume);
             mCharacterVelocity = mDashVelocity;
         }
-        else if (Input.GetButtonDown("Dash"))
+        else if (Time.time > mTimeDashStart + DashCooldown && Input.GetButtonDown("Dash"))
         {
-            DashEffect.SetActive(false);
             mTimeDashStart = Time.time;
+            // Effects
+            DashEffect.SetActive(true);
+            mAudioSource.PlayOneShot(DashSoundEffect, DashSoundVolume);
             PlayerHUD.ResetDashIcon();
+            // Velocity
             mCharacterVelocity.y = 0f;
             mCharacterVelocity.Normalize();
             mDashVelocity = DashSpeed * mCharacterVelocity;
         }
-        else
+        else 
         {
             DashEffect.SetActive(false);
         }
