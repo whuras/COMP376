@@ -12,12 +12,18 @@ public class MarketplaceConductor : MonoBehaviour
     public Gargoyle Gargoyle;
     [Tooltip("Grunt prefabs to spawn")]
     public MeleeEnemy Grunt;
+    [Tooltip("Ranged prefab to spawn")]
+    public RangedEnemy RangedGrunt;
     [Tooltip("Perches for Gargoyles to Perch on")]
     public List<Transform> GargoylePerches;
     [Tooltip("Spawn points for grunts enemies")]
     public List<Transform> GruntSpawns;
     [Tooltip("Number of grunts to spawn per round")]
     public List<int> GruntCount;
+    [Tooltip("Spawn points for ranged enemies")]
+    public List<Transform> RangedSpawns;
+    [Tooltip("Number of grunts to spawn per round")]
+    public List<int> RangedCount;
     [Tooltip("Beat offset of first round. Use negative value to start conductor using script.")]
     public int BeatOffset;
     [Tooltip("Beats until gargoyles start moving")]
@@ -41,11 +47,14 @@ public class MarketplaceConductor : MonoBehaviour
 
     int mNumGargoyles;
     int mNumGrunts;
+    int mNumRanged;
 
     int mNumGargoylesKilled = 0;
     int mNumGargoylesSpawned = 0;
     int mNumGruntsKilled = 0;
     int mNumGruntsSpawned = 0;
+    int mNumRangedKilled = 0;
+    int mNumRangedSpawned = 0;
     int mRound = 0;
     int mVoiceLineIndex = 0;
 
@@ -166,6 +175,15 @@ public class MarketplaceConductor : MonoBehaviour
             enemy.HealthController.OnDeath += IncrementGruntKillCount;
             mNumGruntsSpawned += 1;
         }
+        
+        if (mNumRangedSpawned != mNumRanged && crrtBeat == mNumRangedSpawned)
+        {
+            RangedEnemy enemy = Instantiate(RangedGrunt, RangedSpawns[mNumRangedSpawned % RangedSpawns.Count].position,
+                Quaternion.identity);
+            enemy.Target = Player;
+            enemy.HealthController.OnDeath += IncrementRangedKillCount;
+            mNumRangedSpawned += 1;
+        }
     }
 
     /// <summary> Increase enemies killed by one. Update game state appropriately. </summary>
@@ -177,6 +195,7 @@ public class MarketplaceConductor : MonoBehaviour
         {
             FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
             mNumGrunts = GruntCount[mRound/2];
+            mNumRanged = RangedCount[mRound/2];
             mRound += 1;
 
             mNumGargoylesSpawned = mNumGargoylesKilled = 0;
@@ -188,7 +207,31 @@ public class MarketplaceConductor : MonoBehaviour
     {
         mNumGruntsKilled += 1;
         // Ready next round if all grunts are dead.
-        if (mNumGruntsKilled == mNumGrunts)
+        CheckIfGruntRoundOver();
+        // if (mNumGruntsKilled == mNumGrunts)
+        // {
+        //     if (mRound/2 == GruntCount.Count - 1)
+        //     {
+        //         Destroy(gameObject);
+        //     }
+        //     FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
+        //     mRound += 1;
+        //
+        //     mNumGruntsSpawned = mNumGruntsKilled = 0;
+        // }
+    }
+    
+    /// <summary> Increase enemies killed by one. Update game state appropriately. </summary>
+    void IncrementRangedKillCount()
+    {
+        mNumRangedKilled += 1;
+        // Ready next round if all grunts are dead.
+        CheckIfGruntRoundOver();
+    }
+
+    void CheckIfGruntRoundOver()
+    {
+        if (mNumRangedKilled == mNumRanged && mNumGruntsKilled == mNumGrunts)
         {
             if (mRound/2 == GruntCount.Count - 1)
             {
@@ -201,6 +244,7 @@ public class MarketplaceConductor : MonoBehaviour
             mRound += 1;
 
             mNumGruntsSpawned = mNumGruntsKilled = 0;
+            mNumRangedSpawned = mNumRangedKilled = 0;
         }
     }
 
