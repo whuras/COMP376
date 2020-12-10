@@ -78,7 +78,7 @@ MonoBehaviour:
   DashEffect: {fileID: 5636208647673372699}
   DashSoundEffect: {fileID: 8300000, guid: f02d314a948b34e449b2c4c827c39257, type: 3}
   DashCooldown: 0
-  DashSoundVolume: 0.4
+  DashSoundVolume: 1
   ScorePerHit: 50
   StreakRequiredForMultiplierIncrement: 5
 --- !u!143 &6019745202820869159
@@ -110,7 +110,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

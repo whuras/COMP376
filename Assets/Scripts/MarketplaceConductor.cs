@@ -58,6 +58,8 @@ public class MarketplaceConductor : MonoBehaviour
     int mRound = 0;
     int mVoiceLineIndex = 0;
 
+    private bool requestionConductorTransition = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,6 +83,12 @@ public class MarketplaceConductor : MonoBehaviour
 
     void Update()
     {
+        if (mRound == 5)
+        {
+            Exit?.SetActive(false);
+            Entrance?.SetActive(false);
+        }
+        
         if (mRound % 2 == 0)
         {
             GargoyleRound();
@@ -90,10 +98,10 @@ public class MarketplaceConductor : MonoBehaviour
             GruntRound();
         }
 
-        if (mRound == 5)
+        if (mRound == 2 && !requestionConductorTransition)
         {
-            Exit?.SetActive(false);
-            Entrance?.SetActive(false);
+            Conductor.RequestTransition();
+            requestionConductorTransition = true;
         }
     }
 
@@ -208,17 +216,6 @@ public class MarketplaceConductor : MonoBehaviour
         mNumGruntsKilled += 1;
         // Ready next round if all grunts are dead.
         CheckIfGruntRoundOver();
-        // if (mNumGruntsKilled == mNumGrunts)
-        // {
-        //     if (mRound/2 == GruntCount.Count - 1)
-        //     {
-        //         Destroy(gameObject);
-        //     }
-        //     FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
-        //     mRound += 1;
-        //
-        //     mNumGruntsSpawned = mNumGruntsKilled = 0;
-        // }
     }
     
     /// <summary> Increase enemies killed by one. Update game state appropriately. </summary>
@@ -233,7 +230,8 @@ public class MarketplaceConductor : MonoBehaviour
     {
         if (mNumRangedKilled == mNumRanged && mNumGruntsKilled == mNumGrunts)
         {
-            if (mRound/2 == GruntCount.Count - 1)
+            mRound += 1;
+            if (mRound/2 == GruntCount.Count - 1 && mRound/2 == RangedCount.Count - 1)
             {
                 Dust?.Stop();
                 GroundDust?.Stop();
@@ -241,7 +239,6 @@ public class MarketplaceConductor : MonoBehaviour
                 Destroy(gameObject, 15f);
             }
             FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
-            mRound += 1;
 
             mNumGruntsSpawned = mNumGruntsKilled = 0;
             mNumRangedSpawned = mNumRangedKilled = 0;
