@@ -102,8 +102,8 @@ MonoBehaviour:
   DashSpeed: 50
   DashDuration: 0.2
   SlowdownFactor: 0.2
-  DashEffect: {fileID: 0}
-  DashSoundEffect: {fileID: 0}
+  DashEffect: {fileID: 5636208647673372699}
+  DashSoundEffect: {fileID: 8300000, guid: f02d314a948b34e449b2c4c827c39257, type: 3}
   DashSoundVolume: 0.4
   ScorePerHit: 50
   StreakRequiredForMultiplierIncrement: 5
@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  canTakeDamage: 1
 --- !u!114 &1305417510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  canTakeDamage: 1
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +450,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1079
+    m_Bits: 5175
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -730,3 +732,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8acc9fbcba66d846b88f3c6c06d1940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5636208647673372699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8824646719785835000, guid: 814c70905c79f2346880a4fc9202a635, type: 3}
+  m_PrefabInstance: {fileID: 3765190196759951843}
+  m_PrefabAsset: {fileID: 0}

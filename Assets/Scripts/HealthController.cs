@@ -24,6 +24,8 @@ public class HealthController : MonoBehaviour
 
     [Tooltip("Toggles being able to take damage")]
     public bool canTakeDamage = true;
+    [Tooltip("Toggles being able to heal")]
+    public bool canHeal = true;
 
     float mCrrtHealth;
     /// <summary> Health of object normalized from 0 to 1. </summary>
@@ -62,12 +64,15 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of health added </param>
     public void Heal(float health)
     {
-        mCrrtHealth += health;
-        if (mCrrtHealth > MaxHealth)
+        if (canHeal)
         {
-            mCrrtHealth = MaxHealth;
-        }
+            mCrrtHealth += health;
+            if (mCrrtHealth > MaxHealth)
+            {
+                mCrrtHealth = MaxHealth;
+            }
 
-        OnHealed?.Invoke();
+            OnHealed?.Invoke();
+        }
     }
 }

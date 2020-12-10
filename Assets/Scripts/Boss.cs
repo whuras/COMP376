@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class Boss : MonoBehaviour
 {
@@ -32,12 +33,17 @@ public class Boss : MonoBehaviour
     private bool isHalfToggle = false;
     [Tooltip("Sound played when boss is at 50% hp")]
     public AudioClip HalfSound;
-
+    [Tooltip("Timeline reference for triggering death")]
+    public GameObject Timeline;
 
     [Header("Combat")]
     [Tooltip("Projectiles fired by boss")]
     public Projectile Projectile;
-    
+
+    [Header("Phase 2")]
+    public BossLava Lava;
+    public BossFlames Flames;
+
     int mAmmoLeft = 8;
     float mBeatReloadStart = -10;
     float mTimeOfDeath = -10f;
@@ -73,19 +79,8 @@ public class Boss : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(toTarget);
 
         Fire();
-
-        // handle 50% hp boss transition
-        if((HealthController.CurrentHealth <= (HealthController.MaxHealth / 2)) && !isHalfToggle)
-        {
-            isHalfToggle = true;
-            GameObject.Find("Lava").GetComponent<BossLava>().canMove = true;
-            mAnimator.SetTrigger("isHalf");
-            mAnimator.SetBool("isShooting", false);
-            HealthController.canTakeDamage = false;
-            EngageTimer = 0.0f;
-            EngageTime = 5.0f;
-            AudioSource.PlayClipAtPoint(HalfSound, GameObject.Find("Player").transform.position, 3f);
-        }
+        CheckPhase();
+        
     }
 
     /// <summary> Fire projectile if appropriate. </summary>
@@ -152,5 +147,30 @@ public class Boss : MonoBehaviour
         HealthBar.fillAmount = 0f;
         mTimeOfDeath = Time.time;
         Destroy(gameObject, DissolveTime);
+    }
+
+    void CheckPhase()
+    {
+        // End Game
+        if(HealthController.CurrentHealth <= 0)
+        {
+            Timeline.GetComponent<PlayableDirector>().Resume();
+        }
+
+        // handle 50% hp boss transition - Phase 2
+        if ((HealthController.CurrentHealth <= (HealthController.MaxHealth / 2)) && !isHalfToggle)
+        {
+            isHalfToggle = true;
+            Lava.canMove = true;
+            Flames.raiseFlames = true;
+            mAnimator.SetTrigger("isHalf");
+            mAnimator.SetBool("isShooting", false);
+            HealthController.canTakeDamage = false;
+            EngageTimer = 0.0f;
+            EngageTime = 5.0f;
+            HealthController.Heal(HealthController.MaxHealth);
+            GameObject.Find("Player").GetComponent<HealthController>().canHeal = false;
+            AudioSource.PlayClipAtPoint(HalfSound, GameObject.Find("Player").transform.position, 3f);
+        }
     }
 }
