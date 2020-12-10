@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1014301463}
   - component: {fileID: 645899913}
   - component: {fileID: 1305417510}
+  - component: {fileID: 4331256778458261369}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -237,8 +238,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a15d352303ddf540ab570c9cd8b9425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InvulnerableTime: 1
   MultiplierHealAmount: 10
+--- !u!114 &4331256778458261369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6019745202820869162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87d32747f44aff468e33304ddbb12f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamagedIntensity:
+  - mVignetteColor: {r: 0.2627451, g: 0.14509805, b: 0.14509805, a: 0}
+    mVignetteIntensity: 0.5
+    mVignetteSmoothness: 0.32
+    mColorContrast: 22
+    mColorSaturation: -25.5
+  - mVignetteColor: {r: 0.41960785, g: 0.14509805, b: 0.14509805, a: 0}
+    mVignetteIntensity: 0.58
+    mVignetteSmoothness: 0.375
+    mColorContrast: 28.5
+    mColorSaturation: -51
+  HurtFadeAwayTime: 2
+  HurtDuration: 1
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0

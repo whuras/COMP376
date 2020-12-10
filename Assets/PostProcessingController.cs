@@ -36,7 +36,7 @@ public class PostProcessingController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mPostProcessing = GetComponentInChildren<Volume>();
+        mPostProcessing = GameObject.Find("Post processing").GetComponent<Volume>();
 
         mPostProcessing.profile.TryGet(out mVignette);
         mPostProcessing.profile.TryGet(out mColorAdjustments);
