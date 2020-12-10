@@ -24,6 +24,11 @@ public class HealthController : MonoBehaviour
     [Tooltip("What to do when object dies")]
     public UnityAction OnDeath;
 
+    [Tooltip("Toggles being able to take damage")]
+    public bool canTakeDamage = true;
+    [Tooltip("Toggles being able to heal")]
+    public bool canHeal = true;
+
     float mCrrtHealth;
     float mLastTimeDamageTaken = -10f;
 
@@ -43,21 +48,33 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of damage dealt </param>
     public void TakeDamage(float damage)
     {
-        // Return early if object is currently invulnerable
-        if (mLastTimeDamageTaken + InvulnerabilityTime > Time.time)
-        {
-            return;
-        }
-        mLastTimeDamageTaken = Time.time;
-        mCrrtHealth -= damage;
-        if (mCrrtHealth < 0)
-        {
-            mCrrtHealth = 0;
-            OnDeath?.Invoke();
-        }
-        else
-        {
-            OnDamaged?.Invoke();
+        if (canTakeDamage){
+            // Return early if object is currently invulnerable
+            if (mLastTimeDamageTaken + InvulnerabilityTime > Time.time)
+            {
+                return;
+            }
+            mLastTimeDamageTaken = Time.time;
+            mCrrtHealth -= damage;
+            if (mCrrtHealth < 0)
+            {
+                mCrrtHealth = 0;
+                OnDeath?.Invoke();
+            }
+            else
+            {
+                Debug.Log("DamageTaken");
+                mCrrtHealth -= damage;
+                if (mCrrtHealth < 0)
+                {
+                    mCrrtHealth = 0;
+                    OnDeath?.Invoke();
+                }
+                else
+                {
+                    OnDamaged?.Invoke();
+                }
+            }
         }
     }
 
@@ -65,12 +82,15 @@ public class HealthController : MonoBehaviour
     /// <param name="damage"> Amount of health added </param>
     public void Heal(float health)
     {
-        mCrrtHealth += health;
-        if (mCrrtHealth > MaxHealth)
+        if (canHeal)
         {
-            mCrrtHealth = MaxHealth;
-        }
+            mCrrtHealth += health;
+            if (mCrrtHealth > MaxHealth)
+            {
+                mCrrtHealth = MaxHealth;
+            }
 
-        OnHealed?.Invoke();
+            OnHealed?.Invoke();
+        }
     }
 }

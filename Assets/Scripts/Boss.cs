@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class Boss : MonoBehaviour
 {
@@ -22,11 +23,27 @@ public class Boss : MonoBehaviour
     public Dissolve Dissolve;
     [Tooltip("Time taken to dissolve boss on death")]
     public float DissolveTime = 2f;
+    [Tooltip("Delay Time for Boss to engage")]
+    public float EngageTime = 12.0f;
+    private float EngageTimer = 0.0f;
+
+    [Tooltip("Boss Gameobject that the Animator is on")]
+    public GameObject BossModel;
+    private Animator mAnimator;
+    private bool isHalfToggle = false;
+    [Tooltip("Sound played when boss is at 50% hp")]
+    public AudioClip HalfSound;
+    [Tooltip("Timeline reference for triggering death")]
+    public GameObject Timeline;
 
     [Header("Combat")]
     [Tooltip("Projectiles fired by boss")]
     public Projectile Projectile;
-    
+
+    [Header("Phase 2")]
+    public BossLava Lava;
+    public BossFlames Flames;
+
     int mAmmoLeft = 8;
     float mBeatReloadStart = -10;
     float mTimeOfDeath = -10f;
@@ -36,9 +53,11 @@ public class Boss : MonoBehaviour
     /// <summary> Get references and add actions. </summary>
     void Start()
     {
+        mAnimator = BossModel.GetComponent<Animator>();
         mConductor = Conductor.GetActiveConductor();
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
+        HealthController.canTakeDamage = false;
         
         // To Be Deleted, shooting is too loud for the voice lines
         AudioSource.volume = .05f;
@@ -60,39 +79,59 @@ public class Boss : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(toTarget);
 
         Fire();
+        CheckPhase();
+        
     }
 
     /// <summary> Fire projectile if appropriate. </summary>
     void Fire()
     {
-        // Reload if no ammo
-        if (mAmmoLeft == 0)
+        if(!(EngageTimer >= EngageTime))
         {
-            if (mConductor.GetBeat() > mBeatReloadStart + 4)
+            EngageTimer += Time.deltaTime;
+        }
+        else
+        {
+            HealthController.canTakeDamage = true;
+
+            if (mAmmoLeft == 0)
             {
-                mAmmoLeft = 8;
+                mAnimator.SetBool("isShooting", false);
             }
             else
             {
-                return;
+                mAnimator.SetBool("isShooting", true);
             }
-        }
 
-        // Fire on half-beats
-        if ((mConductor.GetBeat(2) - mAmmoLeft) % 2 == 0)
-        {
-            Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
-            newProjectile.Owner = HealthController.gameObject;
-            newProjectile.Damage = 5f;
-            AudioSource.pitch = 0.95f + 0.1f * (mAmmoLeft % 2);
-            AudioSource.PlayOneShot(FireSFX);
-            mAmmoLeft--;
-        }
+            // Reload if no ammo
+            if (mAmmoLeft == 0)
+            {
+                if (mConductor.GetBeat() > mBeatReloadStart + 4)
+                {
+                    mAmmoLeft = 8;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            // Fire on half-beats
+            if ((mConductor.GetBeat(2) - mAmmoLeft) % 2 == 0)
+            {
+                Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
+                newProjectile.Owner = HealthController.gameObject;
+                newProjectile.Damage = 5f;
+                AudioSource.pitch = 0.95f + 0.1f * (mAmmoLeft % 2);
+                AudioSource.PlayOneShot(FireSFX);
+                mAmmoLeft--;
+            }
         
-        // Reload if no ammo
-        if (mAmmoLeft == 0)
-        {
-            mBeatReloadStart = mConductor.GetBeat();
+            // Reload if no ammo
+            if (mAmmoLeft == 0)
+            {
+                mBeatReloadStart = mConductor.GetBeat();
+            }
         }
     }
 
@@ -108,5 +147,30 @@ public class Boss : MonoBehaviour
         HealthBar.fillAmount = 0f;
         mTimeOfDeath = Time.time;
         Destroy(gameObject, DissolveTime);
+    }
+
+    void CheckPhase()
+    {
+        // End Game
+        if(HealthController.CurrentHealth <= 0)
+        {
+            Timeline.GetComponent<PlayableDirector>().Resume();
+        }
+
+        // handle 50% hp boss transition - Phase 2
+        if ((HealthController.CurrentHealth <= (HealthController.MaxHealth / 2)) && !isHalfToggle)
+        {
+            isHalfToggle = true;
+            Lava.canMove = true;
+            Flames.raiseFlames = true;
+            mAnimator.SetTrigger("isHalf");
+            mAnimator.SetBool("isShooting", false);
+            HealthController.canTakeDamage = false;
+            EngageTimer = 0.0f;
+            EngageTime = 5.0f;
+            HealthController.Heal(HealthController.MaxHealth);
+            GameObject.Find("Player").GetComponent<HealthController>().canHeal = false;
+            AudioSource.PlayClipAtPoint(HalfSound, GameObject.Find("Player").transform.position, 3f);
+        }
     }
 }

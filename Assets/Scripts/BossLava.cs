@@ -18,14 +18,14 @@ public class BossLava : MonoBehaviour
     private int nextSink = 0;
 
     private bool isUp = false;
-    private Vector3 downPos;
-    private Vector3 upPos = new Vector3(0, 7.0f, 0);
+    public Vector3 downPos = new Vector3(0, 5.0f, 0);
+    public Vector3 upPos = new Vector3(0, 7.0f, 0);
+
+    public bool canMove = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        downPos = transform.position;
-
         for (int i = 0; i < sinkSections.Count; i++)
         {
             sinkSectionsUpPos.Add(sinkSections[i].transform.position);
@@ -36,7 +36,7 @@ public class BossLava : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(nextSink < 4)
+        if(nextSink < 4 && canMove)
         {
             timer += Time.deltaTime;
 

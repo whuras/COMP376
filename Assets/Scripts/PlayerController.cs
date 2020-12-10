@@ -220,8 +220,12 @@ public class PlayerController : MonoBehaviour
     /// <summary> Update whether or not player is grounded. </summary>
     void CheckIfGrounded()
     {
-        mIsGrounded = mTimeLastJump + 0.2f < Time.time
-                    && Physics.Raycast(transform.position, Vector3.down, 1.6f);
+        int groundMask = 1 << 12;
+        groundMask = ~groundMask;
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, Vector3.down, 1.6f, groundMask);
+
+        mIsGrounded = (mTimeLastJump + 0.2f < Time.time)
+                    && (hits.Length > 0);
     }
 
     /// <summary> Play footstep sound effect depending on ground material and player speed. </summary>
