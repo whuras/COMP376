@@ -48,14 +48,14 @@ public class MainroadConductor : MonoBehaviour
     /// <summary> Start function. </summary>
     void Start()
     {
-        if (gameObject.tag == "MainRoad")
-        {
-            if (BeatOffset < 0)
-            {
-                mRoundBeatOffset = int.MaxValue;
-            }
-            mRoundBeatOffset = BeatOffset;
-        }
+        //if (gameObject.tag == "MainRoad")
+        //{
+        //    if (BeatOffset < 0)
+        //    {
+        //        mRoundBeatOffset = int.MaxValue;
+        //    }
+        //    mRoundBeatOffset = BeatOffset;
+        //}
         mConductor = Conductor.GetActiveConductor();
     }
 
