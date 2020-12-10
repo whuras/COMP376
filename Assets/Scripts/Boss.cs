@@ -55,6 +55,7 @@ public class Boss : MonoBehaviour
     {
         mAnimator = BossModel.GetComponent<Animator>();
         mConductor = Conductor.GetActiveConductor();
+        mConductor.RequestTransition();
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
         HealthController.canTakeDamage = false;
@@ -154,12 +155,14 @@ public class Boss : MonoBehaviour
         // End Game
         if(HealthController.CurrentHealth <= 0)
         {
+            mConductor.RequestTransition();
             Timeline.GetComponent<PlayableDirector>().Resume();
         }
 
         // handle 50% hp boss transition - Phase 2
         if ((HealthController.CurrentHealth <= (HealthController.MaxHealth / 2)) && !isHalfToggle)
         {
+            mConductor.RequestTransition();
             isHalfToggle = true;
             Lava.canMove = true;
             Flames.raiseFlames = true;
