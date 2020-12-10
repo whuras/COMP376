@@ -212,7 +212,7 @@ public class Weapon : MonoBehaviour
             if (target != null)
             {
                 // Deal damage.
-                float damageGiven = Damage * ComputeDamageModifier();
+                float damageGiven = Damage * (IsShotOnBeat() ? 1 : 0);
                 target.TakeDamage(damageGiven);
         
                 if (IsShotOnBeat())
@@ -239,7 +239,7 @@ public class Weapon : MonoBehaviour
     void FireProjectile()
     {
         Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
-        float damageGiven = Damage * ComputeDamageModifier();
+        float damageGiven = Damage * (IsShotOnBeat() ? 1 : 0);
         newProjectile.Damage = damageGiven;
         newProjectile.Owner = gameObject;
         

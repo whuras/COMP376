@@ -55,7 +55,7 @@ MonoBehaviour:
   Range: 500
   Period: 0.2
   ClipSize: 6
-  BeatTolerance: 0.3
+  BeatTolerance: 0.5
   GunfireVisualEffects: {fileID: 157586, guid: 2574ca206a571a342a7fab69fdfb87aa, type: 3}
   GunfireSoundEffects:
   - {fileID: 8300000, guid: f9519224c45149c4cbba6206a2200e28, type: 3}
