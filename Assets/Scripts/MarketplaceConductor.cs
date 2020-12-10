@@ -91,7 +91,6 @@ public class MarketplaceConductor : MonoBehaviour
     void GargoyleRound()
     {
         int crrtBeat = Conductor.GetBeat() - FirstBeat;
-        Debug.Log(crrtBeat);
 
         // Return early if round has not begun
         if (crrtBeat < 0)
@@ -208,8 +207,8 @@ public class MarketplaceConductor : MonoBehaviour
     /// <summary> If BeatOffset is set to some negative value, conductor will wait for this function to be called with a future beat to start. </summary>
     public void StartConductor(int startBeat)
     {
-        Debug.Log(startBeat);
         BeatOffset = startBeat;
+        FirstBeat = startBeat;
         Dust?.Play();
         GroundDust?.Play();
         Entrance?.SetActive(true);
