@@ -64,7 +64,9 @@ public class Level2Director : MonoBehaviour
 
     public void ToggleMainRoadConductorStart()
     {
-        MainRoadConductor.GetComponent<MainroadConductor>().StartConductor((mConductor.GetComponent<Conductor>().GetBeat() / 4 + 1) * 4);
+        MainRoadConductor.SetActive(true);
+        mConductor = Conductor.GetActiveConductor();
+        MainRoadConductor.GetComponent<MainroadConductor>().StartConductor(((mConductor.GetBeat() / 4 + 1) * 4) + 13);
     }
 
     public void PauseTimeLine()
