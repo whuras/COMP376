@@ -94,6 +94,7 @@ public class MainroadConductor : MonoBehaviour
         }
     }
 
+
     /// <summary> Increase enemies killed by one. Update game state as necessary. </summary>
     void IncrementKillCount()
     {
