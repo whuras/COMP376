@@ -13,15 +13,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1615922678648469072, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.332138
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1615922678648469072, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.053
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1615922678648469072, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.919211
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1615922678648469072, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -75,6 +75,10 @@ PrefabInstance:
       propertyPath: mAnimator
       value: 
       objectReference: {fileID: 5159209817638186097}
+    - target: {fileID: 9135804140672610386, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
+      propertyPath: CanRetreat
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9135804140672610386, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: CanChasePlayer
       value: 0
