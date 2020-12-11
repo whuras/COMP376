@@ -116,6 +116,11 @@ public class PlayerController : MonoBehaviour
     int mHitStreak = 0;
     float mScoreDrainTime = -10f;
 
+    void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     /// <summary> Get referenced objects. </summary>
     void Start()
     {
@@ -132,7 +137,6 @@ public class PlayerController : MonoBehaviour
         AudioSource[] audioSources = GetComponents<AudioSource>();
         mAudioSource = audioSources[0];
         mHitAudioSource = audioSources[1];
-        Cursor.lockState = CursorLockMode.Locked;
 
         // Disable Toggles turned off by default
         mDisableMovement = false;
