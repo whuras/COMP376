@@ -7,6 +7,11 @@ public class ChangeLevel2Conductor : MonoBehaviour
     public Conductor MainConductor;
     public GameObject NewConductor;
 
+    void Start()
+    {
+        MainConductor = Conductor.GetActiveConductor();
+    }
+    
     private void OnTriggerExit(Collider other)
     {
         NewConductor.SetActive(true);

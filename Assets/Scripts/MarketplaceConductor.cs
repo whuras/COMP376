@@ -68,7 +68,7 @@ public class MarketplaceConductor : MonoBehaviour
             FirstBeat = int.MaxValue;
         }
         FirstBeat = BeatOffset;
-
+        Conductor = Conductor.GetActiveConductor();
         mNumGargoyles = GargoylePerches.Count;
         mGargoyles = new Gargoyle[mNumGargoyles];
         mInitialAngles = new float[mNumGargoyles];

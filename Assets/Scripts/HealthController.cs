@@ -55,7 +55,6 @@ public class HealthController : MonoBehaviour
                 return;
             }
             mLastTimeDamageTaken = Time.time;
-            mCrrtHealth -= damage;
             if (mCrrtHealth < 0)
             {
                 mCrrtHealth = 0;
@@ -63,7 +62,6 @@ public class HealthController : MonoBehaviour
             }
             else
             {
-                Debug.Log("DamageTaken");
                 mCrrtHealth -= damage;
                 if (mCrrtHealth < 0)
                 {

@@ -13,14 +13,15 @@ public class GameOverScreen : MonoBehaviour
     public Text[] TextObjects;
 
     private float mStartTime;
-    private AudioSource mAudioSource;
-    
+    private Conductor mConductor;
+
     // Start is called before the first frame update
     void Start()
     {
         mStartTime = Time.time;
-        mAudioSource = GetComponent<AudioSource>();
-        mAudioSource.Play();
+        mConductor = Conductor.GetActiveConductor();
+        mConductor.RequestDeathJingle();
+        Destroy(Conductor.GetActiveConductorGameObject(), TimeBeforeReset);
         //disable player hud
     }
 
@@ -35,7 +36,6 @@ public class GameOverScreen : MonoBehaviour
 
         if (currentTime > mStartTime + TimeBeforeReset)
         {
-            Destroy(Conductor.GetActiveConductorGameObject());
             SceneManager.LoadScene("_Start");
         }
     }

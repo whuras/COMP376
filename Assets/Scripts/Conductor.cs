@@ -26,6 +26,7 @@ public class Conductor : MonoBehaviour
 
     private Queue<MusicFrame> MusicFrames;
     private MusicFrame mCurrentFrame;
+    private MusicFrame mDeathFrame;
 
 
     public static Conductor GetActiveConductor()
@@ -65,6 +66,7 @@ public class Conductor : MonoBehaviour
         MusicFrames.Enqueue(new MusicFrame("Level 3 Low Intensity", 351.652F,355.826F,420.521F,false));
         MusicFrames.Enqueue(new MusicFrame("Level 3 High Intensity", 420.521F,441.391F,485.217F,true));
         MusicFrames.Enqueue(new MusicFrame("Credits", 485.217F,535.304F,566.000F,false));
+        mDeathFrame = new MusicFrame("Death", 542.912F,542.912F,560.000F,true);
         
         mCurrentFrame = MusicFrames.Dequeue();
 
@@ -126,7 +128,12 @@ public class Conductor : MonoBehaviour
 
     public void RequestTransition()
     {
-        HandleTransition();
+        HandleTransition(MusicFrames.Dequeue());
+    }
+
+    public void RequestDeathJingle()
+    {
+        HandleTransition(mDeathFrame);
     }
 
     private void HandleLoop()
@@ -150,12 +157,12 @@ public class Conductor : MonoBehaviour
         }
     }
 
-    private void HandleTransition()
+    private void HandleTransition(MusicFrame transitionTo)
     {
         AudioSource toPlay = mMusicSources[mAudioSourcePlaying ? 1 : 0];
         AudioSource toStop = mMusicSources[mAudioSourcePlaying ? 0 : 1];
 
-        mCurrentFrame = MusicFrames.Dequeue();
+        mCurrentFrame = transitionTo;
         toPlay.time = mCurrentFrame.IntroStartTime;
 
         // Find the timestamp for the next bar end
