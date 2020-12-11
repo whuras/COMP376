@@ -42,6 +42,7 @@ public class Conductor : MonoBehaviour
         if (conductor == null)
         {
             conductor = (GameObject)GameObject.Instantiate(Resources.Load("Conductor"));
+            
             conductor.name = "Conductor";
         }
 
@@ -49,7 +50,7 @@ public class Conductor : MonoBehaviour
     }
     
     /// <summary> Get references to game objects, initialize settings, and start music. </summary>
-    void Start()
+    void Awake()
     {    
         // Get the audio sources attached to the game object
         mMusicSources = GetComponents<AudioSource>();

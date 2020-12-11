@@ -250,7 +250,6 @@ public class PlayerController : MonoBehaviour
         mScoreDrainTime = -10f;
         mMultiplier = 1;
         mHitStreak = 0;
-        OnMultiplierIncrement?.Invoke();
     }
     
     /// <summary> Update whether or not player is grounded. </summary>

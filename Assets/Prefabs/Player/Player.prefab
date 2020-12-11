@@ -79,13 +79,14 @@ MonoBehaviour:
   SlowdownFactor: 0.2
   DashEffect: {fileID: 5636208647673372699}
   DashSoundEffect: {fileID: 8300000, guid: f02d314a948b34e449b2c4c827c39257, type: 3}
-  DashCooldown: 0
+  DashCooldown: 1
   DashSoundVolume: 1
   ScorePerHit: 50
   TimeRequiredForMultiplierIncrease: 10
   TimeIncreaseForSuccessfulHit: 3
   HitSFX: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
   MissSFX: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
+  MultiplierSFX: {fileID: 0}
 --- !u!143 &6019745202820869159
 CharacterController:
   m_ObjectHideFlags: 0
@@ -116,7 +117,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -244,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a15d352303ddf540ab570c9cd8b9425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MultiplierHealAmount: 0
+  MultiplierHealAmount: 10
 --- !u!82 &5698490940262127773
 AudioSource:
   m_ObjectHideFlags: 0

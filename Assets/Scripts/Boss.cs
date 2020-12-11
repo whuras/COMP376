@@ -31,11 +31,16 @@ public class Boss : MonoBehaviour
     public GameObject BossModel;
     private Animator mAnimator;
     private bool isHalfToggle = false;
+    [Tooltip("Sound played when boss fight starts")]
+    public AudioClip StartSound;
     [Tooltip("Sound played when boss is at 50% hp")]
     public AudioClip HalfSound;
     [Tooltip("Timeline reference for triggering death")]
     public GameObject Timeline;
 
+    public float DelayForStartSound;
+    public float DelayForHalfSound;
+    
     [Header("Combat")]
     [Tooltip("Projectiles fired by boss")]
     public Projectile Projectile;
@@ -52,11 +57,18 @@ public class Boss : MonoBehaviour
     float mBeatReloadStart = -10;
     float mTimeOfDeath = -10f;
 
+    private bool playedStartSound = false;
+    private float bossInstantiatedTime;
+
+    private bool needsToPlayHalfSound = false;
+    private float halfSoundScheduleTime;
+
     private Conductor mConductor;
     
     /// <summary> Get references and add actions. </summary>
     void Start()
     {
+        bossInstantiatedTime = Time.time;
         mAnimator = BossModel.GetComponent<Animator>();
         mConductor = Conductor.GetActiveConductor();
         mConductor.RequestTransition();
@@ -68,6 +80,18 @@ public class Boss : MonoBehaviour
     /// <summary> Update function. </summary>
     void Update()
     {
+        if (!playedStartSound && Time.time >= bossInstantiatedTime + DelayForStartSound)
+        {
+            playedStartSound = true;
+            AudioSource.PlayOneShot(StartSound, 1f);
+        }
+
+        if (needsToPlayHalfSound && Time.time >= halfSoundScheduleTime + DelayForHalfSound)
+        {
+            needsToPlayHalfSound = false;
+            AudioSource.PlayOneShot(HalfSound, 1f);
+        }
+        
         // Dissolve out if dead
         float dissolveProgress = (Time.time - mTimeOfDeath) / DissolveTime;
         if (dissolveProgress < 1 && dissolveProgress > 0)
@@ -176,7 +200,8 @@ public class Boss : MonoBehaviour
             EngageTime = 5.0f;
             HealthController.Heal(HealthController.MaxHealth);
             GameObject.Find("Player").GetComponent<HealthController>().canHeal = false;
-            AudioSource.PlayOneShot(HalfSound, 1f);
+            needsToPlayHalfSound = true;
+            halfSoundScheduleTime = Time.time;
         }
     }
 }
