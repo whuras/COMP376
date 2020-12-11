@@ -102,8 +102,10 @@ public class RangedEnemy : Enemy
     public Dissolve Dissolve;
     [Tooltip("Duration of dissolve effect")]
     public float DissolveTime = 2f;
-    
-    
+
+    [Tooltip("Model which the Animator is attached to")]
+    public Animator mAnimator;
+
     // States
     private bool mIsAlive;
     private bool mWasHitLastFrame;
@@ -171,6 +173,8 @@ public class RangedEnemy : Enemy
         {
             Dissolve.SetDissolved(dissolveProgress);
         }
+
+        WalkingAnimation();
     }
 
     private void AttackPlayer()
@@ -180,10 +184,9 @@ public class RangedEnemy : Enemy
         if (mAttackBeat == mConductor.GetBeat() % mConductor.BarLength && Time.time >= mTimeLastAttack + TimeBetweenAttacks)
         {
             mTimeLastAttack = Time.time;
-            Projectile newProjectile = Instantiate(Projectile, GunPoint.transform.position, Quaternion.LookRotation(_Target.transform.position - GunPoint.transform.position));
-            newProjectile.Damage = AttackDamage;
-            newProjectile.Owner = gameObject;    
-            mFireSFX.Play();
+            mAnimator.SetTrigger("CastSpell");
+            GetComponent<NavMeshAgent>().enabled = false;
+            Invoke("FireBullet", 0.5f);
         }
 
         if (!CanChasePlayer)
@@ -282,5 +285,37 @@ public class RangedEnemy : Enemy
     private void OnDamaged()
     {
         mWasHitLastFrame = true;
+    }
+
+    private void FireBullet()
+    {
+        Projectile newProjectile = Instantiate(Projectile, GunPoint.transform.position, Quaternion.LookRotation(_Target.transform.position - GunPoint.transform.position));
+        newProjectile.Damage = AttackDamage;
+        newProjectile.Owner = gameObject;
+        mFireSFX.Play();
+        GetComponent<NavMeshAgent>().enabled = true;
+    }
+
+    private void WalkingAnimation()
+    {
+        Vector3 normalizedMovement = GetComponent<NavMeshAgent>().desiredVelocity.normalized;
+        Vector3 rightVector = Vector3.Project(normalizedMovement, transform.right);
+        float rightVelocity = rightVector.magnitude * Vector3.Dot(rightVector, transform.right);
+        if (rightVelocity > 0)
+        {
+            mAnimator.SetBool("WalkRight", true);
+        }
+        else
+        {
+            mAnimator.SetBool("WalkRight", false);
+        }
+        if (rightVelocity < 0)
+        {
+            mAnimator.SetBool("WalkLeft", true);
+        }
+        else
+        {
+            mAnimator.SetBool("WalkLeft", false);
+        }
     }
 }
