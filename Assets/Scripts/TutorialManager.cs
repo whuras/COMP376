@@ -75,7 +75,7 @@ public class TutorialManager : MonoBehaviour
     public void StartPhaseThree()
     {
         goalText.text = "Chase The Bartender!";
-        tipText.text = "Tip: Double tap a movement key to dash!";
+        tipText.text = "Tip: Right Mouse Button to dash!";
     }
 
     // Used by Bottle script
