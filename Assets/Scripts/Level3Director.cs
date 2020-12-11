@@ -11,13 +11,16 @@ public class Level3Director : MonoBehaviour
 
     public GameObject Credits;
 
+    private AudioSource AudioSource;
+    public AudioClip TadaSound;
+
     // Need a camera when player is deactivated (ie. during credits)
     public GameObject Camera;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        AudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -28,6 +31,7 @@ public class Level3Director : MonoBehaviour
 
     public void ActivateCreditScreen()
     {
+        AudioSource.PlayOneShot(TadaSound, 1f);
         Credits.SetActive(true);
         Camera.SetActive(true);
     }

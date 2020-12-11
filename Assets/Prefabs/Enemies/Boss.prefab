@@ -1151,8 +1151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021d07f476b953648ab8d4aab01ddddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 300
+  InvulnerabilityTime: 0
   canTakeDamage: 1
+  canHeal: 1
 --- !u!135 &7045269694272242088
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1779,8 +1781,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7045269694515427663}
   - component: {fileID: 7045269694709088943}
-  - component: {fileID: 7045269694709088928}
   - component: {fileID: 7045269695604771520}
+  - component: {fileID: 7045269694709088928}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -1830,9 +1832,30 @@ MonoBehaviour:
   EngageTime: 12
   BossModel: {fileID: 7045269693967342885}
   HalfSound: {fileID: 8300000, guid: 8950fe94d2c92f446a119327ced5c260, type: 3}
+  Timeline: {fileID: 0}
   Projectile: {fileID: 7841898570000956669, guid: 3be43ce5d1c84284b9a5358a8333e332, type: 3}
   Lava: {fileID: 0}
   Flames: {fileID: 0}
+  DeathSound: {fileID: 0}
+--- !u!95 &7045269695604771520
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7045269694709088930}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!82 &7045269694709088928
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1929,25 +1952,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &7045269695604771520
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7045269694709088930}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7045269694712313176
 GameObject:
   m_ObjectHideFlags: 0
