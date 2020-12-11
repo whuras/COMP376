@@ -70,7 +70,6 @@ public class MeleeEnemy : Enemy
         float distanceToTarget = (Target.position - transform.position).magnitude;
         if (distanceToTarget < AttackRange || Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
-            Debug.Log("WithinRange");
             NavMeshAgent.enabled = false;
             if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
