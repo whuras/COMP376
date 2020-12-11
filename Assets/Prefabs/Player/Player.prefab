@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1014301463}
   - component: {fileID: 645899913}
   - component: {fileID: 1305417510}
+  - component: {fileID: 5580977444479269252}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -224,8 +225,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  canTakeDamage: 1
   InvulnerabilityTime: 0
+  canTakeDamage: 1
+  canHeal: 1
 --- !u!114 &1305417510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a15d352303ddf540ab570c9cd8b9425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MultiplierHealAmount: 0
 --- !u!114 &5580977444479269252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,8 +254,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  InvulnerabilityTime: 0
   canTakeDamage: 1
-  MultiplierHealAmount: 10
+  canHeal: 1
 --- !u!1 &6019745203006177886
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +429,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 5175
+    m_Bits: 9271
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

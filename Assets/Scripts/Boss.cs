@@ -44,6 +44,10 @@ public class Boss : MonoBehaviour
     public BossLava Lava;
     public BossFlames Flames;
 
+    [Header("Boss Death")]
+    private bool isDead;
+    public AudioClip DeathSound;
+
     int mAmmoLeft = 8;
     float mBeatReloadStart = -10;
     float mTimeOfDeath = -10f;
@@ -58,9 +62,6 @@ public class Boss : MonoBehaviour
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
         HealthController.canTakeDamage = false;
-        
-        // To Be Deleted, shooting is too loud for the voice lines
-        AudioSource.volume = .05f;
     }
 
     /// <summary> Update function. </summary>
@@ -90,7 +91,7 @@ public class Boss : MonoBehaviour
         {
             EngageTimer += Time.deltaTime;
         }
-        else
+        else if(!isDead)
         {
             HealthController.canTakeDamage = true;
 
@@ -123,7 +124,7 @@ public class Boss : MonoBehaviour
                 newProjectile.Owner = HealthController.gameObject;
                 newProjectile.Damage = 5f;
                 AudioSource.pitch = 0.95f + 0.1f * (mAmmoLeft % 2);
-                AudioSource.PlayOneShot(FireSFX);
+                AudioSource.PlayOneShot(FireSFX, 0.5f);
                 mAmmoLeft--;
             }
         
@@ -152,8 +153,10 @@ public class Boss : MonoBehaviour
     void CheckPhase()
     {
         // End Game
-        if(HealthController.CurrentHealth <= 0)
+        if(HealthController.CurrentHealth <= 0 && !isDead)
         {
+            isDead = true;
+            AudioSource.PlayOneShot(DeathSound, 1f);
             Timeline.GetComponent<PlayableDirector>().Resume();
         }
 
@@ -170,7 +173,7 @@ public class Boss : MonoBehaviour
             EngageTime = 5.0f;
             HealthController.Heal(HealthController.MaxHealth);
             GameObject.Find("Player").GetComponent<HealthController>().canHeal = false;
-            AudioSource.PlayClipAtPoint(HalfSound, GameObject.Find("Player").transform.position, 3f);
+            AudioSource.PlayOneShot(HalfSound, 1f);
         }
     }
 }
