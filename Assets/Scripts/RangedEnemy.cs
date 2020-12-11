@@ -293,7 +293,10 @@ public class RangedEnemy : Enemy
         newProjectile.Damage = AttackDamage;
         newProjectile.Owner = gameObject;
         mFireSFX.Play();
-        GetComponent<NavMeshAgent>().enabled = true;
+        if (CanChasePlayer || CanWander)
+        {
+            GetComponent<NavMeshAgent>().enabled = true;
+        }
     }
 
     private void WalkingAnimation()

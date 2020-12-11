@@ -83,10 +83,11 @@ public class MarketplaceConductor : MonoBehaviour
 
     void Update()
     {
-        if (mRound == 5)
+        if (mRound == 6)
         {
             Exit?.SetActive(false);
             Entrance?.SetActive(false);
+            return;
         }
         
         if (mRound % 2 == 0)
@@ -98,7 +99,7 @@ public class MarketplaceConductor : MonoBehaviour
             GruntRound();
         }
 
-        if (mRound == 2 && !requestionConductorTransition)
+        if (mRound == 3 && !requestionConductorTransition)
         {
             Conductor.RequestTransition();
             requestionConductorTransition = true;
@@ -230,14 +231,14 @@ public class MarketplaceConductor : MonoBehaviour
     {
         if (mNumRangedKilled == mNumRanged && mNumGruntsKilled == mNumGrunts)
         {
-            mRound += 1;
-            if (mRound/2 == GruntCount.Count - 1 && mRound/2 == RangedCount.Count - 1)
+            if (mRound == 5)
             {
                 Dust?.Stop();
                 GroundDust?.Stop();
                 Exit?.SetActive(false);
                 Destroy(gameObject, 15f);
             }
+            mRound += 1;
             FirstBeat = ((Conductor.GetBeat() / 4) + 2) * 4;
 
             mNumGruntsSpawned = mNumGruntsKilled = 0;
