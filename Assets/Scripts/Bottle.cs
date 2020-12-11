@@ -29,6 +29,7 @@ public class Bottle : MonoBehaviour
     /// <summary> Cache components. </summary>
     private void Start()
     {
+        Weapon.OnUnsuccessfulHit += MissedBottle;
         mHealthController = gameObject.GetComponent<HealthController>();
         mHealthController.OnDeath += OnDamaged;
         mConductor = Conductor.GetActiveConductor();
@@ -64,6 +65,7 @@ public class Bottle : MonoBehaviour
             // If on second phase of tutorial, add 1 to combo when shooting large bottle
             if (mTutorialManager.GetTutorialPhaseTwoStarted())
             {
+                Debug.Log("hit");
                 mTutorialManager.UpdateShotCount(1);
             }
             // Play positive hit sound if bottle was not destroyed and one exists.
@@ -82,22 +84,18 @@ public class Bottle : MonoBehaviour
                 Destroy();
             }
         }
-        // Else, play missed beat sfx.
-        else
+    }
+
+    private void MissedBottle()
+    {
+        // If on second phase of tutorial, subtract 1 from combo when shooting large bottle
+        if (mTutorialManager.GetTutorialPhaseTwoStarted())
         {
-            // If on second phase of tutorial, subtract 1 from combo when shooting large bottle
-            if (mTutorialManager.GetTutorialPhaseTwoStarted())
+            Debug.Log("miss");
+            mTutorialManager.UpdateShotCount(-1);
+            if (mCrrtHealth < 5)
             {
-                mTutorialManager.UpdateShotCount(-1);
-                if (mCrrtHealth < 5)
-                {
-                    mCrrtHealth++;
-                }
-            }
-            if (MissedBeatSound)
-            {
-                mAudioSource.pitch = 1;
-                mAudioSource.PlayOneShot(MissedBeatSound);
+                mCrrtHealth = 5;
             }
         }
     }
