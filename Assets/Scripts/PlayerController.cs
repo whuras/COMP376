@@ -126,6 +126,13 @@ public class PlayerController : MonoBehaviour
         // Disable Toggles turned off by default
         mDisableMovement = false;
         mDisableWeapons = false;
+
+        if (Weapon.OnSuccessfulHit?.GetInvocationList().Length != 0 ||
+            Weapon.OnUnsuccessfulHit?.GetInvocationList().Length != 0)
+        {
+            Weapon.OnSuccessfulHit = null;
+            Weapon.OnUnsuccessfulHit = null;
+        }
         
         // Setup weapon/score update delegates
         Weapon.OnSuccessfulHit += IncrementHitStreak;
