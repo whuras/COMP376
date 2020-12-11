@@ -60,6 +60,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 1
   InvulnerabilityTime: 0
+  canTakeDamage: 1
+  canHeal: 1
 --- !u!1 &1615922678648469083
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,6 +149,7 @@ MonoBehaviour:
   RetreatDistanceMax: 10
   Dissolve: {fileID: 894929083}
   DissolveTime: 2
+  mAnimator: {fileID: 4576113479135192766}
   GunPoint: {fileID: 1615922679078209292}
 --- !u!195 &1615922678648469084
 NavMeshAgent:
@@ -158,7 +161,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -429,6 +432,11 @@ PrefabInstance:
 --- !u!4 &4576113479135192765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1495469742207777439, guid: f4b49a86063fea74ba0f20a0f20c8043, type: 3}
+  m_PrefabInstance: {fileID: 3116885908995529762}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4576113479135192766 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1495469742207777436, guid: f4b49a86063fea74ba0f20a0f20c8043, type: 3}
   m_PrefabInstance: {fileID: 3116885908995529762}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4576113478804701989 stripped

@@ -72,6 +72,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9135804140672610386, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
+      propertyPath: mAnimator
+      value: 
+      objectReference: {fileID: 5159209817638186097}
+    - target: {fileID: 9135804140672610386, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
       propertyPath: CanChasePlayer
       value: 0
       objectReference: {fileID: 0}
@@ -88,6 +92,11 @@ PrefabInstance:
 --- !u!82 &7990699435417523730 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: -7567166931912155939, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
+  m_PrefabInstance: {fileID: 8653859134257679055}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5159209817638186097 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4576113479135192766, guid: b32e4a06b04e19543be5fe5362dfc4d5, type: 3}
   m_PrefabInstance: {fileID: 8653859134257679055}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8653859134126385765 stripped
