@@ -1704,9 +1704,7 @@ PlayableDirector:
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: 2124030881826647829, guid: c306fdacfaf7cbf4099f21890a173c57, type: 2}
-    value: {fileID: 0}
+  m_SceneBindings: []
   m_ExposedReferences:
     m_References:
     - 6f3acab6261ac254493be0d92011b721: {fileID: 918758613}
@@ -13676,10 +13674,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7045269694272242089, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
-      propertyPath: MaxHealth
-      value: 300
-      objectReference: {fileID: 0}
     - target: {fileID: 7045269694515427663, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -13724,14 +13718,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7045269694709088928, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7045269694709088928, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7045269694709088930, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
       propertyPath: m_Name
       value: Boss
@@ -13752,10 +13738,6 @@ PrefabInstance:
       propertyPath: Timeline
       value: 
       objectReference: {fileID: 1852595602}
-    - target: {fileID: 7045269694709088943, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
-      propertyPath: DeathSound
-      value: 
-      objectReference: {fileID: 8300000, guid: ea8255807303a984b8017a7246acf165, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1553330033e52f2458d426fbd94e06ab, type: 3}
 --- !u!198 &8647984319953857385
