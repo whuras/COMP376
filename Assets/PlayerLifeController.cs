@@ -9,6 +9,7 @@ public class PlayerLifeController : MonoBehaviour
     private PlayerInterface mPlayerHUD;
     private PlayerController mPlayerController;
     private HealthController mHealthController;
+    private bool mPlayerDied = false;
     
     // Start is called before the first frame update
     void Start()
@@ -36,6 +37,10 @@ public class PlayerLifeController : MonoBehaviour
 
     public void OnPlayerDeath()
     {
-        GameObject.Instantiate(Resources.Load("GameOverScreen"));
+        if (!mPlayerDied)
+        {
+            Instantiate(Resources.Load("GameOverScreen"));
+            mPlayerDied = true;
+        }
     }
 }
