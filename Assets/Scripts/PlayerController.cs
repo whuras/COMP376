@@ -65,9 +65,16 @@ public class PlayerController : MonoBehaviour
     [Header("Scoreboard")] 
     [Tooltip("Number of points awarded before multiplier")]
     public int ScorePerHit;
-
     [Tooltip("The streak the player needs to achieve to increase the multiplier.")]
-    public int StreakRequiredForMultiplierIncrement;
+    public float TimeRequiredForMultiplierIncrease;
+    [Tooltip("Rate at which the multiplier increase from a consecutive shot is lost.")]
+    public float TimeIncreaseForSuccessfulHit;
+    [Tooltip("Sound effect played on successful shot")]
+    public AudioClip HitSFX;
+    [Tooltip("Sound effect played on missed shot")]
+    public AudioClip MissSFX;
+    [Tooltip("Sound effect played on multiplier increase")]
+    public AudioClip MultiplierSFX;
 
     public UnityAction OnMultiplierIncrement;
     
@@ -82,6 +89,7 @@ public class PlayerController : MonoBehaviour
     CharacterController mCharacterController;
     PlayerLifeController mPlayerLifeController;
     AudioSource mAudioSource;
+    AudioSource mHitAudioSource;
 
     // Movement
     Vector3 mCharacterVelocity = new Vector3(0f, 0f, 0f);
@@ -106,6 +114,7 @@ public class PlayerController : MonoBehaviour
     int mScore = 0;
     int mMultiplier = 1;
     int mHitStreak = 0;
+    float mScoreDrainTime = -10f;
 
     /// <summary> Get referenced objects. </summary>
     void Start()
@@ -120,7 +129,9 @@ public class PlayerController : MonoBehaviour
         mConductor = Conductor.GetActiveConductor();
         mCharacterController = GetComponent<CharacterController>();
         mPlayerLifeController = GetComponent<PlayerLifeController>();
-        mAudioSource = GetComponent<AudioSource>();
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        mAudioSource = audioSources[0];
+        mHitAudioSource = audioSources[1];
         Cursor.lockState = CursorLockMode.Locked;
 
         // Disable Toggles turned off by default
@@ -158,6 +169,8 @@ public class PlayerController : MonoBehaviour
     /// <summary> Receive input and update player state accordingly. </summary>
     void Update()
     {
+        DisplayScore();
+
         CheckIfGrounded();
         if (!mDisableMovement)
         {
@@ -172,8 +185,6 @@ public class PlayerController : MonoBehaviour
             HandleWeaponBob();
             HandleAbilities();
         }
-
-        DisplayScore();
     }
 
     /// <summary> Delay physics updates to syncronize with physics system. </summary>
@@ -186,6 +197,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerHUD.SetScoreDisplayed(mScore);
         PlayerHUD.SetMultiplierDisplayed(mMultiplier);
+        PlayerHUD.SetMultiplierFill(Mathf.Clamp01((mScoreDrainTime - Time.time) / TimeRequiredForMultiplierIncrease));
         PlayerHUD.SetShotStreakDisplayed(mHitStreak);
     }
 
@@ -198,23 +210,40 @@ public class PlayerController : MonoBehaviour
 
     void ComputeMultiplier()
     {
-        int multiplier = (int)Mathf.Pow(2, (int)(mHitStreak / StreakRequiredForMultiplierIncrement));
-
-        if (multiplier > mMultiplier)
+        if (mScoreDrainTime > Time.time + TimeRequiredForMultiplierIncrease)
         {
+            if (mMultiplier < 16 && MultiplierSFX != null)
+            {
+                mHitAudioSource.pitch = 1f;
+                mHitAudioSource.PlayOneShot(MultiplierSFX);
+            }
+            mMultiplier = Mathf.Min(mMultiplier * 2, 16);
             OnMultiplierIncrement?.Invoke();
+            mScoreDrainTime = -10f;
         }
-
-        mMultiplier = multiplier;
     }
+    
     void IncrementHitStreak()
     {
+        mScoreDrainTime = Mathf.Max(mScoreDrainTime + TimeIncreaseForSuccessfulHit, Time.time + TimeIncreaseForSuccessfulHit);
         mHitStreak++;
+        if (HitSFX != null)
+        {
+            mHitAudioSource.pitch = 0.5f * Mathf.Clamp01((mScoreDrainTime - Time.time) / TimeRequiredForMultiplierIncrease) + 0.75f;
+            mHitAudioSource.PlayOneShot(HitSFX);
+        }
     }
 
     void ResetHitStreak()
     {
+        if (MissSFX != null)
+        {
+            mAudioSource.PlayOneShot(MissSFX);
+        }
+        mScoreDrainTime = -10f;
+        mMultiplier = 1;
         mHitStreak = 0;
+        OnMultiplierIncrement?.Invoke();
     }
     
     /// <summary> Update whether or not player is grounded. </summary>

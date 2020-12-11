@@ -60,10 +60,6 @@ public class Weapon : MonoBehaviour
     [Tooltip("Normalized time to apex of recoil")]
     [Range(0f, 1f)]
     public float RecoilApex = 0.1f;
-    [Tooltip("Sound effect played on successful shot")]
-    public AudioClip HitSFX;
-    [Tooltip("Sound effect played on missed shot")]
-    public AudioClip MissSFX;
 
     [Header("Reload Effects")]
     [Tooltip("Duration of recoil")]
@@ -315,20 +311,12 @@ public class Weapon : MonoBehaviour
     void OnSuccessfulShot(HealthController target)
     {
         mTimeLastSuccessfulShot = Time.time;
-        if (HitSFX != null)
-        {
-            mAudioSource.PlayOneShot(HitSFX);
-        }
         OnSuccessfulHit?.Invoke();
     }
 
     /// <summary> Respond to unsuccessful shots. </summary>
     void OnUnsuccessfulShot()
     {
-        if (MissSFX != null)
-        {
-            mAudioSource.PlayOneShot(MissSFX);
-        }
         OnUnsuccessfulHit?.Invoke();
     }
 

@@ -18,9 +18,10 @@ public class PlayerInterface : MonoBehaviour
     [Tooltip("Current ammo text object")]
     public Text CurrentAmmoText;
     
-    
     public Text CurrentScoreText;
     public Text CurrentMultiplierText;
+    public Text CurrentMultiplierTextBack;
+    public Image CurrentMultiplierMask;
     public Text CurrentStreakText;
 
     [Header("Animations")]
@@ -99,6 +100,12 @@ public class PlayerInterface : MonoBehaviour
     public void SetMultiplierDisplayed(int multiplier)
     {
         CurrentMultiplierText.text = $"{multiplier}";
+        CurrentMultiplierTextBack.text = $"{multiplier}";
+    }
+
+    public void SetMultiplierFill(float fill)
+    {
+        CurrentMultiplierMask.fillAmount = 1 - fill;
     }
 
     public void SetShotStreakDisplayed(int streak)
