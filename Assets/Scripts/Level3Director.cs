@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class Level3Director : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class Level3Director : MonoBehaviour
         AudioSource.PlayOneShot(TadaSound, 1f);
         Credits.SetActive(true);
         Camera.SetActive(true);
+        Invoke("LoadHomeScreen", 15f);
     }
 
     public void DeactiateCreditsScreen()
@@ -69,5 +71,10 @@ public class Level3Director : MonoBehaviour
     public void StopTimeLine()
     {
         GetComponent<PlayableDirector>().Stop();
+    }
+
+    public void LoadHomeScreen()
+    {
+        SceneManager.LoadScene(0);
     }
 }
