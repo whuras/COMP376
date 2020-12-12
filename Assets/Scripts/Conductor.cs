@@ -154,7 +154,7 @@ public class Conductor : MonoBehaviour
             mSwapAudioSourceTime = loopAtTime;
             mSourceSwapped = false;
             
-            Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
+            //Debug.Log($"Loop scheduled for : {loopAtTime}, time until loop : {loopAtTime - AudioSettings.dspTime}");
         }
     }
 

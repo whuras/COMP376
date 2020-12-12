@@ -47,6 +47,5 @@ public class PulseToBeat : MonoBehaviour
     public void ToggleIsPulsing()
     {
         mIsPulsing = !mIsPulsing;
-        print(mIsPulsing);
     }
 }
