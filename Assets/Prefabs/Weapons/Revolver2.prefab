@@ -63,11 +63,10 @@ MonoBehaviour:
   RecoilKickback: 0.2
   RecoilDuration: 0.35
   RecoilApex: 0.1
-  HitSFX: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
-  MissSFX: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
   ReloadTime: 1
   SpinCount: 1
   ReloadSFX: {fileID: 8300000, guid: dfed76fd83e6498479abc3397762e6fb, type: 3}
+  DryFire: {fileID: 8300000, guid: df221fbe4552b5045906ec08285a5e12, type: 3}
   Reticle: {fileID: 8807356412295458343}
   Hitmarker: {fileID: 6647137510962859045}
   ReticlePulseAmplitude: 0.5

@@ -66,6 +66,7 @@ MonoBehaviour:
   ReloadTime: 1
   SpinCount: 1
   ReloadSFX: {fileID: 8300000, guid: dfed76fd83e6498479abc3397762e6fb, type: 3}
+  DryFire: {fileID: 8300000, guid: df221fbe4552b5045906ec08285a5e12, type: 3}
   Reticle: {fileID: 1076299078756430367}
   Hitmarker: {fileID: 2948357919968055325}
   ReticlePulseAmplitude: 0.5
