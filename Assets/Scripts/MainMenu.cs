@@ -15,6 +15,8 @@ public class MainMenu : MonoBehaviour
     {
         mSelectionSFX = GetComponent<AudioSource>();
         OptionsScreen.SetActive(false);
+        // Destroy it just in case we came from a restart
+        Destroy(Conductor.GetActiveConductorGameObject());
         mConductor = Conductor.GetActiveConductor();
         Cursor.lockState = CursorLockMode.None;
     }
