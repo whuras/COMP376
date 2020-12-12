@@ -55,7 +55,7 @@ MonoBehaviour:
   CameraRoot: {fileID: 6019745203289817065}
   WeaponSocket: {fileID: 6019745204038976729}
   PlayerHUD: {fileID: 8124330934293397499}
-  MouseSensitivity: {x: 360, y: 200}
+  MouseSensitivity: {x: 3, y: 2}
   CharacterSpeedNormal: 10
   CharacterSpeedRunning: 20
   JumpSpeed: 10

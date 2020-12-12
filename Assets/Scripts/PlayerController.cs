@@ -318,13 +318,13 @@ public class PlayerController : MonoBehaviour
     {
         // AIMING (LEFT/RIGHT)
         Vector3 characterRotation = transform.localEulerAngles;
-        float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x * Time.deltaTime;
+        float angleDelta = Input.GetAxis("Mouse X") * MouseSensitivity.x;
         characterRotation.y += angleDelta;
         transform.localEulerAngles = characterRotation;
 
         // AIMING (UP/DOWN)
         Vector3 cameraRotation = CameraRoot.transform.localEulerAngles;
-        angleDelta = Input.GetAxis("Mouse Y") * MouseSensitivity.y * Time.deltaTime;
+        angleDelta = Input.GetAxis("Mouse Y") * MouseSensitivity.y;
 
         float newCameraRotationX = cameraRotation.x - angleDelta;
         if (newCameraRotationX > CameraClampAngleX && newCameraRotationX < (360 - CameraClampAngleX))
