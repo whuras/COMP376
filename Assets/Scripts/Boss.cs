@@ -189,6 +189,7 @@ public class Boss : MonoBehaviour
         if ((HealthController.CurrentHealth <= (HealthController.MaxHealth / 2)) && !isHalfToggle)
         {
             mConductor.RequestTransition();
+            mBeatReloadStart = mConductor.GetBeat();
             isHalfToggle = true;
             Lava.canMove = true;
             Flames.raiseFlames = true;
