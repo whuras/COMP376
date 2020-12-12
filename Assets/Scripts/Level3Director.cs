@@ -36,6 +36,7 @@ public class Level3Director : MonoBehaviour
         Credits.SetActive(true);
         Camera.SetActive(true);
         Invoke("LoadHomeScreen", 15f);
+        Destroy(Conductor.GetActiveConductorGameObject(), 15f);
     }
 
     public void DeactiateCreditsScreen()
