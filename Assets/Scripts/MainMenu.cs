@@ -28,6 +28,7 @@ public class MainMenu : MonoBehaviour
         mSelectionSFX.Play();
         mConductor.RequestTransition();
         SceneManager.LoadScene(1);
+        PlayerController.ResetScore();
     }
 
     public void OpenOptions()

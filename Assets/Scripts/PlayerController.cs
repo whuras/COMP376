@@ -111,9 +111,9 @@ public class PlayerController : MonoBehaviour
     Vector3 mDashVelocity;
     
     // Scoreboard
-    int mScore = 0;
-    int mMultiplier = 1;
-    int mHitStreak = 0;
+    static int mScore = 0;
+    static int mMultiplier = 1;
+    static int mHitStreak = 0;
     float mScoreDrainTime = -10f;
 
     void Awake()
@@ -424,5 +424,12 @@ public class PlayerController : MonoBehaviour
     public void ToggleDisableWeapon()
     {
         mDisableWeapons = !mDisableWeapons;
+    }
+
+    public static void ResetScore()
+    {
+        mScore = 0;
+        mMultiplier = 1;
+        mHitStreak = 0;
     }
 }
