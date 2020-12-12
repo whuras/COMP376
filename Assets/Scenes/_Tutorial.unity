@@ -16399,6 +16399,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2009355914}
     m_Modifications:
+    - target: {fileID: 8785660322421451718, guid: c79b71998c3af9f4f9ca6e6658055a48, type: 3}
+      propertyPath: TransitionMusic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8785660322421451719, guid: c79b71998c3af9f4f9ca6e6658055a48, type: 3}
       propertyPath: m_Name
       value: Level_Transition

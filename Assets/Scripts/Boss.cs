@@ -71,7 +71,6 @@ public class Boss : MonoBehaviour
         bossInstantiatedTime = Time.time;
         mAnimator = BossModel.GetComponent<Animator>();
         mConductor = Conductor.GetActiveConductor();
-        mConductor.RequestTransition();
         HealthController.OnDamaged += OnDamaged;
         HealthController.OnDeath += OnDeath;
         HealthController.canTakeDamage = false;
