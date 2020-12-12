@@ -21,7 +21,7 @@ public class ChangeLevel2Conductor : MonoBehaviour
         }
         else if (NewConductor.tag == "BehindMarketplace" || NewConductor.tag == "Canyon")
         {
-            NewConductor.GetComponent<MainroadConductor>().StartConductor((MainConductor.GetBeat() / 4 + 1) * 4);
+            NewConductor.GetComponent<MainroadConductor>().StartConductor((MainConductor.GetBeat() + 1));
         }
         Destroy(gameObject);
     }
