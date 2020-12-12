@@ -126,7 +126,7 @@ public class Gargoyle : Enemy
             Projectile newProjectile = Instantiate(Projectile, MuzzlePosition.position, Quaternion.LookRotation(MuzzlePosition.forward));
             newProjectile.Owner = HealthController.gameObject;
             newProjectile.Damage = 5f;
-            AudioSource.PlayOneShot(FireSFX);
+            AudioSource.PlayOneShot(FireSFX, 0.3f);
             HasNotFired = false;
         }
     }

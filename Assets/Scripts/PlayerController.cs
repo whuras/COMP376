@@ -224,7 +224,7 @@ public class PlayerController : MonoBehaviour
             if (mMultiplier < 16 && MultiplierSFX != null)
             {
                 mHitAudioSource.pitch = 1f;
-                mHitAudioSource.PlayOneShot(MultiplierSFX);
+                mHitAudioSource.PlayOneShot(MultiplierSFX, 0.5f);
             }
             mMultiplier = Mathf.Min(mMultiplier * 2, 16);
             OnMultiplierIncrement?.Invoke();
@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour
         if (HitSFX != null)
         {
             mHitAudioSource.pitch = 0.5f * Mathf.Clamp01((mScoreDrainTime - Time.time) / TimeRequiredForMultiplierIncrease) + 0.75f;
-            mHitAudioSource.PlayOneShot(HitSFX);
+            mHitAudioSource.PlayOneShot(HitSFX, 0.3f);
         }
     }
 
@@ -247,7 +247,7 @@ public class PlayerController : MonoBehaviour
     {
         if (MissSFX != null)
         {
-            mAudioSource.PlayOneShot(MissSFX);
+            mAudioSource.PlayOneShot(MissSFX, 0.7f);
         }
         mScoreDrainTime = -10f;
         mMultiplier = 1;
