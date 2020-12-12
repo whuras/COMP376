@@ -148,7 +148,7 @@ public class Boss : MonoBehaviour
                 newProjectile.Owner = HealthController.gameObject;
                 newProjectile.Damage = 5f;
                 AudioSource.pitch = 0.95f + 0.1f * (mAmmoLeft % 2);
-                AudioSource.PlayOneShot(FireSFX, 0.5f);
+                AudioSource.PlayOneShot(FireSFX, 0.3f);
                 mAmmoLeft--;
             }
         
@@ -199,6 +199,7 @@ public class Boss : MonoBehaviour
             EngageTimer = 0.0f;
             EngageTime = 5.0f;
             HealthController.Heal(HealthController.MaxHealth);
+            HealthBar.fillAmount = HealthController.NormalizedHealth;
             GameObject.Find("Player").GetComponent<HealthController>().canHeal = false;
             needsToPlayHalfSound = true;
             halfSoundScheduleTime = Time.time;

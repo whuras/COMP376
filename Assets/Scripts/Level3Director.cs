@@ -32,7 +32,7 @@ public class Level3Director : MonoBehaviour
 
     public void ActivateCreditScreen()
     {
-        AudioSource.PlayOneShot(TadaSound, 1f);
+        //AudioSource.PlayOneShot(TadaSound, 1f);
         Credits.SetActive(true);
         Camera.SetActive(true);
         Invoke("LoadHomeScreen", 15f);
