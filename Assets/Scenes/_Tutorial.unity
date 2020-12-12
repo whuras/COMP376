@@ -2899,8 +2899,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1 &139841224
@@ -3590,8 +3590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 5
 --- !u!1001 &178777208
@@ -5919,8 +5919,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!4 &404663820 stripped
@@ -7945,8 +7945,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1 &562948265
@@ -9589,8 +9589,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1 &635239886
@@ -10666,8 +10666,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1001 &697858035
@@ -23983,8 +23983,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1 &1571468654
@@ -24373,8 +24373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1001 &1589173774
@@ -24757,8 +24757,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1 &1627318575
@@ -31326,8 +31326,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!1001 &2036872737
@@ -32476,8 +32476,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyedVersion: {fileID: 198343879538955180, guid: 26e67720cbc11924689078b34fe9a61f, type: 3}
-  MissedBeatSound: {fileID: 8300000, guid: 029a9e09ffc1a824e9b0bf748ed554bf, type: 3}
-  HitBeatSound: {fileID: 8300000, guid: 92f9d8ce04ecc8b458c0081287cee6b7, type: 3}
+  MissedBeatSound: {fileID: 0}
+  HitBeatSound: {fileID: 0}
   BeatThreshold: 0.3
   Health: 1
 --- !u!4 &2110334247 stripped
