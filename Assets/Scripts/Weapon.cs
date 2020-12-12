@@ -68,7 +68,9 @@ public class Weapon : MonoBehaviour
     public uint SpinCount = 3;
     [Tooltip("Sound effect played on reload")]
     public AudioClip ReloadSFX;
-
+    [Tooltip("Sound effect played when fired and gun empty")]
+    public AudioClip DryFire;
+    
     [Header("Weapon Reticle")]
     [Tooltip("Transform holding reticle UI elements")]
     public RectTransform Reticle;
@@ -173,8 +175,14 @@ public class Weapon : MonoBehaviour
     /// <summary> Fire bullet of appropriate type if enough time has passed since last fire and enough ammo remains. Add weapon SFX. </summary>
     bool Fire()
     {
-        // Check if weapon can be fired. Return early if weapon was last fired too recently or ammo is missing
-        if (mIsReloading || mAmmoLeft == 0 || mTimeLastShot + Period > Time.time)
+        if (mAmmoLeft == 0)
+        {
+            mAudioSource.PlayOneShot(DryFire, 1F);
+            return false;
+        }
+        
+        // Check if weapon can be fired. Return early if weapon was last fired too recently or is reloading
+        if (mIsReloading || mTimeLastShot + Period > Time.time)
         {
             return false;
         }
