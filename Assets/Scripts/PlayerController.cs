@@ -155,8 +155,6 @@ public class PlayerController : MonoBehaviour
         Weapon.OnSuccessfulHit += ComputeMultiplier;
         Weapon.OnUnsuccessfulHit += ResetHitStreak;
         Weapon.OnUnsuccessfulHit += ComputeMultiplier;
-
-        OnMultiplierIncrement += mPlayerLifeController.OnMultiplierIncreaseHealPlayer;
     }
 
     /// <summary> Equip the weapon in inventory at a specified index. </summary>

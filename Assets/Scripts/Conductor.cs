@@ -137,6 +137,14 @@ public class Conductor : MonoBehaviour
         HandleTransition(mDeathFrame);
     }
 
+    public void SetVolume(float volume)
+    {
+        foreach (AudioSource a in mMusicSources)
+        {
+            a.volume = Mathf.Clamp01(volume);
+        }
+    }
+    
     private void HandleLoop()
     {
         // Schedule a loop one bar after the last loop/transition occured

@@ -53,8 +53,11 @@ public class PostProcessingController : MonoBehaviour
         mCurrentProcessingState = mDefaultProcessingState;
         
         GameObject player = GameObject.Find("Player");
-        mHealthController = player.GetComponent<HealthController>();
-        mHealthController.OnDamaged += IncreaseHurtIntensity;
+        if (player != null)
+        {
+            mHealthController = player.GetComponent<HealthController>();
+            mHealthController.OnDamaged += IncreaseHurtIntensity;
+        }
 
         mHurtEffectStart = 3.40282347E+38F;
     }

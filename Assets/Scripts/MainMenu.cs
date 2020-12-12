@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -11,10 +12,13 @@ public class MainMenu : MonoBehaviour
     private Conductor mConductor;
     private AudioSource mSelectionSFX;
 
+    private Slider mVolumeSliderComponent;
     private void Start()
     {
         mSelectionSFX = GetComponent<AudioSource>();
         OptionsScreen.SetActive(false);
+        mVolumeSliderComponent = OptionsScreen.GetComponentInChildren<Slider>();
+        mVolumeSliderComponent.onValueChanged.AddListener(delegate { OnVolumeSliderChangedEvent(); });
         mConductor = Conductor.GetActiveConductor();
         Cursor.lockState = CursorLockMode.None;
     }
@@ -44,5 +48,10 @@ public class MainMenu : MonoBehaviour
     {
         mSelectionSFX.Play();
         Application.Quit();
+    }
+
+    private void OnVolumeSliderChangedEvent()
+    {
+        mConductor.SetVolume(mVolumeSliderComponent.value);
     }
 }
